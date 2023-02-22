@@ -32,12 +32,14 @@
 - User can change location with location pop up 
 
 ![posting page](./ux-design/wireframes/Posting.png)
+
 ![location pop-up](./ux-design/wireframes/location_popup.png)
 
 ## User Profile page
 - Shows user profile
 
 ![up page](./ux-design/wireframes/User_Profile.png)
+
 ![user profile page](./ux-design/wireframes/User_Profile_with_dropdown_menu.png)
 
 
