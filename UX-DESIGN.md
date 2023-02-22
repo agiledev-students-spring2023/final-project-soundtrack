@@ -16,6 +16,7 @@
 
 ## Home page
 - Shows home page and displays map with desired/current location
+
 ![client login page](./ux-design/wireframes/Home.png)
 
 ## Browse page
