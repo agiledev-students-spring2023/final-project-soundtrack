@@ -6,32 +6,32 @@
 
 
 # Wireframes
-## Login page
+## Login
 
 ![login page](./ux-design/wireframes/Login.png)
 
-## Create Account page
+## Create Account
 
 ![create account page](./ux-design/wireframes/Create%20Account.png)
 
-## Home page
+## Home
 - Shows home page and displays map with desired/current location
 
 ![client login page](./ux-design/wireframes/Home.png)
 
-## Browse page
+## Browse
 - Browsing page to see others' posts
 
 ![browse page](./ux-design/wireframes/Browse.png)
 
-## Posting page 
+## Posting
 - Posting page with location pop-up
 
 ![posting page](./ux-design/wireframes/Posting.png)
 
 ![location pop-up](./ux-design/wireframes/location_popup.png)
 
-## User Profile page
+## User Profile
 - Shows user profile
 
 ![up page](./ux-design/wireframes/User_Profile.png)
