@@ -1,19 +1,25 @@
-# Project Repository
+# Project Description
+Every generation has its own unique connection to the arts. Now more than ever, people define their identities by preferences that form a curated aesthetic. These preferences include those of fashion, cuisine, and (arguably most importantly) music. Vast online communities have been formed through the sharing of tastes, and the association between these tastes and certain lifestyles.
 
-This repository will be used for team projects.
+SoundTrack is a web application that tracks users’ listening history across different locations. The app brings users together based on common places that they frequent, and the music they associate with these places by creating playlists of songs posted at these locations.
 
-Several sets of instructions are included in this repository. They should each be treated as separate assignments with their own due dates and sets of requirements.
+Next time you’re in a cozy cafe, a dark-academia library, or your favorite museum, make yourself the main character and pull up a perfectly tailored playlist curated by like-minded peers. Live life to your own soundTrack.
 
-1. See the [App Map & Wireframes](instructions-0a-app-map-wireframes.md) and [Prototyping](./instructions-0b-prototyping.md) instructions for the requirements of the initial user experience design of the app.
+## Product Vision Statement
+Our Minimum Viable Product includes the following: 
 
-1. Delete the contents of this file and replace with the contents of a proper README.md, as described in the [project setup instructions](./instructions-0c-project-setup.md)
+* Notification goes off.
+* The user posts a song or a playlist, and (optionally) a picture.
+* The song, picture, and location of the user are added to their profile (which can be made private).
+* Application makes playlists for different places based on songs that users post at that location.
 
-1. See the [Sprint Planning instructions](instructions-0d-sprint-planning.md) for the requirements of Sprint Planning for each Sprint.
+# Team members
+* [Alice Long](https://github.com/AliceLong)
+* [Isabella Masiero](https://github.com/isabellaMas)
+* [Diya Mohan](https://github.com/diya314)
+* [Anzhelika Nastashchuk](https://github.com/annsts)
+* [Jackson Reinhart](https://github.com/jar10020)
 
-1. See the [Front-End Development instructions](./instructions-1-front-end.md) for the requirements of the initial Front-End Development.
+# How to contribute 
+Kindly refer to [CONTRIBUTING.md](CONTRIBUTING.md) for instructions on collaboration. 
 
-1. See the [Back-End Development instructions](./instructions-2-back-end.md) for the requirements of the initial Back-End Development.
-
-1. See the [Database Integration instructions](./instructions-3-database.md) for the requirements of integrating a database into the back-end.
-
-1. See the [Deployment instructions](./instructions-4-deployment.md) for the requirements of deploying an app.
