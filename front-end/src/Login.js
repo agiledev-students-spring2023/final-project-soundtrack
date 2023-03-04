@@ -7,7 +7,7 @@ function Login() {
             <h1>SoundTack</h1>
             <p>full logo to be added when developed</p>
         </div>
-        <h2>Login</h2>
+        <h2>LOGIN</h2>
     </div>
   );
 }
