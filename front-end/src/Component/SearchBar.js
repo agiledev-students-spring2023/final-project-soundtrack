@@ -53,7 +53,7 @@ function SearchBar({placeholder, data }) {
 ) : (wordEntered.length === 0 && (
   <div className="recentListenBlock">
     <p10>
-      Recently Listening
+      Recently Listen
     </p10>
     <div className="recentListen">
       {data.slice(0, 5).map((value, key) => {
