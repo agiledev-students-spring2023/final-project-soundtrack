@@ -1,62 +1,62 @@
 .Login {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: auto;
-    width: auto;
-  }
-  
-  .logo{
-    width: 300px;
-    height: 125px;
-    background-color: lightgray;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: black;
-    margin-top: 56px;
-    margin-bottom: 60px;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  width: auto;
+}
 
-  .inputs .links{
-    font-size: 10px;
-    text-decoration-line: underline;
-    margin-top: 5px;
-    align-self: flex-end;
-    margin-right: auto;
-    cursor: pointer;
-  }
+.logo{
+  width: 300px;
+  height: 125px;
+  background-color: lightgray;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: black;
+  margin-top: 56px;
+  margin-bottom: 60px;
+}
 
-  .inputs{
-    width: auto;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    color: black;
-    padding: 10px;
-  }
+.inputs .links{
+  font-size: 10px;
+  text-decoration-line: underline;
+  margin-top: 5px;
+  align-self: flex-end;
+  margin-right: auto;
+  cursor: pointer;
+}
+
+.inputs{
+  width: auto;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  color: black;
+  padding: 10px;
+}
 
 
-  button{
-    width: 90px;
-    height: 50px;
-    background-color: lightgrey;
-    border: 0px;
-    cursor: pointer;
-    margin: 10px;
-    text-decoration-line: underline;
-    align-self: center;
-  }
-   
-  input{
-    background-color: lightgrey;
-    border: 0px;
-    width: 280px;
-    height: 50px;
-    margin-top: 40px;
-  }
-  
+button{
+  width: 90px;
+  height: 50px;
+  background-color: lightgrey;
+  border: 0px;
+  cursor: pointer;
+  margin: 10px;
+  text-decoration-line: underline;
+  align-self: center;
+}
+ 
+input{
+  background-color: lightgrey;
+  border: 0px;
+  width: 280px;
+  height: 50px;
+  margin-top: 40px;
+}
+
