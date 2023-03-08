@@ -20,6 +20,11 @@
   margin-bottom: 60px;
 }
 
+.button-container {
+  text-align: center;
+  align-items: center;
+}
+
 .inputs .links{
   font-size: 10px;
   text-decoration-line: underline;
@@ -27,6 +32,9 @@
   align-self: flex-end;
   margin-right: auto;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .inputs{
@@ -50,9 +58,12 @@ button{
   margin: 10px;
   text-decoration-line: underline;
   align-self: center;
+  text-align: center;
 }
+
  
 input{
+  text-align: center;
   background-color: lightgrey;
   border: 0px;
   width: 280px;

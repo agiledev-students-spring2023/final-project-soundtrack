@@ -22,7 +22,8 @@ function Login() {
                     <input type="password" name="pass" placeholder="password" required />
                 </div>
                 <div className="links">
-                <label onClick={createAccount}>Create Account</label>
+                    <label onClick={createAccount}>Create Account</label>
+                    <label onClick={createAccount}>Forgot Password</label>
                 </div>
                 <div className="button-container">
                     <button type="submit">login</button>
