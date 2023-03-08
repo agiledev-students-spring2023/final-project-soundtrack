@@ -6,10 +6,13 @@ import Browse from './Pages/Browse';
 import reportWebVitals from './reportWebVitals';
 import HeaderBrowseMap from './Components/HeaderBrowseMap';
 
+import Friends from './Pages/Friends';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    {/* <App /> */}
+    <Friends/>
   </React.StrictMode>
 );
 
