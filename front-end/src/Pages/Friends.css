@@ -1,0 +1,13 @@
+.FriendsMainContainer {
+    margin-left: 10vw;
+    margin-right: 10vw;
+    margin-top: 5vh;
+}
+
+.FriendsItemsDisplayColumn {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    row-gap: 2vh;
+    column-count: 1;
+}
