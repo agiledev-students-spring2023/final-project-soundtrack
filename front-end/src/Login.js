@@ -1,5 +1,10 @@
 import './Login.css';
 
+function createAccount(e) {
+    e.preventDefault();
+    window.location = './App.js';
+}
+
 function Login() {
   return (
     <div className="Login">
@@ -8,6 +13,22 @@ function Login() {
             <p>full logo to be added when developed</p>
         </div>
         <h2>LOGIN</h2>
+        <div className="inputs">
+            <form>
+                <div className="input-container">
+                    <input type="text" name="uname" placeholder="@username" required />
+                </div>
+                <div className="input-container">
+                    <input type="password" name="pass" placeholder="password" required />
+                </div>
+                <div className="links">
+                <label onClick={createAccount}>Create Account</label>
+                </div>
+                <div className="button-container">
+                    <button type="submit">login</button>
+                </div>
+            </form>
+        </div>
     </div>
   );
 }
