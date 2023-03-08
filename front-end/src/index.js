@@ -5,7 +5,7 @@ import App from './App';
 import Login from './Login';
 import Browse from './Browse';
 import reportWebVitals from './reportWebVitals';
-import HeaderBrowseMap from './components/HeaderBrowseMap';
+import HeaderBrowseMap from './Components/HeaderBrowseMap';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
