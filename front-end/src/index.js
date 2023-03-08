@@ -2,9 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import Browse from './Browse';
+import Browse from './Pages/Browse';
 import reportWebVitals from './reportWebVitals';
-import HeaderBrowseMap from './components/HeaderBrowseMap';
+import HeaderBrowseMap from './Components/HeaderBrowseMap';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
