@@ -1,7 +1,7 @@
 import React from "react";
-import './post.css'
-import SearchBar from "./Component/SearchBar";
-import BookData from "./Data.json";
+import './Post.css'
+import SearchBar from "../Components/SearchBar";
+import BookData from "../Data.json";
 
 const Post = () => {
   console.log("Rendering Post");
