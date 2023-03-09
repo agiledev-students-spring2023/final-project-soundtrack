@@ -1,23 +1,25 @@
 import React, { useState } from "react";
 import "./SearchBar.css"
 
-function SearchBar({placeholder, data }) {
+function SearchBar({placeholder, data}) {
+  // console.log("rendering searchbar")
   const [filteredData, setFilteredData] = useState([]);
   const [wordEntered, setWordEntered] = useState("");
 
-  //filter through data
+  // filter through data
   const handleFilter = (event) => {
     const searchWord = event.target.value;
     setWordEntered(searchWord);
     const newFilter = data.filter((value) => {
-      return value.title.toLowerCase().includes(searchWord.toLowerCase());
+      return value.song_title.toLowerCase().includes(searchWord.toLowerCase());
     });
-
+    
     if (searchWord === "") {
       setFilteredData([]);
     } else {
       setFilteredData(newFilter);
     }
+  
   };
 
   const clearInput = () => {
@@ -39,39 +41,42 @@ function SearchBar({placeholder, data }) {
         </button>
       </div>
 
-{filteredData.length !== 0 ? (
-  <div className = "dataResultBlock">
-     <p10>
-      Rearch Result
-    </p10>
-  <div className="dataResult">
-    {filteredData.slice(0, 15).map((value, key) => {
-      return <div  id = "test" className="dataItem">{value.title}</div>
-    })}
-  </div>
-  </div>
-) : (wordEntered.length === 0 && (
-  <div className="recentListenBlock">
-    <p10>
-      Recently Listen
-    </p10>
-    <div className="recentListen">
-      {data.slice(0, 5).map((value, key) => {
-        return <div  id = "test" className="recentItem">{value.title}</div>
-      })}
-    </div>
-  </div>
-))}
-    </div>
-  );
-}
-
-function SearchResult({ filteredData }) {
-  return (
-    <div className="dataResult">
-      {filteredData.slice(0, 15).map((value, key) => {
-        return <div  id = "test" className="dataItem">{value.title}</div>
-      })}
+      {filteredData.length !== 0 ? (
+        <div className="dataResultBlock">
+          <h2>Search Result</h2>
+          <div className="dataResult">
+            {filteredData.slice(0, 15).map((value, key) => {
+              return (
+                <div key={key} className="dataItem">
+                  <img src={value.image} alt={"no image"} />
+                  <div className="songDetails">
+                    <p className="songTitle">{value.song_title}</p>
+                    <p className="artistName">{value.artist}</p>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      ) : (wordEntered.length === 0 && (
+        <div className="recentListenBlock">
+          <h2>Recently Listened</h2>
+          <div className="recentListen">
+            {data.slice(0, 5).map((value, key) => {
+              return (
+                <div key={key} className="dataItem">
+                  <img src={value.image} alt={"no image"} />
+                  <div className="songDetails">
+                    <p className="songTitle">{value.song_title}</p>
+                    <p className="artistName">{value.artist}</p>
+                  </div>
+                </div>
+              )
+              
+            })}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
