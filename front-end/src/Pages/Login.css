@@ -71,3 +71,6 @@ input{
   margin-top: 40px;
 }
 
+label{
+  cursor: pointer;
+}

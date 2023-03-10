@@ -2,7 +2,7 @@ import './Login.css';
 
 function createAccount(e) {
     e.preventDefault();
-    window.location = './App.js';
+    window.location = './CreateAccount';
 }
 
 function Login() {
