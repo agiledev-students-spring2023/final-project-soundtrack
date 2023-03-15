@@ -1,72 +1,56 @@
+import React, { useState } from 'react';
+import Webcam from 'react-webcam';
+import './Camera.css';
 
-import React, { useEffect, useRef } from "react";
-
+const videoConstraints = {
+  width: 220,
+  height: 200,
+  facingMode: 'user',
+};
 
 const Camera = () => {
-  let videoRef = useRef(null);
+  const [image, setImage] = useState('');
+  const webcamRef = React.useRef(null);
 
-  let photoRef = useRef(null)
+  const capture = React.useCallback(() => {
+    const imageSrc = webcamRef.current.getScreenshot();
+    setImage(imageSrc);
+  });
 
-  const getVideo = () => {
-    navigator.mediaDevices
-      .getUserMedia({
-        video: true
-      })
-      .then((stream) => {
-        let video = videoRef.current;
-        video.srcObject = stream;
-        video.play();
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+  const retakeImage = () => {
+    setImage('');
   };
 
-  const takePicture = () => {
-    const width = 400
-    const height = width / (16 / 9)
-    
-    let video = videoRef.current
-
-    let photo = photoRef.current
-
-    photo.width = width
-
-    photo.height = height
-
-    let ctx = photo.getContext('2d')
-
-    ctx.drawImage(video, 0, 0, width, height)
-    
-  }
-
-  const clearImage = () => {
-    let photo = photoRef.current
-
-    let ctx = photo.getContext('2d')
-
-    ctx.clearRect(0,0,photo.width,photo.height)
-  }
-
-  useEffect(() => {
-    getVideo();
-  }, [videoRef]);
-
-    return (
-      <div className="container">
-      <h1 className="text-center">Camera Selfie App in React</h1>
-
-      <video ref={videoRef} className="container"></video>
-
-      <button onClick={takePicture} className="btn btn-danger container">Take Picture</button>
-
-      <canvas className="container" ref={photoRef}></canvas>
-
-      <button onClick={clearImage} className="btn btn-primary container">Clear Image</button>
-
-      <br/><br/>
+  return (
+    <div className="webcam-container">
+      <h1 className="title">Take a pic</h1>
+      <div className="webcam-img">
+        {!image ? (
+          <Webcam
+            audio={false}
+            height={200}
+            ref={webcamRef}
+            screenshotFormat="image/jpeg"
+            width={220}
+            videoConstraints={videoConstraints}
+          />
+        ) : (
+          <img src={image} />
+        )}
+      </div>
+      <div>
+        {image ? (
+          <button onClick={retakeImage} className="webcam-btn">
+            Retake Image
+          </button>
+        ) : (
+          <button onClick={capture} className="webcam-btn">
+            Capture
+          </button>
+        )}
+      </div>
     </div>
-    )
-  };
+  );
+};
 
 export default Camera;
