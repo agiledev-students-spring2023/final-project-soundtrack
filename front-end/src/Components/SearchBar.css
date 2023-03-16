@@ -17,7 +17,6 @@
 
 input[type="text"] {
   width: 100%;
-  padding: 10px;
   border-radius: 30px;
   border: none;
   font-size: 18px;
@@ -29,6 +28,7 @@ input[type="text"] {
 #clearButton {
   position: absolute;
   right: 10px;
+  top: 30px; 
   font-size: 18px;
   color: #999;
   background: transparent;
