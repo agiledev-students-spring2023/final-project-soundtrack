@@ -18,5 +18,10 @@
     text-transform: uppercase;
     border: none;
     border-radius: 2rem;
-  }
+}
   
+.Filter {
+    display: block;
+    justify-content: left;
+    left: 5%;
+}
