@@ -7,6 +7,8 @@ import User from './Pages/User';
 import Friends from './Pages/Friends';
 import Browse from './Pages/Browse';
 import Map from './Pages/Map';
+import Favorites from './Pages/Favorites';
+
 
 function App() {
   return (
@@ -21,6 +23,7 @@ function App() {
             <Route exact path="/Friends" element={<Friends />}></Route>
             <Route exact path="/Browse" element={<Browse />}></Route>
             <Route exact path="/Map" element={<Map />}></Route>
+            <Route exact path="/Favorites" element={<Favorites />}></Route>
 
           </Routes>
         </div>
