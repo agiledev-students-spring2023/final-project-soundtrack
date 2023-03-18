@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Webcam from 'react-webcam';
 import {useNavigate} from "react-router-dom"
-
 import './Camera.css';
 
 const videoConstraints = {

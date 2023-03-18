@@ -6,6 +6,11 @@ import Camera from './Pages/Camera';
 import User from './Pages/User';
 import Friends from './Pages/Friends';
 import Browse from './Pages/Browse';
+import Map from './Pages/Map';
+import Favorites from './Pages/Favorites';
+import Filter from './Pages/Filter';
+
+
 
 function App() {
   return (
@@ -19,6 +24,9 @@ function App() {
             <Route exact path="/User" element={<User />}></Route>
             <Route exact path="/Friends" element={<Friends />}></Route>
             <Route exact path="/Browse" element={<Browse />}></Route>
+            <Route exact path="/Map" element={<Map />}></Route>
+            <Route exact path="/Favorites" element={<Favorites />}></Route>
+            <Route exact path="/Filter" element={<Filter />}></Route>
 
           </Routes>
         </div>

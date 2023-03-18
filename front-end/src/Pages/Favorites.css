@@ -1,0 +1,22 @@
+.Title{
+    background-color: #282c34;
+    min-height: 20vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 1vmin);
+    color: white;
+}
+
+.Button {
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 1rem 2rem;
+    color: white;
+    font-size: 1rem;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 2rem;
+  }
+  
