@@ -2,9 +2,11 @@ import './Post.css';
 import SearchBar from "../Components/SearchBar";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
+import {useNavigate} from "react-router-dom";
 
 const Post = () => {
   const [data, setData] = useState([]);
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     // a nested function that fetches the data
@@ -37,7 +39,9 @@ const Post = () => {
       <SearchBar placeholder={"Search Song"} data={data} />
 
       <div className="Button">
-        <button>
+        <button onClick = {() => {
+            navigate("/Camera")
+          }}>
           Go to Camera
         </button>
       </div>

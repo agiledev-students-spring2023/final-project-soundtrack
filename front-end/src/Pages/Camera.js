@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import Webcam from 'react-webcam';
+import {useNavigate} from "react-router-dom"
+
 import './Camera.css';
 
 const videoConstraints = {
@@ -11,6 +13,7 @@ const videoConstraints = {
 const Camera = () => {
   const [image, setImage] = useState('');
   const webcamRef = React.useRef(null);
+  const navigate = useNavigate(); 
 
   const capture = React.useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
@@ -44,9 +47,12 @@ const Camera = () => {
           <button onClick={retakeImage} className="webcam-btn">
             Retake Image
           </button>
-          <button className = "next-btn">
+          <button onClick = {() => {
+            navigate("/Location")
+          }}className = "next-btn">
             next
           </button>
+     
           </div>
         ) : (
     
