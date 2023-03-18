@@ -18,8 +18,12 @@
   }
 
   .button-container {
+    position: fixed;
+    bottom: 50px;
+    left: 40%;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
   }
   
   .webcam-btn {
@@ -30,7 +34,22 @@
     border: none;
     border-radius: 5px;
   }
-  
+
+  .retake-btn {
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 10px;
+    background-color: transparent;
+    color: #fff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 18px;
+    text-decoration: none;
+  }
+
+
   .next-btn {
     display: inline-block;
     padding: 10px 20px;

@@ -40,25 +40,29 @@ const Camera = () => {
           <img src={image} />
         )}
       </div>
-      <div>
+      <div className = "button-container">
         {image ? (
-          <div className = "button-container">
-          <button onClick={retakeImage} className="webcam-btn">
-            Retake Image
-          </button>
-          <button onClick = {() => {
+          <div>
+            <button onClick={retakeImage} className="retake-btn">
+            X
+            </button>
+            <button onClick = {() => {
             navigate("/Location")
-          }}className = "next-btn">
+            }}className = "next-btn">
             next
-          </button>
-     
+            </button>
           </div>
         ) : (
-    
-          <button onClick={capture} className="webcam-btn">
+          <div>
+            <button onClick = {() => {
+            navigate("/Post")
+            }}className="retake-btn">
+            Back
+            </button>
+            <button onClick={capture} className="webcam-btn">
             Capture
-          </button>
-    
+            </button>
+            </div>
         )}
       </div>
     </div>
