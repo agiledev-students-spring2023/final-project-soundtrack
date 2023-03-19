@@ -1,57 +1,77 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './Location.css';
 import axios from "axios";
 import SearchLocations from '../Components/SearchLocations';
 
-
-
 const Location = () => {
   const [data, setData] = useState([]);
+  const [locationData, setLocationData] = useState([]);
+  const [showPopup, setShowPopup] = useState(false);
+  const popupRef = useRef(null);
 
   useEffect(() => {
-    // a nested function that fetches the data
     async function fetchData() {
-      console.log("Fetching data from Api");
-      // axios is a 3rd-party module for fetching data from servers
       const result = await axios(
-        // retrieving some mock data about animals for sale
         "https://my.api.mockaroo.com/user_post.json?key=6f6ae4c0"
       );
-      // set the state variable to the image URL
       setData(result.data);
     }
 
-    // fetch the data!
     fetchData();
-
-    // the blank array below causes this callback to be executed only once on component load
   }, []);
-  console.log("Rendering Location");
+
+  useEffect(() => {
+    async function fetchLocationData() {
+      const result = await axios(
+        "https://my.api.mockaroo.com/search_locations.json?key=76409ff0"
+      );
+      setLocationData(result.data);
+    }
+
+    fetchLocationData();
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (popupRef.current && !popupRef.current.contains(event.target)) {
+        setShowPopup(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [popupRef]);
 
   return (
-    <div>
-      
+    <div className='container'>
       <div className='Title'>
         <h1>Finish Posting</h1>
       </div>
       <div>
-        {<img src={data.imageTaken} alt='Uploaded Image' />}
+        {<img src={data.imageTaken} alt='no Image' />}
       </div>
 
       <div className="choose">
-        <div className="artistName">
+        <div className="songName">
           chooseSong:{data.songName}
         </div>
-        <div className='SearchLocation'>
+        <div className='SearchLocation' onClick={() => setShowPopup(true)}>
           Location
+          {showPopup && (
+            <div className="popup" ref={popupRef}>
+              <div className="popup-inner">
+
+                <SearchLocations placeholder="Search Locations" data={locationData} />
+              </div>
+            </div>
+          )}        
         </div>
         <div className='Privacy'>
           Privacy
         </div>
-
       </div>
-
-
 
       <button>Finished Posting</button>
     </div>
