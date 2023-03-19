@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import Webcam from 'react-webcam';
+import {useNavigate} from "react-router-dom"
 import './Camera.css';
 
 const videoConstraints = {
-  width: 220,
-  height: 200,
+  width: 390,
+  height: 844,
   facingMode: 'user',
 };
 
 const Camera = () => {
   const [image, setImage] = useState('');
   const webcamRef = React.useRef(null);
+  const navigate = useNavigate(); 
 
   const capture = React.useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
@@ -23,15 +25,15 @@ const Camera = () => {
 
   return (
     <div className="webcam-container">
-      <h1 className="title">Take a pic</h1>
+
       <div className="webcam-img">
         {!image ? (
           <Webcam
             audio={false}
-            height={200}
+            height={400}
             ref={webcamRef}
             screenshotFormat="image/jpeg"
-            width={220}
+            width={500}
             videoConstraints={videoConstraints}
           />
         ) : (
@@ -40,13 +42,23 @@ const Camera = () => {
       </div>
       <div>
         {image ? (
+          <div className = "button-container">
           <button onClick={retakeImage} className="webcam-btn">
             Retake Image
           </button>
+          <button onClick = {() => {
+            navigate("/Location")
+          }}className = "next-btn">
+            next
+          </button>
+     
+          </div>
         ) : (
+    
           <button onClick={capture} className="webcam-btn">
             Capture
           </button>
+    
         )}
       </div>
     </div>
