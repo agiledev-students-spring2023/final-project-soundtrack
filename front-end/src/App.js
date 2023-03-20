@@ -12,6 +12,7 @@ import Filter from './Pages/Filter';
 import Location from './Pages/Location';
 import ForgotPassword from './Pages/ForgotPassword';
 import CreateAccount from './Pages/CreateAccount';
+import Settings from "./Pages/Settings";
 
 
 
@@ -33,6 +34,7 @@ function App() {
             <Route exact path="/Filter" element={<Filter />}></Route>
             <Route exact path="/CreateAccount" element={<CreateAccount />}></Route>
             <Route exact path="/ForgotPassword" element={<ForgotPassword />}></Route>
+            <Route exact path="/Settings" element={<Settings />}></Route>
           </Routes>
         </div>
       </BrowserRouter>
