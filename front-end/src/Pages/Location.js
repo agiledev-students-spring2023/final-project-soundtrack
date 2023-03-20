@@ -2,12 +2,26 @@ import React, { useState, useEffect, useRef } from 'react';
 import './Location.css';
 import axios from "axios";
 import SearchLocations from '../Components/SearchLocations';
+import Button from '@mui/material/Button';
+
+
 
 const Location = () => {
   const [data, setData] = useState([]);
   const [locationData, setLocationData] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const popupRef = useRef(null);
+  const [open, setOpen] = React.useState(false);
+  const [privacy, setPrivacy] = React.useState('Privacy');
+
+  const handleOpen = () => {
+    setOpen(!open);
+  };
+
+  const handlePrivacy = (value) => {
+    setPrivacy(value);
+    setOpen(false);
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -62,18 +76,34 @@ const Location = () => {
           {showPopup && (
             <div className="popup" ref={popupRef}>
               <div className="popup-inner">
-
                 <SearchLocations placeholder="Search Locations" data={locationData} />
               </div>
             </div>
           )}        
         </div>
-        <div className='Privacy'>
-          Privacy
+        
+
+        <div className="dropdown">
+          <div className="dropdownTitle" onClick={handleOpen}>
+            {privacy}
+          </div>
+          {open ? (
+            <ul className="privacy">
+              <li className="privacy-item">
+                <button onClick={() => handlePrivacy('Private')}>
+                  Private
+                </button>
+              </li>
+              <li className="privacy-item">
+                <button onClick={() => handlePrivacy('Public')}>
+                  Public
+                </button>
+              </li>
+            </ul>
+          ) : null}
         </div>
       </div>
-
-      <button>Finished Posting</button>
+      <button className='next-btn'>Finished Posting</button>
     </div>
   );
 };

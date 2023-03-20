@@ -10,6 +10,11 @@
     height: 844;
     overflow: hidden;
   }
+
+  .webcam-img > img {
+    margin:0px;
+    padding:0px;
+  }
   
   .webcam-img video {
     width: 100%;
