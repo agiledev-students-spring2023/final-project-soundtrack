@@ -40,7 +40,7 @@ const Location = () => {
   useEffect(() => {
     async function fetchLocationData() {
       const result = await axios(
-        "https://my.api.mockaroo.com/search_locations.json?key=76409ff0"
+        "https://my.api.mockaroo.com/location.json?key=0b0aecc0"
       );
       setLocationData(result.data);
     }

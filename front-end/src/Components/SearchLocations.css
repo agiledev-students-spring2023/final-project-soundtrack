@@ -82,14 +82,14 @@
   
   .dataItem img,
   .recentListenItem img {
-    width: 100%;
-    height: 100%;
+    max-width: 50px;
+    max-height:50px;
     object-fit: cover;
   }
   
   .locationDetails,
   .recentListenDetails {
-    width: 100%;
+    width: 300%;
     padding: 10px;
     box-sizing: border-box;
     text-align: left;
