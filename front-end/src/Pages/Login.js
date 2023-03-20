@@ -2,7 +2,12 @@ import './Login.css';
 
 function createAccount(e) {
     e.preventDefault();
-    window.location = './App.js';
+    window.location = './CreateAccount';
+}
+
+function handleSubmit(e){
+    e.preventDefault();
+    window.location = './Map';
 }
 
 function Login() {
@@ -14,18 +19,18 @@ function Login() {
         </div>
         <h2>LOGIN</h2>
         <div className="inputs">
-            <form>
-                <div className="input-container">
-                    <input type="text" name="uname" placeholder="@username" required />
+            <form onSubmit={handleSubmit}>
+                <div className="input-containerUserPass">
+                    <input type="user" name="uname" placeholder="@username" required />
                 </div>
-                <div className="input-container">
+                <div className="input-containerUserPass">
                     <input type="password" name="pass" placeholder="password" required />
                 </div>
-                <div className="links">
+                <div className="linksAccountForgot">
                     <label onClick={createAccount}>Create Account</label>
                     <label onClick={createAccount}>Forgot Password</label>
                 </div>
-                <div className="button-container">
+                <div className="login-button-container">
                     <button type="submit">login</button>
                 </div>
             </form>
