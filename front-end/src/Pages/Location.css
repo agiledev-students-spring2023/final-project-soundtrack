@@ -26,6 +26,16 @@ img {
   padding-left: 40px;
 }
 
+.songNameContainer{
+  display: flex;
+  justify-content: space-between;
+}
+
+.returnSongButton{
+  padding: 12px; 
+
+}
+
 .songName,
 .SearchLocation,
 .dropdownTitle {
@@ -81,7 +91,7 @@ img {
 
 .next-btn {
   position: fixed;
-  bottom: 30px;
+  bottom: 20px;
   left:50%;
   transform: translateX(-50%);
   width: 150px;

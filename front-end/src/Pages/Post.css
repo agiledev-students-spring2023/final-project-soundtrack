@@ -9,14 +9,26 @@
 }
 
 .Button {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
+  position: fixed;
+  bottom: 30px;
+  left:50%;
   transform: translateX(-50%);
-  padding: 1rem 2rem;
+  width: 150px;
+  height: 50px;
+  background-color: black;
   color: white;
-  font-size: 1rem;
-  text-transform: uppercase;
   border: none;
-  border-radius: 2rem;
+  border-radius: 1px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.ReturnButton{
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: auto;
 }

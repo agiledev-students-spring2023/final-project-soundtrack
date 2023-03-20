@@ -32,12 +32,19 @@
   }
   
   .webcam-btn {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #333;
-    color: #fff;
+    position: fixed;
+    bottom: 30px;
+    left:50%;
+    transform: translateX(-50%);
+    width: 150px;
+    height: 50px;
+    background-color: black;
+    color: white;
     border: none;
     border-radius: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
   }
 
   .retake-btn {
@@ -56,13 +63,19 @@
 
 
   .next-btn {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #333;
-    color: #fff;
+    position: fixed;
+    bottom: 30px;
+    left:50%;
+    transform: translateX(-50%);
+    width: 150px;
+    height: 50px;
+    background-color: black;
+    color: white;
     border: none;
     border-radius: 5px;
-    margin-left: 10px; /* Add margin to separate the buttons */
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
   }
   
   

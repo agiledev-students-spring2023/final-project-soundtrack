@@ -29,7 +29,7 @@ const Location = () => {
   useEffect(() => {
     async function fetchData() {
       const result = await axios(
-        "https://my.api.mockaroo.com/user_post.json?key=6f6ae4c0"
+        "https://my.api.mockaroo.com/user_post.json?key=5aa92030"
       );
       setData(result.data);
     }
@@ -64,6 +64,9 @@ const Location = () => {
   return (
     <div className='container'>
       <div className='Title'>
+        <button className="ReturnButton" onClick={() => navigate("/Map")}>
+        map
+        </button>
         <h1>Finish Posting</h1>
       </div>
       <div>
@@ -71,9 +74,12 @@ const Location = () => {
       </div>
 
       <div className="choose">
-        <div className="songName">
+        <div className = "songNameContainer">
+         <div className="songName">
           chooseSong:{data.songName}
+         </div>
         </div>
+
         <div className='SearchLocation' onClick={() => setShowPopup(true)}>
           Location
           {showPopup && (
