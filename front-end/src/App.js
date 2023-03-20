@@ -9,6 +9,7 @@ import Browse from './Pages/Browse';
 import Map from './Pages/Map';
 import Favorites from './Pages/Favorites';
 import Filter from './Pages/Filter';
+import Location from './Pages/Location';
 
 
 
@@ -21,6 +22,7 @@ function App() {
             <Route exact path="/" element={<Login />}></Route>
             <Route exact path="/Post" element={<Post />}></Route>
             <Route exact path="/Camera" element={<Camera />}></Route>
+            <Route exact path="/Location" element={<Location />}></Route>
             <Route exact path="/User" element={<User />}></Route>
             <Route exact path="/Friends" element={<Friends />}></Route>
             <Route exact path="/Browse" element={<Browse />}></Route>

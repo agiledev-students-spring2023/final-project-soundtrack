@@ -65,7 +65,7 @@ function SearchBar({placeholder, data}) {
             {data.slice(0, 5).map((value, key) => {
               return (
                 <div key={key} className="dataItem">
-                  <img src={value.image} alt={"no image"} />
+                  <img src={value.image} alt={"no image"} crossOrigin="anonymous" />
                   <div className="songDetails">
                     <p className="songTitle">{value.song_title}</p>
                     <p className="artistName">{value.artist}</p>

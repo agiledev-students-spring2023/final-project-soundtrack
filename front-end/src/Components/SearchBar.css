@@ -3,7 +3,6 @@
   margin: 0 auto;
   width: 90%;
   max-width: 800px;
-  padding: 20px;
   box-sizing: border-box;
   font-family: sans-serif;
 }
@@ -23,12 +22,13 @@ input[type="text"] {
   color: #333;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
   outline: none;
+
 }
 
 #clearButton {
   position: absolute;
   right: 10px;
-  top: 30px; 
+  top: 40px; 
   font-size: 18px;
   color: #999;
   background: transparent;
@@ -39,13 +39,14 @@ input[type="text"] {
 
 .dataResultBlock,
 .recentListenBlock {
-  margin-top: 40px;
+  margin: 0;
+  padding: 0;
 }
 
 .dataResultBlock h2,
 .recentListenBlock h2 {
-  margin: 0 0 10px;
-  padding-bottom: 10px;
+  margin: 0 0 0px;
+  padding-bottom: 0px;
   font-size: 17px;
   color: #333;
   text-align: left;
