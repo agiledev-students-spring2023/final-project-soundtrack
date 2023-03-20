@@ -1,21 +1,21 @@
 import React from "react";
 import "./Browse.css";
+import HeaderBrowseMap from "../Components/HeaderBrowseMap";
+import UserPost from "../Components/UserPost"
 
 const Browse = () => {
     return (
-        //Header Placeholder
-        // <Header/>
-        
-        <main className="Browse">
+        <div>
+        <HeaderBrowseMap/>
             <div className="Browse-items">
                 {/* Posts will go here. They're flexed in a single column */}
 
-                <div>
-                    lorem ipsum post placeholder lorem ipsum post placeholder lorem ipsum post placeholder lorem ipsum post placeholder 
-                </div>
+                <UserPost/>
+                <UserPost/>
+                <UserPost/>
                 
             </div>
-        </main>
+        </div>
     );
 }
 
