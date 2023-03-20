@@ -39,13 +39,14 @@ input[type="text"] {
 
 .dataResultBlock,
 .recentListenBlock {
-  margin-top: 40px;
+  margin: 0;
+  padding: 0;
 }
 
 .dataResultBlock h2,
 .recentListenBlock h2 {
-  margin: 0 0 10px;
-  padding-bottom: 10px;
+  margin: 0 0 0px;
+  padding-bottom: 0px;
   font-size: 17px;
   color: #333;
   text-align: left;

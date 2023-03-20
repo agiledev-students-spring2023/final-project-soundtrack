@@ -1,11 +1,14 @@
 import React from "react";
 import "./HeaderBrowseMap.css";
+import {useNavigate} from "react-router-dom"
+
 
 const HeaderBrowseMap = () => {
+    const navigate = useNavigate(); 
     return(
         <main>
             <div className="LogoPostAndProfile">
-                <div className="SquareButton1">
+                <div onClick = {() => {navigate("/post") }} className="SquareButton1">
                     Post
                 </div>
 
@@ -13,12 +16,12 @@ const HeaderBrowseMap = () => {
                     SoundTrack
                 </div>
 
-                <div className="SquareButton1">
+                <div onClick = {() => {navigate("/user") }}className="SquareButton1">
                     Profile
                 </div>
             </div>
             <div className="BrowseAndMapRow">
-                <div className="SquareButton2">
+                <div onClick = {() => {navigate("/browse") }}className="SquareButton2">
                     Browse
                 </div>
 
@@ -26,7 +29,7 @@ const HeaderBrowseMap = () => {
                     |
                 </div>
                 
-                <div className="SquareButton2">
+                <div  onClick = {() => {navigate("/map") }} className="SquareButton2">
                     Map
                 </div>
             </div>

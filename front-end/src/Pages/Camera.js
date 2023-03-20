@@ -34,7 +34,6 @@ const Camera = () => {
             width={500}
             ref={webcamRef}
             screenshotFormat="image/jpeg"
-         
             videoConstraints={videoConstraints}
           />
         ) : (

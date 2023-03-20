@@ -2,7 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import './Location.css';
 import axios from "axios";
 import SearchLocations from '../Components/SearchLocations';
-import Button from '@mui/material/Button';
+import {useNavigate} from "react-router-dom"
+
+
 
 
 
@@ -13,6 +15,7 @@ const Location = () => {
   const popupRef = useRef(null);
   const [open, setOpen] = React.useState(false);
   const [privacy, setPrivacy] = React.useState('Privacy');
+  const navigate = useNavigate(); 
 
   const handleOpen = () => {
     setOpen(!open);
@@ -103,7 +106,9 @@ const Location = () => {
           ) : null}
         </div>
       </div>
-      <button className='next-btn'>Finished Posting</button>
+      <button onClick = {() => {
+            navigate("/map")
+            }}className='next-btn'> Post</button>
     </div>
   );
 };
