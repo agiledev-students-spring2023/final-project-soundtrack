@@ -5,6 +5,11 @@ function createAccount(e) {
     window.location = './CreateAccount';
 }
 
+function forgotPassword(e) {
+    e.preventDefault();
+    window.location = './ForgotPassword';
+}
+
 function handleSubmit(e){
     e.preventDefault();
     window.location = './Map';
@@ -28,7 +33,7 @@ function Login() {
                 </div>
                 <div className="linksAccountForgot">
                     <label onClick={createAccount}>Create Account</label>
-                    <label onClick={createAccount}>Forgot Password</label>
+                    <label onClick={forgotPassword}>Forgot Password</label>
                 </div>
                 <div className="login-button-container">
                     <button type="submit">login</button>
