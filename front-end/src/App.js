@@ -10,6 +10,8 @@ import Map from './Pages/Map';
 import Favorites from './Pages/Favorites';
 import Filter from './Pages/Filter';
 import Location from './Pages/Location';
+import ForgotPassword from './Pages/ForgotPassword';
+import CreateAccount from './Pages/CreateAccount';
 
 
 
@@ -29,7 +31,8 @@ function App() {
             <Route exact path="/Map" element={<Map />}></Route>
             <Route exact path="/Favorites" element={<Favorites />}></Route>
             <Route exact path="/Filter" element={<Filter />}></Route>
-
+            <Route exact path="/CreateAccount" element={<CreateAccount />}></Route>
+            <Route exact path="/ForgotPassword" element={<ForgotPassword />}></Route>
           </Routes>
         </div>
       </BrowserRouter>
