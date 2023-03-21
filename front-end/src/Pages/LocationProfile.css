@@ -1,0 +1,56 @@
+.location-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+  
+.location-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    background-color: #ffffff;
+    padding: 20px 10px;
+    
+}
+  
+.back-link {
+    
+    color: #333;
+    font-size: 16px;
+    padding: 0 20px;
+    text-decoration: underline;
+}
+  
+  
+.location-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+}
+  
+.location-profile img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+  
+.locationname {
+    margin-top: 20px;
+    font-size: 24px;
+}
+  
+  
+.location-posts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+}
+  
+
+  
+  
+  
+  
