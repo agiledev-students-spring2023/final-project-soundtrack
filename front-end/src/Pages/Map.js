@@ -1,42 +1,118 @@
-import './Map.css';
-import HeaderBrowseMap from '../Components/HeaderBrowseMap';
-import SearchLocations from '../Components/SearchLocations';
-import axios from "axios";
-import React, { useState, useEffect } from "react";
+import "./Map.css";
+import HeaderBrowseMap from "../Components/HeaderBrowseMap";
+import { useLoadScript, GoogleMap, Marker, MarkerF } from "@react-google-maps/api";
+import React, { useState, useEffect, useRef } from "react";
+import { Autocomplete } from "@react-google-maps/api";
+import { useNavigate } from "react-router-dom";
+import Filter from './Filter';
+import Favorites from './Favorites'
+
+
+
 
 function Map() {
-    const [data, setData] = useState([]);
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: "AIzaSyB1D7Olh84_bINSSNaJ5N9nsU6bq933y0U",
+    libraries: ["places"],
+  });
 
-    useEffect(() => {
-        // a nested function that fetches the data
-        async function fetchData() {
-        console.log("Fetching data from Api");
-        // axios is a 3rd-party module for fetching data from servers
-        const result = await axios(
-            // retrieving some mock data about animals for sale
-            "https://my.api.mockaroo.com/location.json?key=0b0aecc0"
-        );
-        // set the state variable
-        // this will cause a re-render of this component
-        setData(result.data);
-        }
+  const [center, setCenter] = useState({ lat: null, lng: null });
+  const [loading, setLoading] = useState(true);
+  const autocomplete = useRef(null);
+  const navigate = useNavigate(); 
 
-        // fetch the data!
-        fetchData();
+  
 
-        // the blank array below causes this callback to be executed only once on component load
-    }, []);
-
-    return (
-        <header>
-            <HeaderBrowseMap/>
-
-            <SearchLocations placeholder={"Search Location"} data={data}/>
-
-
-        </header>
-
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setCenter({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        });
+        setLoading(false);
+      },
+      (error) => {
+        console.error(error);
+        setLoading(false);
+      }
     );
+  }, []);
+  
+
+
+  const onPlaceChanged = () => {
+    if (autocomplete.current !== null) {
+      setCenter({
+        lat: autocomplete.current.getPlace().geometry.location.lat(),
+        lng: autocomplete.current.getPlace().geometry.location.lng(),
+      });
+    }
+  };
+
+  const handleMarkerClick = (event) => {
+    const marker = event?.placeId;
+    if (marker) {
+      // This is a Google Place marker, redirect to user profile page
+      navigate("/LocationProfile");
+    }
+  };
+
+  if (loadError) return "Error loading maps";
+  if (!isLoaded) return "Loading Maps";
+
+  const mapContainerStyle = {
+    width: "100%",
+    height: "600px",
+  };
+
+
+  return (
+    <div className="map-container">
+      <div className="header">
+        <HeaderBrowseMap />
+      </div>
+      <div className="autocomplete-container">
+      <Autocomplete    onLoad={(auto) => (autocomplete.current = auto)}
+          onPlaceChanged={onPlaceChanged}>
+          <input
+            className="autocomplete-input"
+            type="text"
+            placeholder="Enter a location"
+          />
+        </Autocomplete >
+    </div>
+    <div className = "buttonContainer">
+        <div className='filter' onClick = {() => {
+            navigate("/Filter")
+            }}>
+          Filter   
+        </div>
+        <div className='favorites' onClick = {() => {
+            navigate("/Favorites")
+            }}>
+          Favorite  
+        </div>
+    </div>
+    
+      {loading ? (
+        <div className="loading-container">Loading...</div>
+      ) : (
+        <GoogleMap
+          mapContainerStyle={mapContainerStyle}
+          center={center}
+          zoom={15}
+          options={{
+            mapTypeControl: false,
+          }}
+          onClick={handleMarkerClick}
+        >
+          <MarkerF position={center} onClick={() =>navigate("/LocationProfile")} />
+        </GoogleMap>
+        
+      )}
+    </div>
+  );
 }
 
 export default Map;

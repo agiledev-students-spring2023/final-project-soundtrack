@@ -2,11 +2,12 @@ import './Favorites.css';
 import HeaderBrowseMap from '../Components/HeaderBrowseMap';
 import axios from "axios";
 import React, { useState, useEffect } from "react";
+import {useNavigate} from "react-router-dom"
 
 
 function Favorites() {
     const [data, setData] = useState([]);
-
+    const navigate = useNavigate();
     useEffect(() => {
         // a nested function that fetches the data
         async function fetchData() {
@@ -29,17 +30,13 @@ function Favorites() {
 
     return (
         <header>
-            <HeaderBrowseMap/>
 
             <div className="Title">
                 My Favorites
             </div>
 
-            <div className="Button">
-                <button>
-                Filter by Favorites
-                </button>
-            </div>
+
+       
 
             {data.slice(0, 5).map((value, key) => {
                 return (
@@ -53,6 +50,12 @@ function Favorites() {
                 )
                     
             })}
+
+                <button className="filterByFavButton" onClick = {() => {
+            navigate("/map")
+            }}>
+                Filter by Favorites
+                </button>
         </header>
     );
 }

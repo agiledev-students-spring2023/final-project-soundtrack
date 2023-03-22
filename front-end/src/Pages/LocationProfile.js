@@ -1,17 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'; 
+import axios from "axios";
 import "./LocationProfile.css"; 
-import Post from '../Components/UserPost';
+import UserPost from '../Components/UserPost';
 import {useNavigate} from "react-router-dom"
+
 
 
 const LocationProfile = props => {
     const navigate = useNavigate();
+    const [data, setData] = useState([]);
+  
+  useEffect(() => {
+    async function fetchData() {
+        const result = await axios(
+          "https://my.api.mockaroo.com/user.json?key=d0d8c110"
+        );
+        setData(result.data);
+      
+    }
+    fetchData();
+  }, []);
     return (
         <div className="location-container">
 
             <div className = "location-header"> 
-            <a href="#" className="back-link" onClick = {() => {navigate("/map") }}>Back</a> 
+            <div onClick={() => navigate("/map")} className="back-link">Back</div>
             </div>
 
         <div className="location-profile">
@@ -19,12 +32,12 @@ const LocationProfile = props => {
             <h1 className="locationname">@locationname</h1>
         </div>
 
-        <div className="location-posts">
-        <Post /> 
-        <Post /> 
-        <Post /> 
-        <Post /> 
-        </div>
+        <div className="location-posts" >
+        {data.posts &&
+          data.posts.slice(0, data.posts.length).map((post, index) => (
+            <UserPost key={index} data={data} post = {post}/>
+          ))}
+      </div>
         </div>
     );
 };

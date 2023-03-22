@@ -3,10 +3,7 @@ import './Location.css';
 import axios from "axios";
 import SearchLocations from '../Components/SearchLocations';
 import {useNavigate} from "react-router-dom"
-
-
-
-
+import NearbyLocations from '../Components/NearbyLocation';
 
 const Location = () => {
   const [data, setData] = useState([]);
@@ -16,7 +13,23 @@ const Location = () => {
   const [open, setOpen] = React.useState(false);
   const [privacy, setPrivacy] = React.useState('Privacy');
   const navigate = useNavigate(); 
+  const [selectedLocation, setSelectedLocation] = useState(null); // added state to store selected location
+  const [valueFromChild, setValueFromChild] = useState('true');
 
+  useEffect(() => {
+    if (valueFromChild === 'false') {
+      setShowPopup(false);
+    }
+  }, [valueFromChild]);
+  
+  function handleValueFromChild(value) {
+    setValueFromChild(value);
+  }
+ 
+  function handleClick(){
+    setShowPopup(true)
+ }
+  
   const handleOpen = () => {
     setOpen(!open);
   };
@@ -65,7 +78,7 @@ const Location = () => {
     <div className='container'>
       <div className='Title'>
         <button className="ReturnButton" onClick={() => navigate("/Map")}>
-        map
+          map
         </button>
         <h1>Finish Posting</h1>
       </div>
@@ -75,22 +88,21 @@ const Location = () => {
 
       <div className="choose">
         <div className = "songNameContainer">
-         <div className="songName">
-          chooseSong:{data.songName}
-         </div>
+          <div className="songName">
+            chooseSong:{data.songName}
+          </div>
         </div>
 
-        <div className='SearchLocation' onClick={() => setShowPopup(true)}>
+        <div className='SearchLocation' onClick={handleClick}>
           Location
           {showPopup && (
             <div className="popup" ref={popupRef}>
               <div className="popup-inner">
-                <SearchLocations placeholder="Search Locations" data={locationData} />
+                <NearbyLocations onValueFromChild={handleValueFromChild} />
               </div>
             </div>
           )}        
         </div>
-        
 
         <div className="dropdown">
           <div className="dropdownTitle" onClick={handleOpen}>
@@ -113,8 +125,10 @@ const Location = () => {
         </div>
       </div>
       <button onClick = {() => {
-            navigate("/map")
-            }}className='next-btn'> Post</button>
+          navigate("/map");
+        }} className='next-btn'>
+        Post
+      </button>
     </div>
   );
 };

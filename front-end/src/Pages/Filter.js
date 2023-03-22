@@ -1,39 +1,35 @@
-import './Filter.css';
-import HeaderBrowseMap from '../Components/HeaderBrowseMap';
+import "./Filter.css";
+import {useNavigate} from "react-router-dom"
+
 
 function Filter() {
-    return (
-        <header>
-            <HeaderBrowseMap/>
+    const navigate = useNavigate(); 
 
-            <div className="Title">
-                Filter
-            </div>
+  return (
+    <div className="FilterContainer">
+      <div className="Title">Filter</div>
 
-            <div className="Button">
-                <button>
-                Clear Filters
-                </button>
-            </div>
-
-            <div className="Filter">
-                <input type="checkbox"/>
-                <label>Favorites</label>
-            </div>
-            <div className="Filter">
-                <input type="checkbox"/>
-                <label>Cafes</label>
-            </div>
-            <div className="Filter">
-                <input type="checkbox"/>
-                <label>Museums</label>
-            </div>
-            <div className="Filter">
-                <input type="checkbox"/>
-                <label>Parks</label>
-            </div>
-        </header>
-    );
+      <div className="Filter">
+        <input type="checkbox" />
+        <label>Favorites</label>
+      </div>
+      <div className="Filter">
+        <input type="checkbox" />
+        <label>Cafes</label>
+      </div>
+      <div className="Filter">
+        <input type="checkbox" />
+        <label>Museums</label>
+      </div>
+      <div className="Filter">
+        <input type="checkbox" />
+        <label>Parks</label>
+      </div>
+      <button className="confirmButton" onClick = {() => {
+            navigate("/map")
+            }}>confirm</button>
+    </div>
+  );
 }
 
 export default Filter;
