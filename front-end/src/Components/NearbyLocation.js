@@ -1,4 +1,4 @@
-import { useLoadScript, GoogleMap, Marker } from "@react-google-maps/api";
+import { useLoadScript, GoogleMap, Marker,MarkerF } from "@react-google-maps/api";
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./NearbyLocation.css";
@@ -78,7 +78,7 @@ function NearbyLocation(props) {
           }}
           onClick={handleMarkerClick}
         >
-          <Marker position={selectedLocation} />
+          <MarkerF position={center} />
         </GoogleMap>
       )}
       {locationName && (
