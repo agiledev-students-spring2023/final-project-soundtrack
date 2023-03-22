@@ -1,0 +1,53 @@
+
+  .settings-header {
+    padding-bottom: 2vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 20px 10px;
+  }
+
+  .back-link {
+    color: #333;
+    font-size: 16px;
+    padding: 0 0px;
+    margin-left:0px;
+    text-decoration: underline;
+
+  }
+
+  .options{
+    color: #333;
+    font-size: 18px;
+    padding: 0 20px;
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    color: #333;
+    text-decoration: none;
+  }
+
+  .settings-page {
+    padding-left: 0px;
+    font-size: 16px;
+    align-items:center;
+    justify-content:center;
+  }
+  
+  .option {
+    margin-bottom: 10px;
+    justify-content: center;
+    display: block;
+    background-color: #f9f9f9;
+  }
+  
+  a {
+    display: block;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    color: #333;
+    text-decoration: none;
+  }

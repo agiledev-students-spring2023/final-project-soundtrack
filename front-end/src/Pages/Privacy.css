@@ -1,0 +1,26 @@
+.page {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    padding: 20px;
+  }
+  
+  .option {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .save-button {
+    margin-top: 20px;
+    padding: 10px;
+    border: none;
+    background-color: #ccc;
+    color: black;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  
+  
+  
