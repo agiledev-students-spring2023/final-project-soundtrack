@@ -10,10 +10,10 @@ function handleSubmit(e){
     window.location = './';
 }
 
-function CreateAccount() {
+function ForgotPassword() {
   return (
     <div className="createAccount">
-        <h2>Create Account</h2>
+        <h2>Forgot Password</h2>
         <div className="inputs-CreateAccount">
             <form onSubmit={handleSubmit}>
                 <div className="input-containerCreateAccount">
@@ -37,4 +37,4 @@ function CreateAccount() {
   );
 }
 
-export default CreateAccount;
+export default ForgotPassword;
