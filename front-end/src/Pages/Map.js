@@ -1,42 +1,59 @@
 import './Map.css';
 import HeaderBrowseMap from '../Components/HeaderBrowseMap';
-import SearchLocations from '../Components/SearchLocations';
-import axios from "axios";
-import React, { useState, useEffect } from "react";
+import { useLoadScript, GoogleMap, MarkerF } from "@react-google-maps/api";
+import React, { useState, useEffect } from 'react';
 
 function Map() {
-    const [data, setData] = useState([]);
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: "AIzaSyB1D7Olh84_bINSSNaJ5N9nsU6bq933y0U",
+    libraries: ["places"],
+  });
 
-    useEffect(() => {
-        // a nested function that fetches the data
-        async function fetchData() {
-        console.log("Fetching data from Api");
-        // axios is a 3rd-party module for fetching data from servers
-        const result = await axios(
-            // retrieving some mock data about animals for sale
-            "https://my.api.mockaroo.com/location.json?key=0b0aecc0"
-        );
-        // set the state variable
-        // this will cause a re-render of this component
-        setData(result.data);
-        }
+  const [center, setCenter] = useState({ lat: null, lng: null });
+  const [loading, setLoading] = useState(true);
 
-        // fetch the data!
-        fetchData();
-
-        // the blank array below causes this callback to be executed only once on component load
-    }, []);
-
-    return (
-        <header>
-            <HeaderBrowseMap/>
-
-            <SearchLocations placeholder={"Search Location"} data={data}/>
-
-
-        </header>
-
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        setCenter({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        });
+        setLoading(false);
+      },
+      error => {
+        console.error(error);
+        setLoading(false);
+      }
     );
+  }, []);
+
+  if (!isLoaded) {
+    return <div>Loading...</div>;
+  }
+
+  const mapContainerStyle = {
+    width: "100%",
+    height: "600px"
+  };
+  console.log({center});
+  
+  return (
+    <div>
+      <HeaderBrowseMap />
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
+        <GoogleMap
+          mapContainerStyle={mapContainerStyle}
+          center={center}
+          zoom={15}
+        >
+         <MarkerF position={center}/>
+     </GoogleMap>
+      )}
+    </div>
+  );
 }
 
 export default Map;
