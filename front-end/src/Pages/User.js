@@ -36,9 +36,9 @@ const User = () => {
         {data.posts &&
           data.posts.slice(0, data.posts.length).map((post, index) => (
             <UserPost key={index} data={data} post = {post}/>
-            
           ))}
       </div>
+      
     </div>
   );
 };
