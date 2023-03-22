@@ -6,20 +6,27 @@ import {useNavigate} from "react-router-dom"
 
 
 
-const LocationProfile = props => {
+const LocationProfile = (props) => {
+    const locationName = props;
+    console.log(locationName); 
     const navigate = useNavigate();
     const [data, setData] = useState([]);
   
   useEffect(() => {
     async function fetchData() {
         const result = await axios(
-          "https://my.api.mockaroo.com/user.json?key=d0d8c110"
+          "https://my.api.mockaroo.com/browse.json?key=d0d8c110"
         );
         setData(result.data);
       
     }
     fetchData();
   }, []);
+
+  for(let i=0; i<data.length; i++){
+    data[i].location = "Location Name";
+  }
+
     return (
         <div className="location-container">
 
@@ -33,10 +40,7 @@ const LocationProfile = props => {
         </div>
 
         <div className="location-posts" >
-        {data.posts &&
-          data.posts.slice(0, data.posts.length).map((post, index) => (
-            <UserPost key={index} data={data} post = {post}/>
-          ))}
+        {data.map((post, index) => (<UserPost key={index} data={post} post={post}/>))}
       </div>
         </div>
     );

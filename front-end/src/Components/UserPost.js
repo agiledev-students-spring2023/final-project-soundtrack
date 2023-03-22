@@ -21,7 +21,7 @@ const UserPost = ({data, post}) => {
         <img src={data.avatar} alt="avatar" className="avatar" />
         <h3>@{data.username}</h3>
       </div>
-      <div className="location" onClick={() => {navigate("/map"); }}> {post.location} </div>
+      <div className="location" onClick={() => {navigate("/LocationProfile"); }}> {post.location} </div>
       <img src={post.image} alt="post" className="post-image" />
       <div className="song">
         <button id="play-button" onClick={handlePlay}>Play</button>
