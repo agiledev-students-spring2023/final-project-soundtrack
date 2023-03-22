@@ -1,33 +1,45 @@
-import './CreateAccount.css';
-import {useNavigate} from "react-router-dom"
-
-
-function handleSubmit(e){
-    e.preventDefault();
-    window.location = './User';
-}
+import React from 'react';
+import './Settings.css';
+import {useNavigate} from "react-router-dom";
 
 function Settings() {
-const navigate = useNavigate(); 
+   const navigate = useNavigate(); 
+
+  function handlePrivacy() {
+    // code to handle privacy click
+  }
+
+  function handleAbout() {
+    const url = `https://github.com/agiledev-students-spring-2023/final-project-soundtrack`;
+    window.open(url);
+  }
+
+  function handleNotifications() {
+    // code to handle notifications click
+  }
+
   return (
-    <div className="createAccount">
-        <div className = "user-header"> 
-            <a href="#" className="back-link" onClick = {() => {navigate("/user") }}>Back</a> 
+    <div className="settings-page">
+        <div className="settings-header"> 
+        <div onClick={() => navigate("/user")} className="back-link">Back</div>
         </div>
-        <h2>Settings</h2>
-        
-        <div className="inputs-CreateAccount">
-            <p>User account information</p>
-            <form onSubmit={handleSubmit}>
-                <div className="input-containerCreateAccount">
-                    <input type="password" name="pass" placeholder="New Password" required />
-                </div>
-                <div className="login-button-container">
-                    <button type="submit">submit</button>
-                </div>
-            </form>
-        </div>
+      <div className="option">
+      <a href="#" onClick= {() => {navigate("/EditProfile") }} >Edit Profile</a>
+      </div>
+      <div className="option">
+      <a href="#" onClick= {() => {navigate("/ChangePassword") }} >Change Password</a>
+      </div>
+      <div className="option">
+        <a href="#" onClick={() => {navigate("/Privacy") }}>Privacy</a>
+      </div>
+      <div className="option">
+        <a href="#" onClick={handleAbout}>About</a>
+      </div>
+      <div className="option">
+        <a href="#" onClick= {() => {navigate("/") }} >Log Out</a>
+      </div>
     </div>
+    
   );
 }
 

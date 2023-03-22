@@ -14,6 +14,9 @@ import ForgotPassword from './Pages/ForgotPassword';
 import CreateAccount from './Pages/CreateAccount';
 import Settings from "./Pages/Settings";
 import LocationProfile from "./Pages/LocationProfile";
+import ChangePassword from "./Pages/ChangePassword";
+import Privacy from "./Pages/Privacy";
+import EditProfile from "./Pages/EditProfile";
 
 
 
@@ -36,7 +39,10 @@ function App() {
             <Route exact path="/CreateAccount" element={<CreateAccount />}></Route>
             <Route exact path="/ForgotPassword" element={<ForgotPassword />}></Route>
             <Route exact path="/Settings" element={<Settings />}></Route>
+            <Route exact path="/ChangePassword" element={<ChangePassword />}></Route>
+            <Route exact path="/Privacy" element={<Privacy />}></Route>
             <Route exact path="/LocationProfile" element={<LocationProfile />}></Route>
+            <Route exact path="/EditProfile" element={<EditProfile />}></Route>
           </Routes>
         </div>
       </BrowserRouter>
