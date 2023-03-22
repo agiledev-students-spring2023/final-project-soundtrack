@@ -6,7 +6,9 @@ import {useNavigate} from "react-router-dom"
 
 
 
-const LocationProfile = props => {
+const LocationProfile = (props) => {
+    const locationName = props;
+    console.log(locationName); 
     const navigate = useNavigate();
     const [data, setData] = useState([]);
   
@@ -21,10 +23,10 @@ const LocationProfile = props => {
     fetchData();
   }, []);
 
-  for(let i=1; i<data.length; i++){
-    data[i].location = data[0].location;
+  for(let i=0; i<data.length; i++){
+    data[i].location = "Location Name";
   }
-  
+
     return (
         <div className="location-container">
 
@@ -34,7 +36,7 @@ const LocationProfile = props => {
 
         <div className="location-profile">
             <img src="image.jpeg" alt="Profile" />
-            <h1 className="locationname">{data[0].location}</h1>
+            <h1 className="locationname">@locationname</h1>
         </div>
 
         <div className="location-posts" >
