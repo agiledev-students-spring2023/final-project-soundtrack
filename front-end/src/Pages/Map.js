@@ -4,6 +4,10 @@ import { useLoadScript, GoogleMap, Marker, MarkerF } from "@react-google-maps/ap
 import React, { useState, useEffect, useRef } from "react";
 import { Autocomplete } from "@react-google-maps/api";
 import { useNavigate } from "react-router-dom";
+import Filter from './Filter';
+import Favorites from './Favorites'
+
+
 
 
 function Map() {
@@ -17,6 +21,7 @@ function Map() {
   const autocomplete = useRef(null);
   const navigate = useNavigate(); 
 
+  
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -33,6 +38,8 @@ function Map() {
       }
     );
   }, []);
+  
+
 
   const onPlaceChanged = () => {
     if (autocomplete.current !== null) {
@@ -59,6 +66,7 @@ function Map() {
     height: "600px",
   };
 
+
   return (
     <div className="map-container">
       <div className="header">
@@ -73,7 +81,20 @@ function Map() {
             placeholder="Enter a location"
           />
         </Autocomplete >
-      </div>
+    </div>
+    <div className = "buttonContainer">
+        <div className='filter' onClick = {() => {
+            navigate("/Filter")
+            }}>
+          Filter   
+        </div>
+        <div className='favorites' onClick = {() => {
+            navigate("/Favorites")
+            }}>
+          Favorite  
+        </div>
+    </div>
+    
       {loading ? (
         <div className="loading-container">Loading...</div>
       ) : (
@@ -88,6 +109,7 @@ function Map() {
         >
           <MarkerF position={center} onClick={() =>navigate("/LocationProfile")} />
         </GoogleMap>
+        
       )}
     </div>
   );

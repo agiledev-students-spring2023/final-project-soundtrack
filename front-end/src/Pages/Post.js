@@ -24,7 +24,7 @@ const Post = () => {
     <header>
       <div className="Title">
       <button className="ReturnButton" onClick={() => navigate("/Map")}>
-        map
+        back
       </button>
         <h1>Start Posting, Choose a Song</h1>
       </div>

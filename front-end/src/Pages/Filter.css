@@ -9,18 +9,31 @@
     color: white;
 }
 
-.Button {
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 1rem 2rem;
+.FilterContainer{
+    display: flex;
+    flex-direction: column;
+
+}
+
+
+
+.confirmButton {
+    max-width: 150px;
+    max-height: 50px;
+    background-color: black;
     color: white;
-    font-size: 1rem;
-    text-transform: uppercase;
     border: none;
-    border-radius: 2rem;
+    border-radius: 5px;
+    font-size: 15px;
 }
   
 .Filter {
-    display: block;
-    left: 5%;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+
+input[type="checkbox"] {
+    margin:0px; 
+
 }

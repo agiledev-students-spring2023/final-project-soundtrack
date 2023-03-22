@@ -8,6 +8,21 @@
   height: 100vh; /* Add this line to set the container to full height */
 }
 
+ .buttonContainer{
+    display: flex;
+   justify-content: center;
+   padding: 10px;
+
+}
+
+.filter{
+    padding-right: 20px;
+}
+
+
+.favorite{
+    padding-left: 20px;
+}
 
   .autocomplete-container {
     width: 90%;

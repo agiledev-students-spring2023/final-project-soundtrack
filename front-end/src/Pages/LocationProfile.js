@@ -24,7 +24,7 @@ const LocationProfile = props => {
         <div className="location-container">
 
             <div className = "location-header"> 
-            <a href="#" className="back-link" onClick = {() => {navigate("/map") }}>Back</a> 
+            <div onClick={() => navigate("/map")} className="back-link">Back</div>
             </div>
 
         <div className="location-profile">
