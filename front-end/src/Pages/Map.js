@@ -53,6 +53,7 @@ function Map() {
   const handleMarkerClick = (event) => {
     const marker = event?.placeId;
     if (marker) {
+      console.log(marker);
       // This is a Google Place marker, redirect to user profile page
       navigate("/LocationProfile");
     }

@@ -13,13 +13,18 @@ const LocationProfile = props => {
   useEffect(() => {
     async function fetchData() {
         const result = await axios(
-          "https://my.api.mockaroo.com/user.json?key=d0d8c110"
+          "https://my.api.mockaroo.com/browse.json?key=d0d8c110"
         );
         setData(result.data);
       
     }
     fetchData();
   }, []);
+
+  for(let i=1; i<data.length; i++){
+    data[i].location = data[0].location;
+  }
+  
     return (
         <div className="location-container">
 
@@ -29,14 +34,11 @@ const LocationProfile = props => {
 
         <div className="location-profile">
             <img src="image.jpeg" alt="Profile" />
-            <h1 className="locationname">@locationname</h1>
+            <h1 className="locationname">{data[0].location}</h1>
         </div>
 
         <div className="location-posts" >
-        {data.posts &&
-          data.posts.slice(0, data.posts.length).map((post, index) => (
-            <UserPost key={index} data={data} post = {post}/>
-          ))}
+        {data.map((post, index) => (<UserPost key={index} data={post} post={post}/>))}
       </div>
         </div>
     );
