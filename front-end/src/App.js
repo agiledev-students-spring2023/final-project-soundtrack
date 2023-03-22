@@ -13,6 +13,7 @@ import Location from './Pages/Location';
 import ForgotPassword from './Pages/ForgotPassword';
 import CreateAccount from './Pages/CreateAccount';
 import Settings from "./Pages/Settings";
+import LocationProfile from "./Pages/LocationProfile";
 
 
 
@@ -35,6 +36,7 @@ function App() {
             <Route exact path="/CreateAccount" element={<CreateAccount />}></Route>
             <Route exact path="/ForgotPassword" element={<ForgotPassword />}></Route>
             <Route exact path="/Settings" element={<Settings />}></Route>
+            <Route exact path="/LocationProfile" element={<LocationProfile />}></Route>
           </Routes>
         </div>
       </BrowserRouter>
