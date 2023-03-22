@@ -3,7 +3,6 @@ import SearchBar from "../Components/SearchBar";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import RedoIcon from "@mui/icons-material/Redo";
 
 const Post = () => {
   const [data, setData] = useState([]);
