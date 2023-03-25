@@ -6,16 +6,21 @@ import UserPost from "../Components/UserPost"
 
 const Browse = () => {
     const [data, setData] = useState([]);
-  
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
+
   useEffect(() => {
-    async function fetchData() {
-        const result = await axios(
-          "https://my.api.mockaroo.com/browse.json?key=d0d8c110"
-        );
+    axios
+      .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/browse`)
+      .then((result) => {
         setData(result.data);
-      
-    }
-    fetchData();
+      })
+      .catch((err) => {
+        setError('Failed to fetch data from the server');
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
     return (

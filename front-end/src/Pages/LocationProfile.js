@@ -4,23 +4,24 @@ import "./LocationProfile.css";
 import UserPost from '../Components/UserPost';
 import {useNavigate} from "react-router-dom"
 
-
-
-const LocationProfile = (props) => {
-    const locationName = props;
-    console.log(locationName); 
+const LocationProfile = () => {
     const navigate = useNavigate();
     const [data, setData] = useState([]);
-  
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
+
   useEffect(() => {
-    async function fetchData() {
-        const result = await axios(
-          "https://my.api.mockaroo.com/browse.json?key=d0d8c110"
-        );
+    axios
+      .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/locationprofile`)
+      .then((result) => {
         setData(result.data);
-      
-    }
-    fetchData();
+      })
+      .catch((err) => {
+        setError('Failed to fetch data from the server');
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
   for(let i=0; i<data.length; i++){
