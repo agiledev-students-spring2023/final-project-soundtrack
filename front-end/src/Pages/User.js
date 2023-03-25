@@ -8,20 +8,26 @@ import {useNavigate} from "react-router-dom"
 const User = () => {
   const navigate = useNavigate(); 
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   
   useEffect(() => {
-    async function fetchData() {
-        const result = await axios(
-          "https://my.api.mockaroo.com/user.json?key=d0d8c110"
-        );
+    axios
+      .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/user`)
+      .then((result) => {
         setData(result.data);
-      
-    }
-    fetchData();
+      })
+      .catch((err) => {
+        setError('Failed to fetch data from the server');
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
+
   return (
     <div className="user-container">
-
+      {error && <p>{error}</p>}
         <div className = "user-header"> 
         <div onClick={() => navigate("/map")} className="back-link">Back</div>
         <div onClick={() => navigate("/settings")} className="settings-link">Settings</div>
