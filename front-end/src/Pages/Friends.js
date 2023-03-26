@@ -10,17 +10,22 @@ const Friends = () => {
 
     const [data, setData] = useState([]);
     const navigate = useNavigate(); 
-    
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
+
     useEffect(() => {
-        async function fetchData() {
-            const result = await axios( 
-                //temporarily using the browse mockaroo for the data
-                "https://my.api.mockaroo.com/browse.json?key=d0d8c110"
-            );
+        axios
+          .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/friends`)
+          .then((result) => {
             setData(result.data);
-        }
-        fetchData();
-    }, []);
+          })
+          .catch((err) => {
+            setError('Failed to fetch data from the server');
+          })
+          .finally(() => {
+            setLoading(false);
+          });
+      }, []);
 
     return(
         <div className="FriendsMainContainer">
