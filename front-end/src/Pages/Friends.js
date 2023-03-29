@@ -3,6 +3,7 @@ import axios from "axios";
 
 import {useNavigate} from "react-router-dom"
 
+import IncomingFriendsPopup from "../Components/IncomingFriendsPopup";
 import "./Friends.css";
 import FriendProfileChip from "../Components/FriendProfileChip";
 
@@ -28,21 +29,24 @@ const Friends = () => {
       }, []);
 
     return(
-        <div className="FriendsMainContainer">
-            {/* header goes here? */}
+        <div>
+          <div className="LogoPostAndProfile">
+              <div className="LogoText">
+                Friends
+              </div>
+              
+              <div onClick = {() => {navigate("/user") }} className="SquareButton1">
+                Back
+              </div>
 
-            <div className = "user-header"> 
-                <a href="#" className="back-link" onClick = {() => {navigate("/user") }}>Back</a> 
             </div>
 
-            <div className="FriendsItemsDisplayColumn">
-
-                
-                <h2>Friends</h2>
-                    {/* friend items go here. these are placeholders */}
-                    
-                    {data.map((chip, index) => (<FriendProfileChip key={index} data={chip}/>))}
-            </div>
+          <div className="FriendsMainContainer">
+            <IncomingFriendsPopup/>
+              <div className="FriendsItemsDisplayColumn">
+                {data.map((chip, index) => (<FriendProfileChip key={index} data={chip}/>))} 
+              </div>
+          </div>
         </div>
     );
 }

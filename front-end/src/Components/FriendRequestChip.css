@@ -1,0 +1,28 @@
+.PictureAndUsername {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 4vw;
+
+}
+
+.Buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 10vw;
+}
+
+.MainBox {
+    display:flex;
+    flex-direction: row;
+    justify-content:space-between;
+    align-items: center;
+    flex-wrap: nowrap;
+    margin-left: 2vw;
+    margin-right: 2vw;
+}
