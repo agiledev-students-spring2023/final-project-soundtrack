@@ -1,7 +1,8 @@
 .FriendsMainContainer {
     margin-left: 10vw;
     margin-right: 10vw;
-    margin-top: 5vh;
+    margin-top: 0vh;
+    margin-bottom: 5vh;
 }
 
 .FriendsItemsDisplayColumn {
@@ -10,4 +11,37 @@
     justify-content: flex-start;
     row-gap: 2vh;
     column-count: 1;
+}
+
+.LogoPostAndProfile {
+    padding-left: 10vw;
+    padding-right: 10vw;
+    padding-top: 4vh;
+    padding-bottom: 2vh;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+.LogoText {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.SquareButton1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 3rem;
+    height: 4vh;
+
+    background-color: lightgray;
+    border-radius: 10px;
+
+    text-align: center;
+    font-size: small;
 }
