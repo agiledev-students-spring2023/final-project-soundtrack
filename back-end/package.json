@@ -13,7 +13,8 @@
     "axios": "^1.3.4",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "lsof": "^0.1.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.22"

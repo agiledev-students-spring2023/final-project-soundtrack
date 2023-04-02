@@ -12,10 +12,16 @@
 .FilterContainer{
     display: flex;
     flex-direction: column;
-
+    justify-content: flex-start;
+    column-count: 1;
+    padding: 10px;
 }
 
-
+.Filter {
+    display: flex;
+    justify-content: left;
+    padding: 10px;
+}
 
 .confirmButton {
     max-width: 150px;
@@ -25,12 +31,6 @@
     border: none;
     border-radius: 5px;
     font-size: 15px;
-}
-  
-.Filter {
-    display: flex;
-    justify-content: center;
-    padding: 10px;
 }
 
 input[type="checkbox"] {
