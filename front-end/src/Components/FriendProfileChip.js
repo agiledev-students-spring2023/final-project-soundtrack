@@ -1,28 +1,32 @@
-import React from "react";
-import "./FriendProfileChip.css";
-import {useNavigate} from "react-router-dom";
+import React from 'react';
+import './FriendProfileChip.css';
+import { useNavigate } from 'react-router-dom';
 
+function FriendProfileChip({ data }) {
+  const navigate = useNavigate();
 
-const FriendProfileChip = ({data}) => {
-    const navigate = useNavigate(); 
+  return (
+    <div
+      className="MainBox"
+      onClick={() => {
+        navigate('/User');
+      }}
+    >
+      <div className="PictureAndUsername">
 
-    return(
-        <div className="MainBox" onClick={() => {
-            navigate("/User")
-            }}>
-            <div className="PictureAndUsername">
-
-                <img src={data.avatar} alt="avatar" className="Avatar" /> 
-                <div> @{data.username}</div>
-
-            </div>
-
-            <div>
-                
-            </div>
+        <img src={data.avatar} alt="avatar" className="Avatar" />
+        <div>
+          {' '}
+          @
+          {data.username}
         </div>
 
-    );
+      </div>
+
+      <div />
+    </div>
+
+  );
 }
 
 export default FriendProfileChip;

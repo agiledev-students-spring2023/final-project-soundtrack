@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import "./Browse.css";
-import axios from "axios";
-import HeaderBrowseMap from "../Components/HeaderBrowseMap";
-import UserPost from "../Components/UserPost"
+import './Browse.css';
+import axios from 'axios';
+import HeaderBrowseMap from '../Components/HeaderBrowseMap';
+import UserPost from '../Components/UserPost';
 
-const Browse = () => {
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState('');
+function Browse() {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     axios
@@ -23,16 +23,16 @@ const Browse = () => {
       });
   }, []);
 
-    return (
-        <div>
-        <HeaderBrowseMap/>
-        
-            <div className="Browse-items">
-                {/* Posts will go here. They're flexed in a single column */}
-                {data.map((post, index) => (<UserPost key={index} data={post} post={post}/>))}
-            </div>
-        </div>
-    );
+  return (
+    <div>
+      <HeaderBrowseMap />
+
+      <div className="Browse-items">
+        {/* Posts will go here. They're flexed in a single column */}
+        {data.map((post, index) => (<UserPost key={index} data={post} post={post} />))}
+      </div>
+    </div>
+  );
 }
 
 export default Browse;

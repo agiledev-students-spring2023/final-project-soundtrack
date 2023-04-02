@@ -1,8 +1,8 @@
-import "./UserPost.css"; 
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import './UserPost.css';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const UserPost = ({data, post}) => {
+function UserPost({ data, post }) {
   const navigate = useNavigate();
   const [likes, setLikes] = useState(0);
 
@@ -17,11 +17,18 @@ const UserPost = ({data, post}) => {
   };
   return (
     <div className="post">
-    <div className="post-header">
+      <div className="post-header">
         <img src={data.avatar} alt="avatar" className="avatar" />
-        <h3>@{data.username}</h3>
+        <h3>
+          @
+          {data.username}
+        </h3>
       </div>
-      <div className="location" onClick={() => {navigate("/LocationProfile"); }}> {post.location} </div>
+      <div className="location" onClick={() => { navigate('/LocationProfile'); }}>
+        {' '}
+        {post.location}
+        {' '}
+      </div>
       <img src={post.image} alt="post" className="post-image" />
       <div className="song">
         <button id="play-button" onClick={handlePlay}>Play</button>
@@ -29,10 +36,14 @@ const UserPost = ({data, post}) => {
       </div>
       <div className="post-footer">
         <button id="like-button" onClick={handleLike}>Like</button>
-        <span>{likes} likes</span>
+        <span>
+          {likes}
+          {' '}
+          likes
+        </span>
       </div>
-  </div>
+    </div>
   );
-};
+}
 
-export default UserPost; 
+export default UserPost;

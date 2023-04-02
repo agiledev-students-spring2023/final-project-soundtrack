@@ -1,9 +1,8 @@
-import "./Filter.css";
-import {useNavigate} from "react-router-dom"
-
+import './Filter.css';
+import { useNavigate } from 'react-router-dom';
 
 function Filter() {
-    const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   return (
     <div className="FilterContainer">
@@ -25,9 +24,14 @@ function Filter() {
         <input type="checkbox" />
         <label>Parks</label>
       </div>
-      <button className="confirmButton" onClick = {() => {
-            navigate("/map")
-            }}>confirm</button>
+      <button
+        className="confirmButton"
+        onClick={() => {
+          navigate('/map');
+        }}
+      >
+        confirm
+      </button>
     </div>
   );
 }

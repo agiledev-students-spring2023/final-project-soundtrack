@@ -1,17 +1,17 @@
 #!/usr/bin/env node
-const express = require('express')
+import express, { json, urlencoded } from 'express';
 const app = express(); // instantiate an Express object
-const cors = require("cors");
+import cors from "cors";
 require('dotenv').config({ silent: true }) // load environmental variables from a hidden file named .env
 const port = process.env.PORT || 3000 // the port to listen to for incoming requests
-app.use(express.json()) // decode JSON-formatted incoming POST data
-app.use(express.urlencoded({ extended: true })) // decode url-encoded incoming POST data
+app.use(json()) // decode JSON-formatted incoming POST data
+app.use(urlencoded({ extended: true })) // decode url-encoded incoming POST data
 
 
-const userRoute = require('./routes/User')
-const browseRoute = require('./routes/Browse')
-const friendRoute = require('./routes/Friends')
-const locationProfileRoute = require('./routes/LocationProfile')
+import userRoute from './routes/User';
+import browseRoute from './routes/Browse';
+import friendRoute from './routes/Friends';
+import locationProfileRoute from './routes/LocationProfile';
 
 
 app.use(cors());
@@ -32,7 +32,5 @@ const close = () => {
   listener.close()
 }
 
-module.exports = {
-  close: close,
-}
+export const close = close;
 //run with npx nodemon server.js
