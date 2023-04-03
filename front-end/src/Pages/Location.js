@@ -7,6 +7,7 @@ import NearbyLocations from '../Components/NearbyLocation';
 
 const Location = () => {
   const [data, setData] = useState([]);
+  const [imageData,setImageData] = useState([]);
   const [locationData, setLocationData] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const popupRef = useRef(null);
@@ -15,6 +16,7 @@ const Location = () => {
   const navigate = useNavigate(); 
   const [selectedLocation, setSelectedLocation] = useState(null); // added state to store selected location
   const [valueFromChild, setValueFromChild] = useState('true');
+
 
   useEffect(() => {
     if (valueFromChild === 'false') {
@@ -37,8 +39,35 @@ const Location = () => {
   const handlePrivacy = (value) => {
     setPrivacy(value);
     setOpen(false);
+
+    axios.post("http://localhost:5002/Location/savePrivacy", { privacy: value })
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log('failed to saved privacy data to server');
+      });
   };
 
+  //fetch image from back-end
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5002/location/fetchImage`)
+      .then((result) => {
+        setImageData(result.data);
+        console.log(imageData);
+      })
+      .catch((err) => {
+        console.log('Failed to fetch imagedata from the server');
+      })
+      
+  }, []);
+
+
+
+
+
+  //post mockaroo
   useEffect(() => {
     async function fetchData() {
       const result = await axios(
@@ -50,16 +79,7 @@ const Location = () => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    async function fetchLocationData() {
-      const result = await axios(
-        "https://my.api.mockaroo.com/location.json?key=0b0aecc0"
-      );
-      setLocationData(result.data);
-    }
 
-    fetchLocationData();
-  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -74,6 +94,12 @@ const Location = () => {
     };
   }, [popupRef]);
 
+  
+
+
+
+
+
   return (
     <div className='container'>
       <div className='Title'>
@@ -82,8 +108,8 @@ const Location = () => {
         </button>
         <h1>Finish Posting</h1>
       </div>
-      <div>
-        {<img src={data.imageTaken} alt='no Image' />}
+      <div className='post-image'>
+      {<img src={imageData.imageURL} alt='no Image'/>}
       </div>
 
       <div className="choose">
@@ -104,25 +130,21 @@ const Location = () => {
           )}        
         </div>
 
-        <div className="dropdown">
-          <div className="dropdownTitle" onClick={handleOpen}>
-            {privacy}
-          </div>
-          {open ? (
-            <ul className="privacy">
-              <li className="privacy-item">
-                <button onClick={() => handlePrivacy('Private')}>
-                  Private
-                </button>
-              </li>
-              <li className="privacy-item">
-                <button onClick={() => handlePrivacy('Public')}>
-                  Public
-                </button>
-              </li>
-            </ul>
-          ) : null}
-        </div>
+       <div className="dropdown">
+      <div className="dropdownTitle" onClick={handleOpen}>
+        {privacy}
+      </div>
+      {open ? (
+        <ul className="privacy">
+          <li className="privacy-item">
+            <button onClick={() => handlePrivacy("Private")}>Private</button>
+          </li>
+          <li className="privacy-item">
+            <button onClick={() => handlePrivacy("Public")}>Public</button>
+          </li>
+        </ul>
+      ) : null}
+    </div>
       </div>
       <button onClick = {() => {
           navigate("/map");

@@ -30,10 +30,6 @@ const Post = () => {
       </div>
       
       <SearchBar placeholder={"Search Song"} data={data} />
-
-      <button className="Button" onClick={() => navigate("/Camera")}>
-        Next
-      </button>
     </header>
   );
 };
