@@ -1,0 +1,26 @@
+.MainBox {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    padding-left: 4vw;
+    padding-right: 4vw;
+    gap: 2vw;
+}
+
+input[type="friendSearch"] {
+    border-radius: 15px;
+    background-color: white;
+    color: black;
+
+    font-size: medium;
+    text-align: center;
+
+    margin-top: 1vh;
+    height: 5vh;
+}
+
+button[type=friendSearchSubmit] {
+    height: 5vh;
+    width: 7vh;
+    border-radius: 15px;
+}

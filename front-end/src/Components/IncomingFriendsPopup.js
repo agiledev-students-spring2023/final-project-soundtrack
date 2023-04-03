@@ -28,7 +28,7 @@ const IncomingFriendsPopup = () => {
 
     if(!Object.keys(data).length == 0) { //only display popup if the user has friend requests (check if our api data has entries)
         return(
-            <div className="MainContainer">
+            <div className="IncomingFriendsPopup">
                 <h3>Incoming Requests</h3>
                 {data.map((chip, index) => (<FriendRequestChip key={index} data={chip}/>))} 
             </div>
