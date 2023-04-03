@@ -13,6 +13,8 @@ const userRoute = require('./routes/User')
 const browseRoute = require('./routes/Browse')
 const friendRoute = require('./routes/Friends')
 const locationProfileRoute = require('./routes/LocationProfile')
+const cameraRoute = require('./routes/Camera')
+
 
 
 app.use(cors());
@@ -20,6 +22,7 @@ app.use("/user",userRoute);
 app.use("/browse",browseRoute);
 app.use("/friends",friendRoute);
 app.use("/locationprofile",locationProfileRoute);
+app.use("/Camera",cameraRoute);
 
 
 

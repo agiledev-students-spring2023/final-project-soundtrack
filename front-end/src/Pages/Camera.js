@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Webcam from 'react-webcam';
 import { useNavigate } from 'react-router-dom';
 import './Camera.css';
+import axios from 'axios';
 
 const videoConstraints = {
   width: 390,
@@ -18,6 +19,13 @@ function Camera() {
   const capture = React.useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
     setImage(imageSrc);
+    axios.post((`http://localhost:5002/Camera/saveImage`), {image: imageSrc})
+    .then(response => {
+      console.log("handle successful response from backend", response.data); // handle successful response from backend
+    })
+    .catch(error => {
+      console.error("fails to send image to backend", error); // handle error from backend
+    });
   });
 
   const retakeImage = () => {
@@ -74,6 +82,6 @@ function Camera() {
       </div>
     </div>
   );
-}
+} 
 
 export default Camera;
