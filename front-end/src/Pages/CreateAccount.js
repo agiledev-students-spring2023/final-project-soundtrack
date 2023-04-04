@@ -13,6 +13,13 @@ function handleSubmit(e){
 function CreateAccount() {
   return (
     <div className="createAccount">
+        <div className="LogoText">
+            <img 
+                src={require('../Logos/soundTrackIcon.png')} 
+                width="100px"
+                height="100px"
+                srcSet={require('../Logos/fullLogo.svg')} />
+        </div>
         <h2>Create Account</h2>
         <div className="inputs-CreateAccount">
             <form onSubmit={handleSubmit}>

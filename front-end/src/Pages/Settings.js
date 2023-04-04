@@ -23,6 +23,13 @@ function Settings() {
         <div className="settings-header"> 
         <div onClick={() => navigate("/user")} className="back-link">Back</div>
         </div>
+        <div className="LogoText">
+          <img 
+              src={require('../Logos/soundTrackFullLogo.png')} 
+              width="200px"
+              height="200px"
+              srcSet={require('../Logos/fullLogo.svg')} />
+      </div>
       <div className="option">
       <a href="#" onClick= {() => {navigate("/EditProfile") }} >Edit Profile</a>
       </div>

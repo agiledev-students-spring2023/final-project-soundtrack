@@ -18,10 +18,13 @@ function handleSubmit(e){
 function Login() {
   return (
     <div className="Login">
-        <div className="logo">
-            <h1>SoundTack</h1>
-            <p>full logo to be added when developed</p>
-        </div>
+            <div className="LogoText">
+                <img 
+                    src={require('../Logos/soundTrackFullLogo.png')} 
+                    width="300px"
+                    height="300px"
+                    srcSet={require('../Logos/fullLogo.svg')} />
+            </div>
         <h2>LOGIN</h2>
         <div className="inputs">
             <form onSubmit={handleSubmit}>
