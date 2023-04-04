@@ -18,7 +18,7 @@ function CreateAccount() {
                 src={require('../Logos/soundTrackIcon.png')} 
                 width="100px"
                 height="100px"
-                srcSet={require('../Logos/fullLogo.svg')} />
+                srcSet={require('../Logos/icon.svg')} />
         </div>
         <h2>Create Account</h2>
         <div className="inputs-CreateAccount">
