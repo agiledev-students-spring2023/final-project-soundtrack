@@ -19,7 +19,7 @@ function CreateAccount() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newUser = { ...user, id: uuidv4() }; // add a unique id to the new user
+    const newUser = { ...user, id: uuidv4() };
     axios
       .post('http://localhost:5002/User', newUser)
       .then((response) => {

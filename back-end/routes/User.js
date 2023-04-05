@@ -30,18 +30,15 @@ router.post("/", morgan("dev"), (req, res, next) => {
     const users = JSON.parse(data);
     const newUser = req.body;
     
-    // Check for duplicate username
     const existingUser = users.find(user => user.username === newUser.username);
     if (existingUser) {
       res.status(400).json({ error: "Username already exists. Please choose a different username." });
       return;
     }
     
-    // Generate unique id for new user
     const id = Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
     newUser.id = id;
     
-    // Save new user
     users.push(newUser);
     fs.writeFile(usersFilePath, JSON.stringify(users), (err) => {
       if (err) {
