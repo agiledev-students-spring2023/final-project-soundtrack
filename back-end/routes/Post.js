@@ -7,15 +7,15 @@ const path = require('path');
 
 
 // route for HTTP GET requests to the root document
-router.get("/saveSong", (req, res) => {
+router.get("/savePost", (req, res) => {
     res.send("Goodbye world!")
   })
 
 
 
-router.post('/saveSong', (req, res) => {
+router.post('/savePost', (req, res) => {
     try {
-      const songTitle = req.body.songTitle;
+      const post = req.body.postItem;
       // Construct the path to the JSON file
       const publicFolderPath = path.join(__dirname, '..', 'temp');
       const jsonFilePath = path.join(publicFolderPath, 'post-item-storage.json');
@@ -29,26 +29,11 @@ router.post('/saveSong', (req, res) => {
         console.error(`Error reading JSON file: ${err}`);
       }
 
-    // Construct the post item object
-        let postItem = {
-        SongTitle: "",
-        ImageURL: "",
-        Location: "",
-        Privacy: ""
-     };
-
-
-
-        if (existingData.length === 0) {
-            existingData.push(postItem);
-          } else {
-        existingData[0].SongTitle = songTitle;
-        }
+      existingData.push(post);
       // Write the updated data to the JSON file
-       fs.writeFileSync(jsonFilePath, JSON.stringify(existingData, null, 2));
+      fs.writeFileSync(jsonFilePath, JSON.stringify(existingData, null, 2));
   
       console.log(`Successfully added songTitle to temp folder`);
-      
       res.status(200).send("songTitle saved successfully!");
     } catch (error) {
       console.error(`Error saving songTtile: ${error}`);

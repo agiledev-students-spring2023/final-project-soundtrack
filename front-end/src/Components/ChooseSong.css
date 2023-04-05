@@ -1,6 +1,5 @@
 .search {
-  position: relative;
-  margin: 0 auto;
+  margin: 20px;
   width: 90%;
   max-width: 800px;
   box-sizing: border-box;
@@ -24,6 +23,7 @@ input[type="text"] {
   outline: none;
 
 }
+
 .nextButton {
   position: fixed;
   bottom: 20px;
@@ -61,7 +61,7 @@ input[type="text"] {
 .dataResultBlock h2,
 .recentListenBlock h2 {
   margin: 0 0 0px;
-  padding-bottom: 0px;
+  padding: 20px;
   font-size: 17px;
   color: #333;
   text-align: left;
@@ -69,6 +69,7 @@ input[type="text"] {
 
 .dataResult,
 .recentListen {
+  padding: 10px;
   max-height: 400px;
   overflow-y: auto;
   display: grid;

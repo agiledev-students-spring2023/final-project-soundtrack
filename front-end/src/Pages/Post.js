@@ -1,12 +1,22 @@
 import "./Post.css";
-import SearchBar from "../Components/SearchBar";
+import ChooseSong from "../Components/ChooseSong";
+import Camera from "../Components/Camera";
+import Confirmation from "../Components/Confirmation";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import NearbyLocation from "../Components/NearbyLocation";
+
 
 const Post = () => {
-  const [data, setData] = useState([]);
   const navigate = useNavigate();
+  const [data, setData] = useState([]);
+  const [activeComponent, setActiveComponent] = useState("ChooseSong");
+  const [selectedSongTitle, setSelectedSongTitle] = useState("");
+  const [imageURL, setImageURL] = useState("");
+  const [locationName, setLocationName] = useState("");
+
+
 
   useEffect(() => {
     async function fetchData() {
@@ -20,16 +30,73 @@ const Post = () => {
     fetchData();
   }, []);
 
+  const handleChooseSongNext = (songTitle) => {
+    setSelectedSongTitle(songTitle);
+    setActiveComponent("Camera");
+  };
+
+  const handleCameraBack = () => {
+    setActiveComponent("ChooseSong");
+  };
+
+  const handleCameraNext = (imageSrc) => {
+    setImageURL(imageSrc);
+    setActiveComponent("Location");
+  };
+
+  const handleLocationBack = () => {
+    setActiveComponent("Camera");
+  };
+  
+
+  const handleLocationNext = (locationName) => {
+    setLocationName(locationName);
+    setActiveComponent("Confirmation");
+  };
+
+
+  const handleError = (error) => {
+    console.error(error);
+  };
+
+
   return (
     <header>
       <div className="Title">
-      <button className="ReturnButton" onClick={() => navigate("/Map")}>
-        back
-      </button>
-        <h1>Start Posting, Choose a Song</h1>
+        <button className="ReturnButton" onClick={() => navigate("/Map")}>
+          Back
+        </button>
+        <h1>Create Your Post</h1>
       </div>
-      
-      <SearchBar placeholder={"Search Song"} data={data} />
+
+      <div>
+        {activeComponent === "ChooseSong" && (
+          <ChooseSong
+            placeholder={"Search Song"}
+            data={data}
+            onNext={handleChooseSongNext}
+          />
+        )}
+        {activeComponent === "Camera" && (
+        <Camera onBack={handleCameraBack} onNext={handleCameraNext} />
+        )}
+
+        {activeComponent === "Location" && (
+        <NearbyLocation onBack={handleLocationBack} onNext={handleLocationNext} />
+        )}
+
+
+        {activeComponent === "Confirmation" && (
+          <Confirmation
+            onBack={handleLocationBack}
+            onNext={handleLocationNext}
+            imageURL = {imageURL}
+            songTitle = {selectedSongTitle}
+            locationName={locationName}
+            onError={handleError}
+          />
+        )}
+      </div>
     </header>
   );
 };
