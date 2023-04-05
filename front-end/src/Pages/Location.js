@@ -6,9 +6,7 @@ import {useNavigate} from "react-router-dom"
 import NearbyLocations from '../Components/NearbyLocation';
 
 const Location = () => {
-  const [data, setData] = useState([]);
-  const [imageData,setImageData] = useState([]);
-  const [locationData, setLocationData] = useState([]);
+  const [tmpData,setTmpData] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const popupRef = useRef(null);
   const [open, setOpen] = React.useState(false);
@@ -49,13 +47,13 @@ const Location = () => {
       });
   };
 
-  //fetch image from back-end
+  //fetch image and song from back-end
   useEffect(() => {
     axios
-      .get(`http://localhost:5002/location/fetchImage`)
+      .get(`http://localhost:5002/location/fetchtmpdata`)
       .then((result) => {
-        setImageData(result.data);
-        console.log(imageData);
+        setTmpData(result.data);
+        console.log(tmpData);
       })
       .catch((err) => {
         console.log('Failed to fetch imagedata from the server');
@@ -66,18 +64,6 @@ const Location = () => {
 
 
 
-
-  //post mockaroo
-  useEffect(() => {
-    async function fetchData() {
-      const result = await axios(
-        "https://my.api.mockaroo.com/user_post.json?key=5aa92030"
-      );
-      setData(result.data);
-    }
-
-    fetchData();
-  }, []);
 
 
 
@@ -109,13 +95,13 @@ const Location = () => {
         <h1>Finish Posting</h1>
       </div>
       <div className='post-image'>
-      {<img src={imageData.imageURL} alt='no Image'/>}
+      {<img src={tmpData.imageURL} alt='no Image'/>}
       </div>
 
       <div className="choose">
         <div className = "songNameContainer">
           <div className="songName">
-            chooseSong:{data.songName}
+            chooseSong:{tmpData.songTitle}
           </div>
         </div>
 

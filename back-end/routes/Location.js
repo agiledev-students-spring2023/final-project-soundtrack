@@ -11,7 +11,7 @@ router.get("/", (req, res) => {
 
 
 
-router.get('/fetchImage', (req, res) => {
+router.get('/fetchtmpdata', (req, res) => {
   try {
     // Construct the path to the JSON file
     const publicFolderPath = path.join(__dirname, '..', 'temp');
@@ -22,12 +22,15 @@ router.get('/fetchImage', (req, res) => {
 
     // Return the image URL
     const imageURL = existingData[0].ImageURL;
-    res.json({ imageURL });
+    const songTitle = existingData[0].SongTitle; 
+    res.json({imageURL, songTitle });
   } catch (error) {
-    console.error(`Error fetching image: ${error}`);
-    res.status(500).send("Error fetching image!");
+    console.error(`Error fetching image or Song: ${error}`);
+    res.status(500).send("Error fetching image or Song!");
   }
 });
+
+
 
 router.post('/savePrivacy', (req, res) => {
     try {
