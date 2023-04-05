@@ -21,7 +21,7 @@ function CreateAccount() {
     e.preventDefault();
     const newUser = { ...user, id: uuidv4() };
     axios
-      .post('http://localhost:5002/User', newUser)
+      .post('http://localhost:5002/user', newUser)
       .then((response) => {
         console.log(response.data);
         window.location = './Map';
