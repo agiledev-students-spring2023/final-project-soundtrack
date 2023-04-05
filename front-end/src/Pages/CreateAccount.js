@@ -26,9 +26,13 @@ function CreateAccount() {
       })
       .catch((error) => {
         console.log(error);
-        alert('Error creating user. Please try again.');
+        if (error.response && error.response.status === 409) {
+          alert('Username already exists. Please choose a different one.');
+        } else {
+          alert('Error creating user. Please try again.');
+        }
       });
-  };
+  };  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
