@@ -13,6 +13,13 @@ function handleSubmit(e){
 function ForgotPassword() {
   return (
     <div className="createAccount">
+        <div className="LogoText">
+            <img 
+                src={require('../Logos/soundTrackIcon.png')} 
+                width="100px"
+                height="100px"
+                srcSet={require('../Logos/icon.svg')} />
+        </div>
         <h2>Forgot Password</h2>
         <div className="inputs-CreateAccount">
             <form onSubmit={handleSubmit}>

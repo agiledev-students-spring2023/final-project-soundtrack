@@ -1,6 +1,7 @@
 import React from "react";
 import "./HeaderBrowseMap.css";
 import {useNavigate} from "react-router-dom"
+//import {ReactComponent as Logo} from "./Images/fullLogo.svg"
 
 
 const HeaderBrowseMap = () => {
@@ -13,7 +14,11 @@ const HeaderBrowseMap = () => {
                 </div>
 
                 <div className="LogoText">
-                    SoundTrack
+                    <img 
+                        src={require('../Logos/soundTrackFullLogo.png')} 
+                        width="200px"
+                        height="200px"
+                        srcSet={require('../Logos/fullLogo.svg')} />
                 </div>
 
                 <div onClick = {() => {navigate("/user") }}className="SquareButton1">
