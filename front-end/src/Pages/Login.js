@@ -45,7 +45,7 @@ function Login() {
         <form onSubmit={handleSubmit}>
           <div className="input-containerUserPass">
             <input
-              type="text"
+              type="username"
               name="uname"
               placeholder="@username"
               value={username}
