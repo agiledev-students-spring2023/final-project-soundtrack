@@ -18,7 +18,7 @@ router.post('/savePost', (req, res) => {
       const post = req.body.postItem;
       // Construct the path to the JSON file
       const publicFolderPath = path.join(__dirname, '..', 'temp');
-      const jsonFilePath = path.join(publicFolderPath, 'post-item-storage.json');
+      const jsonFilePath = path.join(publicFolderPath, 'userPost.json');
       
       // Read the existing data from the JSON file, if any
       let existingData = [];

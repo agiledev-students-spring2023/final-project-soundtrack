@@ -5,7 +5,7 @@ import {useNavigate} from "react-router-dom"
 
 const Confirmation = ({songTitle, imageURL,locationName}) => {
   const [open, setOpen] = useState(false);
-  const [privacy, setPrivacy] = useState('Privacy');
+  const [privacy, setPrivacy] = useState('Public');
   const navigate = useNavigate(); 
 
  
