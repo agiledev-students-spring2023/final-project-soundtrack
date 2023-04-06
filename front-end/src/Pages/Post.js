@@ -22,7 +22,7 @@ const Post = () => {
     async function fetchData() {
       console.log("Fetching data from Api");
       const result = await axios(
-        "https://my.api.mockaroo.com/choose_song.json?key=0b0aecc0"
+        "https://my.api.mockaroo.com/choose_song.json?key=5aa92030"
       );
       setData(result.data);
     }
@@ -41,7 +41,7 @@ const Post = () => {
 
   const handleCameraNext = (imageSrc) => {
     setImageURL(imageSrc);
-    setActiveComponent("Location");
+    setActiveComponent("NearbyLocation");
   };
 
   const handleLocationBack = () => {
@@ -81,7 +81,7 @@ const Post = () => {
         <Camera onBack={handleCameraBack} onNext={handleCameraNext} />
         )}
 
-        {activeComponent === "Location" && (
+        {activeComponent === "NearbyLocation" && (
         <NearbyLocation onBack={handleLocationBack} onNext={handleLocationNext} />
         )}
 
