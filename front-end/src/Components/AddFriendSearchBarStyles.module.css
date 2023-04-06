@@ -1,20 +1,26 @@
-.AddFriendArea {
-    border-radius: 15px;
-    background-color: #282c34;
-    width: 100%;
-
-    padding-top: 1vh;
-    padding-bottom: 1vh;
-    margin-bottom: 1vh;
-
-    color: white; /*text color*/
+.MainBox {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    padding-left: 4vw;
+    padding-right: 4vw;
+    gap: 2vw;
 }
 
-.AddFriendTitle {
-    display: flex;
-    justify-content: left;
-    margin-left: 4vw;
+input[type="friendSearch"] {
+    border-radius: 15px;
+    background-color: white;
+    color: black;
 
-    font-weight: bold;
-    font-size: larger;
+    font-size: medium;
+    text-align: center;
+
+    margin-top: 1vh;
+    height: 5vh;
+}
+
+button[type=friendSearchSubmit] {
+    height: 5vh;
+    width: 7vh;
+    border-radius: 15px;
 }
