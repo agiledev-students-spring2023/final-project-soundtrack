@@ -3,9 +3,11 @@ import axios from "axios";
 
 import {useNavigate} from "react-router-dom"
 
-import IncomingFriendsPopup from "../Components/IncomingFriendsPopup";
 import "./Friends.css";
+
+import IncomingFriendsPopup from "../Components/IncomingFriendsPopup";
 import FriendProfileChip from "../Components/FriendProfileChip";
+import AddFriendArea from "../Components/AddFriendArea";
 
 const Friends = () => {
 
@@ -42,6 +44,7 @@ const Friends = () => {
             </div>
 
           <div className="FriendsMainContainer">
+            <AddFriendArea/>
             <IncomingFriendsPopup/>
               <div className="FriendsItemsDisplayColumn">
                 {data.map((chip, index) => (<FriendProfileChip key={index} data={chip}/>))} 

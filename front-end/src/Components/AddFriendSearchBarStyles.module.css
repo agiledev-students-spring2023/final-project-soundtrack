@@ -1,0 +1,20 @@
+.AddFriendArea {
+    border-radius: 15px;
+    background-color: #282c34;
+    width: 100%;
+
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+    margin-bottom: 1vh;
+
+    color: white; /*text color*/
+}
+
+.AddFriendTitle {
+    display: flex;
+    justify-content: left;
+    margin-left: 4vw;
+
+    font-weight: bold;
+    font-size: larger;
+}
