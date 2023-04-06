@@ -4,7 +4,6 @@ const axios = require("axios");
 const morgan = require("morgan") 
 
 
-
 router.get("/",morgan("dev"),(req, res, next) => {
     // use axios to make a request to an API for animal data
     axios

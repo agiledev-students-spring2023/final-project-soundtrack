@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Webcam from 'react-webcam';
-import {useNavigate} from "react-router-dom"
 import './Camera.css';
 
 const videoConstraints = {
@@ -9,23 +8,32 @@ const videoConstraints = {
   facingMode: 'user',
 };
 
-const Camera = () => {
+function Camera({ onBack, onNext }) {
   const [image, setImage] = useState('');
   const webcamRef = React.useRef(null);
-  const navigate = useNavigate(); 
+
 
   const capture = React.useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
     setImage(imageSrc);
-  });
+  }, [webcamRef]);
 
   const retakeImage = () => {
     setImage('');
   };
 
+  const handleNext = () => {
+    if (image) {
+      onNext(image);
+    }
+  };
+
+  const handleBack = () => {
+    onBack();
+  };
+
   return (
     <div className="webcam-container">
-
       <div className="webcam-img">
         {!image ? (
           <Webcam
@@ -37,36 +45,32 @@ const Camera = () => {
             videoConstraints={videoConstraints}
           />
         ) : (
-          <img src={image} />
+          <img src={image} alt="Captured" />
         )}
       </div>
-      <div className = "button-container">
+      <div className="button-container">
         {image ? (
           <div>
             <button onClick={retakeImage} className="retake-btn">
-            X
+              X
             </button>
-            <button onClick = {() => {
-            navigate("/Location")
-            }}className = "next-btn">
-            next
+            <button onClick={handleNext} className="next-btn">
+              Next
             </button>
           </div>
         ) : (
           <div>
-            <button onClick = {() => {
-            navigate("/Post")
-            }}className="retake-btn">
-            Back
+            <button onClick={handleBack} className="retake-btn">
+              Song
             </button>
             <button onClick={capture} className="webcam-btn">
-            Capture
+              Capture
             </button>
-            </div>
+          </div>
         )}
       </div>
     </div>
   );
-};
+}
 
 export default Camera;
