@@ -11,6 +11,7 @@ const userRoute = require('./routes/User')
 const browseRoute = require('./routes/Browse')
 const friendRoute = require('./routes/Friends')
 const locationProfileRoute = require('./routes/LocationProfile')
+const createRoute = require('./routes/Create')
 
 app.use(cors());
 const corsOptions = {
@@ -18,6 +19,7 @@ const corsOptions = {
 }
 app.use(cors(corsOptions))
 app.use("/user",userRoute);
+app.use("/create",createRoute);
 app.use("/browse",browseRoute);
 app.use("/friends",friendRoute);
 app.use("/locationprofile",locationProfileRoute);

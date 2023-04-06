@@ -1,53 +1,17 @@
-const express = require("express");
+const express = require("express"); 
 const router = express.Router();
-const fs = require('fs');
-const morgan = require("morgan");
-const path = require("path");
+const axios = require("axios");
+const morgan = require("morgan") 
 
-const usersFilePath = path.join(__dirname, "users.json");
 
-router.use(express.json());
 
-router.get("/", morgan("dev"), (req, res, next) => {
-  fs.readFile(usersFilePath, 'utf8', (err, data) => {
-    if (err) {
-      console.error(err);
-      return next(err);
-    }
+router.get("/",morgan("dev"),(req, res, next) => {
+    // use axios to make a request to an API for animal data
+    axios
+      .get("https://my.api.mockaroo.com/user.json?key=d0d8c110")
+      .then(apiResponse => res.json(apiResponse.data)) // pass data along directly to client
+      .catch(err => next(err)) // pass any errors to express
+  })
 
-    const users = JSON.parse(data);
-    res.json(users);
-  });
-});
 
-router.post("/", morgan("dev"), (req, res, next) => {
-  fs.readFile(usersFilePath, 'utf8', (err, data) => {
-    if (err) {
-      console.error(err);
-      return next(err);
-    }
-
-    const users = JSON.parse(data);
-    const newUser = req.body;
-    
-    const existingUser = users.find(user => user.username === newUser.username);
-    if (existingUser) {
-      res.status(400).json({ error: "Username already exists. Please choose a different username." });
-      return;
-    }
-    
-    const id = Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
-    newUser.id = id;
-    
-    users.push(newUser);
-    fs.writeFile(usersFilePath, JSON.stringify(users), (err) => {
-      if (err) {
-        console.error(err);
-        return next(err);
-      }
-      res.status(201).end();
-    });
-  });
-});
-
-module.exports = router;
+  module.exports = router;
