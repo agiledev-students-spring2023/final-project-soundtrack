@@ -7,8 +7,6 @@ import { useNavigate } from "react-router-dom";
 import Filter from "../Components/Filter";
 // import Favorites from './Favorites'
 
-// demo comment diya314
-
 function Map() {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: "AIzaSyB1D7Olh84_bINSSNaJ5N9nsU6bq933y0U",
