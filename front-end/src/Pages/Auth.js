@@ -17,12 +17,17 @@ const Auth = () => {
   }, []);
 
   useEffect(() => {
-    if (window.location.href.length > 50) {
-      const {data} = axios.get(`${process.env.REACT_APP_SERVER_HOSTNAME}/auth/callback`);
-      console.log(data); 
-    }
+    const fetchData = async () => {
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get("code");
+      if (code) {
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_HOSTNAME}/auth/callback?code=${code}`);
+        console.log("received code:" + response.data);
+        setToken(response.data); 
+      }
+    };
+    fetchData();
   }, []);
-  
 
   return (
     <div>
