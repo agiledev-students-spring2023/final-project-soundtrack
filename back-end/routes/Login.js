@@ -3,8 +3,11 @@ const router = express.Router();
 const fs = require('fs');
 const morgan = require("morgan");
 const path = require("path");
+const jwt = require("jsonwebtoken");
 
 const usersFilePath = path.join(__dirname, "users.json");
+const JWT_SECRET = "shaoxuewenlu";
+
 
 router.use(express.json());
 
@@ -24,8 +27,9 @@ router.post("/", morgan("dev"), (req, res, next) => {
       return;
     }
     
-    res.status(200).json({ message: "Logged in successfully.", user });
-  });
+  // Generate a JWT with the user ID
+  const token = jwt.sign({ userId: user.id }, JWT_SECRET);
+  res.status(200).json({ message: "Logged in successfully.", token });  });
 });
 
 module.exports = router;
