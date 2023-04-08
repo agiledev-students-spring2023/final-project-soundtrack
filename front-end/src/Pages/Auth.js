@@ -6,6 +6,7 @@ import {useNavigate} from "react-router-dom";
 const Auth = () => {
   const [url, setUrl] = useState('');
   const navigate = useNavigate(); 
+  const [token, setToken] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -15,13 +16,21 @@ const Auth = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (window.location.href.length > 50) {
+      const {data} = axios.get(`${process.env.REACT_APP_SERVER_HOSTNAME}/auth/callback`);
+      console.log(data); 
+    }
+  }, []);
+  
 
   return (
     <div>
       <div className="settings-header"> 
         <div onClick={() => navigate("/settings")} className="back-link">Back</div>
         </div>
-      <a href={url}>Authorize with Spotify</a>
+      {!token && <a href={url}>Authorize with Spotify</a>}
+      {token && <p> Spotify linked. </p>}
     </div>
   );
 };
