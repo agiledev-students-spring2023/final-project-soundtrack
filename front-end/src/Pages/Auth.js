@@ -22,8 +22,8 @@ const Auth = () => {
       const code = params.get("code");
       if (code) {
         const response = await axios.get(`${process.env.REACT_APP_SERVER_HOSTNAME}/auth/callback?code=${code}`);
-        console.log("received code:" + response.data);
-        setToken(response.data); 
+        console.log(response.data);
+        setToken(true);
       }
     };
     fetchData();
