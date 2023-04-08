@@ -8,6 +8,7 @@ const port = process.env.PORT || 3000 // the port to listen to for incoming requ
 app.use(express.json()) // decode JSON-formatted incoming POST data
 app.use(express.urlencoded({ extended: true })) // decode url-encoded incoming POST data
 
+
 const userRoute = require('./routes/User')
 const browseRoute = require('./routes/Browse')
 const friendRoute = require('./routes/Friends')
@@ -15,7 +16,7 @@ const locationProfileRoute = require('./routes/LocationProfile')
 const postRoute = require('./routes/Post')
 const loginRoute = require('./routes/Login')
 const createRoute = require('./routes/Account')
-
+const authRoute = require('./routes/Auth')
 
 app.use(cors());
 const corsOptions = {
@@ -29,6 +30,7 @@ app.use("/friends",friendRoute);
 app.use("/locationprofile",locationProfileRoute);
 app.use("/post",postRoute);
 app.use("/loginCheck",loginRoute);
+app.use("/auth",authRoute);
 
 
 
