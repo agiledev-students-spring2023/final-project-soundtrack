@@ -35,6 +35,7 @@ app.use("/auth",authRoute);
 
 
 
+
 // call express's listen function to start listening to the port
 const listener = app.listen(port, function () {
   console.log(`Server running on port: ${port}`)

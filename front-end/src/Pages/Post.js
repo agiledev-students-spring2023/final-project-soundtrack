@@ -18,17 +18,6 @@ const Post = () => {
 
 
 
-  useEffect(() => {
-    async function fetchData() {
-      console.log("Fetching data from Api");
-      const result = await axios(
-        "https://my.api.mockaroo.com/choose_song.json?key=5aa92030"
-      );
-      setData(result.data);
-    }
-
-    fetchData();
-  }, []);
 
   const handleChooseSongNext = (songTitle) => {
     setSelectedSongTitle(songTitle);
@@ -73,7 +62,6 @@ const Post = () => {
         {activeComponent === "ChooseSong" && (
           <ChooseSong
             placeholder={"Search Song"}
-            data={data}
             onNext={handleChooseSongNext}
           />
         )}

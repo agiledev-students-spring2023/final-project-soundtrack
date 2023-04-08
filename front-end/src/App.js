@@ -16,6 +16,7 @@ import ChangePassword from "./Pages/ChangePassword";
 import Privacy from "./Pages/Privacy";
 import EditProfile from "./Pages/EditProfile";
 import Auth from "./Pages/Auth"; 
+import AccessTest from "./Pages/AccessTest"; 
 
 
 
@@ -42,6 +43,7 @@ function App() {
             <Route exact path="/LocationProfile" element={<LocationProfile />}></Route>
             <Route exact path="/EditProfile" element={<EditProfile />}></Route>
             <Route exact path="/Auth" element={<Auth />}></Route>
+            <Route exact path="/AccessTest" element={<AccessTest />}></Route>
           </Routes>
         </div>
       </BrowserRouter>

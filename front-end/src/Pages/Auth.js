@@ -36,6 +36,7 @@ const Auth = () => {
         </div>
       {!token && <a href={url}>Authorize with Spotify</a>}
       {token && <p> Spotify linked. </p>}
+      <a onClick={() => navigate("/AccessTest")}>Access Test</a>
     </div>
   );
 };

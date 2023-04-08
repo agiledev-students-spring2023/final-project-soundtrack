@@ -20,7 +20,7 @@ var spotifyApi = new SpotifyWebApi({
 router.use(cors(corsOptions)); 
 
 const authEndpoint = "https://accounts.spotify.com/authorize?";
-const scopes = ["user-library-read", "playlist-read-private"];
+const scopes = ["user-library-read", "playlist-read-private", "user-read-recently-played"];
 const loginEndpoint = `${authEndpoint}client_id=${process.env.SPOTIFY_CLIENT_ID}&redirect_uri=${"http://localhost:7002/auth"}&scope=${scopes.join("%20")}&response_type=code&show_dialog=true`;
 
 router.get("/",morgan("dev"),(req, res, next) => {
@@ -57,6 +57,17 @@ router.get("/callback", morgan("dev"), async (req, res, next) => {
     next(error);
   }
 });
+
+router.get('/recently-played', async (req,res) => {
+    try {
+      //var result = await spotifyApi.getUserPlaylists();
+      const result = await spotifyApi.getMyRecentlyPlayedTracks();
+      console.log(result.body);
+      res.status(200).send(result.body);
+    } catch (err) {
+      res.status(400).send(err)
+    }
+  });
   
 module.exports = router;
 
