@@ -4,9 +4,10 @@ import { useNavigate } from "react-router-dom";
 import "./NearbyLocation.css";
 
 function NearbyLocation(props) {
+  const libraries = ["places"];
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: "AIzaSyB1D7Olh84_bINSSNaJ5N9nsU6bq933y0U",
-    libraries: ["places"],
+    libraries
   });
 
   const [center, setCenter] = useState({ lat: null, lng: null });
