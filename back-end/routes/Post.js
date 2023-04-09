@@ -33,6 +33,8 @@ router.post('/savePost', authenticateToken, (req, res) => {
     const post = req.body.postItem;
     console.log({post});
 
+    const userName = req.user.userName;
+    console.log("username is" + userName);
     const userId = req.user.userId;
     console.log('id:', userId); // Extract user ID from token
     // Construct the path to the JSON file
@@ -55,7 +57,7 @@ router.post('/savePost', authenticateToken, (req, res) => {
     fs.writeFileSync(jsonFilePath, JSON.stringify(existingData, null, 2));
 
     console.log(`Successfully added post to temp folder`);
-    res.status(200).send(userId + "has successfully created a post");
+    res.status(200).send(userId + " has successfully created a post");
   } catch (error) {
     console.error(`Error saving post: ${error}`);
     res.status(500).send("Error saving post!");
