@@ -29,7 +29,8 @@ router.post("/", morgan("dev"), (req, res, next) => {
     }
     
     //success
-    const token = jwt.sign({ userId: user.id }, JWT_SECRET);
+    const token = jwt.sign({ userId: user.id, username: user.username }, JWT_SECRET);
+    console.log(token);
     res.status(200).json({ message: "Logged in successfully.", token });  });
 });
 
