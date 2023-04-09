@@ -3,9 +3,10 @@ import React, { useState, useEffect } from "react";
 import "./NearbyLocation.css";
 
 function NearbyLocation({onNext}) {
+  const libraries = ["places"];
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: "AIzaSyB1D7Olh84_bINSSNaJ5N9nsU6bq933y0U",
-    libraries: ["places"],
+    libraries
   });
 
   const [center, setCenter] = useState({ lat: null, lng: null });
