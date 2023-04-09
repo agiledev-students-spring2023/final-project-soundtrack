@@ -22,14 +22,15 @@ router.post("/", morgan("dev"), (req, res, next) => {
     const { username, password } = req.body;
     
     const user = users.find(user => user.username === username && user.password === password);
+    //fail
     if (!user) {
       res.status(401).json({ error: "Invalid username or password." });
       return;
     }
     
-  // Generate a JWT with the user ID
-  const token = jwt.sign({ userId: user.id }, JWT_SECRET);
-  res.status(200).json({ message: "Logged in successfully.", token });  });
+    //success
+    const token = jwt.sign({ userId: user.id }, JWT_SECRET);
+    res.status(200).json({ message: "Logged in successfully.", token });  });
 });
 
 module.exports = router;

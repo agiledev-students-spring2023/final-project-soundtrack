@@ -2,24 +2,30 @@ import React, { useState, useEffect, useRef } from 'react';
 import './Confirmation.css';
 import axios from "axios";
 import {useNavigate} from "react-router-dom"
+import Cookies from "js-cookie";
+
 
 const Confirmation = ({songTitle, imageURL,locationName}) => {
   const [open, setOpen] = useState(false);
   const [privacy, setPrivacy] = useState('Public');
   const navigate = useNavigate(); 
 
- 
   const handleSendPost = () => {
-     const postItem = {songTitle,imageURL,locationName,privacy}
-      axios
-        .post(`http://localhost:5002/Post/savePost`, {postItem})
-        .then((res) => {
-          console.log(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    
+    const postItem = { songTitle, imageURL, locationName, privacy };
+    const token = Cookies.get("jwt"); // Get the JWT token from the cookie
+    axios
+      .post(`http://localhost:5002/Post/savePost`, { postItem }, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the token as a bearer token in the Authorization header
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  
     navigate("/map");
   };
   

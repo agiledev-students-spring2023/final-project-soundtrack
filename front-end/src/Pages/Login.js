@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 function createAccount(e) {
   e.preventDefault();
@@ -23,7 +24,11 @@ function Login() {
         password,
       });
       console.log(response.data);
+      const token = response.data.token;
+      Cookies.set("jwt", token); // Store JWT token in a cookie
+      console.log("token in the cookies is " + Cookies.get("jwt"));
       window.location = "./Map";
+
     } catch (error) {
       console.error(error);
       alert("Failed to log in. Please try again.");
