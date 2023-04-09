@@ -1,9 +1,8 @@
 import { useLoadScript, GoogleMap, Marker,MarkerF } from "@react-google-maps/api";
-import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import "./NearbyLocation.css";
 
-function NearbyLocation(props) {
+function NearbyLocation({onNext}) {
   const libraries = ["places"];
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: "AIzaSyB1D7Olh84_bINSSNaJ5N9nsU6bq933y0U",
@@ -50,12 +49,11 @@ function NearbyLocation(props) {
 );
   };
 
-
-
-  function handleClick() {
-    const value = 'false';
-    props.onValueFromChild(value);
-  }
+  const handleNext = () => {
+    if (locationName) {
+      onNext(locationName);
+    }
+  };
 
   if (loadError) return "Error loading maps";
   if (!isLoaded) return "Loading Maps";
@@ -87,7 +85,7 @@ function NearbyLocation(props) {
 )}
       <div>
         {confirm && (
-          <button className="confirmButton" onClick={handleClick} >
+          <button className="confirmButton" onClick={handleNext} >
             I am here!
           </button>
         )}

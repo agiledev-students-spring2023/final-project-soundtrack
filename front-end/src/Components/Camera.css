@@ -24,8 +24,8 @@
 
   .button-container {
     position: fixed;
-    bottom: 50px;
-    left: 40%;
+    top: 110px;
+    left: 5%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -48,7 +48,6 @@
   }
 
   .retake-btn {
-    position: fixed;
     top: 0;
     left: 0;
     padding: 10px;
