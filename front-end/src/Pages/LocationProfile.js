@@ -54,7 +54,7 @@ const LocationProfile = () => {
             <h1 className="locationname">@locationname</h1>
         </div>
 
-        <div> <Playlist songs={songs} title = "@locationname's playlist" /></div>
+        <div> {songs && <Playlist songs={songs} title = "@locationname's playlist" />}</div>
 
         <div className="location-posts" >
         {data.map((post, index) => (<UserPost key={index} data={post} post={post} song = {songs[index]}/>))}
