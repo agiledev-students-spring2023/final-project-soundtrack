@@ -68,6 +68,9 @@ function Login() {
               required
             />
           </div>
+          <div>
+            please link your spotify account in settings
+          </div>
           <div className="linksAccountForgot">
             <label onClick={createAccount}>Create Account</label>
             <label onClick={forgotPassword}>Forgot Password</label>
