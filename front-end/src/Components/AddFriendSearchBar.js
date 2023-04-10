@@ -1,17 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
+
 
 import AddFriendSearchBarStyles from "./AddFriendSearchBarStyles.module.css";
+import Cookies from "js-cookie";
 
 const AddFriendSearchBar = () => {
 
+    const [query, setQuery] = useState("");
+
     const handleSubmit = () => {
-        //send post request to server with incoming friend request to user
+        const token = Cookies.get("jwt");
+        axios
+            .post(`http://localhost:5002/friends/newfriendrequest`, {toUser: query}, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            .then((res) => {
+                console.log(res.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     }
 
     return(
         <form onSubmit={handleSubmit}> 
             <div className={AddFriendSearchBarStyles.MainBox}>
-                <input type="friendSearch" name="friendSearchInput" placeholder="Add a friend..." required/>
+                <input
+                    type="friendSearch"
+                    name="friendSearchInput"
+                    placeholder="Add a friend..."
+                    onChange={(e) => setQuery(e.target.value)}
+                    required
+                />
                 <button
                     title="Send"
                     type="friendSearchSubmit"
