@@ -11,6 +11,13 @@
     padding: 0px;
   }
   
+  .meatball{
+    display: flex;
+    justify-content: flex-end;  
+    margin-right:10px;
+    margin-left: auto;  
+  }
+  
   .avatar {
     width: 30px;
     height: 30px;

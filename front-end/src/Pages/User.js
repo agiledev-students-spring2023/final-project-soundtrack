@@ -4,7 +4,6 @@ import "./User.css";
 import UserPost from '../Components/UserPost';
 import {useNavigate} from "react-router-dom"
 
-
 const User = () => {
   const navigate = useNavigate(); 
   const [data, setData] = useState([]);
@@ -25,6 +24,33 @@ const User = () => {
       });
   }, []);
 
+  const [recentlyPlayed, setRecentlyPlayed] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_SERVER_HOSTNAME}/auth/recently-played`
+      );
+      const uniqueTracks = removeDuplicateTracks(data.items);
+      setRecentlyPlayed(uniqueTracks);
+      //console.log(recentlyPlayed[0]);
+      
+    };
+    fetchData();
+  }, []);
+
+  const removeDuplicateTracks = (items) => {
+    const trackIds = new Set();
+    return items.filter((item) => {
+      if (trackIds.has(item.track.id)) {
+        return false;
+      } else {
+        trackIds.add(item.track.id);
+        return true;
+      }
+    });
+  };
+
   return (
     <div className="user-container">
       {error && <p>{error}</p>}
@@ -40,8 +66,8 @@ const User = () => {
       </div>
       <div className="user-posts" >
         {data.posts &&
-          data.posts.slice(0, data.posts.length).map((post, index) => (
-            <UserPost key={index} data={data} post = {post}/>
+          data.posts.slice(0, 5).map((post, index) => (
+            <UserPost key={index} data={data} post = {post} song = {recentlyPlayed[index]}/>
           ))}
       </div>
       

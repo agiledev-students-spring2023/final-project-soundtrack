@@ -1,0 +1,30 @@
+.playlist {
+    border: 1px solid #dbdbdb;
+    border-radius: 10px;
+    margin: 10px;
+    background-color: #ffffff;
+    height: 300px;
+    overflow-y: scroll;
+  }
+  
+  .playlist-title {
+    font-size: 24px;
+    font-weight: bold;
+    padding: 10px;
+    margin: 0;
+  }
+  
+  .playlist-songs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+  }
+  
+  .playlist-songs > * {
+    margin-bottom: 10px;
+    width: 100%;
+  }
+  
+  
+  

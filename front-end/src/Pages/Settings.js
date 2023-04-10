@@ -40,6 +40,9 @@ function Settings() {
         <a href="#" onClick={() => {navigate("/Privacy") }}>Privacy</a>
       </div>
       <div className="option">
+        <a href="#" onClick={() => {navigate("/Auth") }}>Link Spotify</a>
+      </div>
+      <div className="option">
         <a href="#" onClick={handleAbout}>About</a>
       </div>
       <div className="option">
