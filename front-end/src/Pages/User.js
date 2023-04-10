@@ -3,6 +3,8 @@ import axios from "axios";
 import "./User.css"; 
 import UserPost from '../Components/UserPost';
 import {useNavigate} from "react-router-dom"
+import Cookies from "js-cookie";
+
 
 
 const User = () => {
@@ -11,9 +13,18 @@ const User = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   
+
+
+
+  const token = Cookies.get("jwt"); // Get the JWT token from the cookie
+
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/user`)
+      .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/user`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the token as a bearer token in the Authorization header
+        },
+      })
       .then((result) => {
         setData(result.data);
       })
@@ -23,7 +34,9 @@ const User = () => {
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+  }, [token]);
+
+  console.log(data);
 
   return (
     <div className="user-container">
@@ -39,8 +52,8 @@ const User = () => {
         <div onClick={() => navigate("/friends")} className="friends-link">Friends</div>
       </div>
       <div className="user-posts" >
-        {data.posts &&
-          data.posts.slice(0, data.posts.length).map((post, index) => (
+        {data &&
+          data.slice(0, data.length).map((post, index) => (
             <UserPost key={index} data={data} post = {post}/>
           ))}
       </div>

@@ -19,13 +19,13 @@ const UserPost = ({data, post}) => {
     <div className="post">
     <div className="post-header">
         <img src={data.avatar} alt="avatar" className="avatar" />
-        <h3>@{data.username}</h3>
+        <h3>@{post.userID}</h3>
       </div>
-      <div className="location" onClick={() => {navigate("/LocationProfile"); }}> {post.location} </div>
-      <img src={post.image} alt="post" className="post-image" />
+      <div className="location" onClick={() => {navigate("/LocationProfile"); }}> {post.locationName} </div>
+      <img src={post.imageURL} alt="post" className="post-image" />
       <div className="song">
         <button id="play-button" onClick={handlePlay}>Play</button>
-        <div>{post.song}</div>
+        <div>{post.songTitle}</div>
       </div>
       <div className="post-footer">
         <button id="like-button" onClick={handleLike}>Like</button>
