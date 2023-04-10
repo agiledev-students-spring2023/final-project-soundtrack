@@ -22,39 +22,27 @@ const Browse = () => {
         setLoading(false);
       });
   }, []);
-  const [recentlyPlayed, setRecentlyPlayed] = useState([]);
+  
+  const [songs, setSongs] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       const { data } = await axios.get(
-        `${process.env.REACT_APP_SERVER_HOSTNAME}/auth/recently-played`
+        `${process.env.REACT_APP_SERVER_HOSTNAME}/auth/random-songs`
       );
-      const uniqueTracks = removeDuplicateTracks(data.items);
-      setRecentlyPlayed(uniqueTracks);
-      //console.log(recentlyPlayed[0]);
-      
+      setSongs(data.tracks.items);
     };
     fetchData();
   }, []);
 
-  const removeDuplicateTracks = (items) => {
-    const trackIds = new Set();
-    return items.filter((item) => {
-      if (trackIds.has(item.track.id)) {
-        return false;
-      } else {
-        trackIds.add(item.track.id);
-        return true;
-      }
-    });
-  };
+  
     return (
         <div>
         <HeaderBrowseMap/>
         
             <div className="Browse-items">
                 {/* Posts will go here. They're flexed in a single column */}
-                {data.map((post, index) => (<UserPost key={index} data={post} post={post} song = {recentlyPlayed[index]}/>))}
+                {data.map((post, index) => (<UserPost key={index} data={post} post={post} song = {songs[index]}/>))}
             </div>
         </div>
     );

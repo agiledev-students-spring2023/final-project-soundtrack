@@ -9,8 +9,11 @@ import Meatball from './Meatball';
 const UserPost = ({data, post, song}) => {
   const currentPage = window.location.pathname;
   const navigate = useNavigate();
-  //console.log(song.track); 
-
+  
+  if(song){
+    console.log(song); 
+  }
+  
   const [liked, setLiked] = useState(false);
   const [likes, setLikes] = useState(0);
 
@@ -34,7 +37,7 @@ const UserPost = ({data, post, song}) => {
       <div className="location" onClick={() => {navigate("/LocationProfile"); }}> {post.location} </div>
       <img src={post.image} alt="post" className="post-image" />
       <div className="song">
-      {/* <SongPreview track={song.track}/> */}
+      {song && <SongPreview track={song}/> }
       </div>
       <div className="post-footer">
       <button id="like-button" onClick={handleLike}>

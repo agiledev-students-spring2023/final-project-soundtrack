@@ -68,13 +68,11 @@ router.get('/recently-played', async (req,res) => {
     }
   });
 
-router.get('/random-song', async (req, res) => {
+router.get('/random-songs', async (req, res) => {
     try {
-      const result = await spotifyApi.searchTracks('year:2022', { limit: 50 });
-      const tracks = result.body.tracks.items;
-      const randomIndex = Math.floor(Math.random() * tracks.length);
-      const randomTrack = tracks[randomIndex];
-      res.status(200).send(randomTrack);
+      const result = await spotifyApi.searchTracks('year:2022', { limit: 20 });
+      //console.log(result.body); 
+      res.status(200).send(result.body);
     } catch (err) {
       res.status(400).send(err);
     }
