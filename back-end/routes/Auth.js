@@ -81,7 +81,17 @@ router.get('/random-song', async (req, res) => {
     }
   });
 
+  router.get('/search-song', async (req, res) => {
+    const { q } = req.query;
   
+    try {
+      const result = await spotifyApi.searchTracks(q, { limit: 20 });
+      const tracks = result.body.tracks.items;
+      res.status(200).send(tracks);
+    } catch (err) {
+      res.status(400).send(err);
+    }
+  });
   
 module.exports = router;
 

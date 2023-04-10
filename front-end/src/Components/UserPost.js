@@ -1,14 +1,27 @@
 import "./UserPost.css"; 
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import SongPreview from '../Components/SongPreview';
+import Meatball from './Meatball';
 
 const UserPost = ({data, post, song}) => {
+  const currentPage = window.location.pathname;
   const navigate = useNavigate();
+  //console.log(song.track); 
+
+  const [liked, setLiked] = useState(false);
   const [likes, setLikes] = useState(0);
 
   const handleLike = () => {
-    setLikes((prevLikes) => prevLikes + 1);
+    if (liked) {
+      setLiked(false);
+      setLikes((prevLikes) => prevLikes - 1);
+    } else {
+      setLiked(true);
+      setLikes((prevLikes) => prevLikes + 1);
+    }
   };
 
   return (
@@ -16,14 +29,21 @@ const UserPost = ({data, post, song}) => {
     <div className="post-header">
         <img src={data.avatar} alt="avatar" className="avatar" />
         <h3>@{data.username}</h3>
+        <div className = "meatball">{currentPage === '/user' && <Meatball/>}</div>
       </div>
       <div className="location" onClick={() => {navigate("/LocationProfile"); }}> {post.location} </div>
       <img src={post.image} alt="post" className="post-image" />
       <div className="song">
-      <SongPreview track={song}/>
+      <SongPreview track={song.track}/>
       </div>
       <div className="post-footer">
-        <button id="like-button" onClick={handleLike}>Like</button>
+      <button id="like-button" onClick={handleLike}>
+          {liked ? (
+            <FontAwesomeIcon icon={faHeart} color="red" />
+          ) : (
+            <FontAwesomeIcon icon={faHeart} />
+          )}
+        </button>
         <span>{likes} likes</span>
       </div>
   </div>

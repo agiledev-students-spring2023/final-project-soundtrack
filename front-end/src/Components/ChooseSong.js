@@ -29,17 +29,20 @@ function ChooseSong({ placeholder, data, onNext }) {
       }
     });
   }
-  const handleFilter = (event) => {
+  const handleFilter = async (event) => {
     const searchWord = event.target.value;
     setWordEntered(searchWord);
-    const newFilter = data.filter((value) =>
-      value.song_title.toLowerCase().includes(searchWord.toLowerCase())
-    );
-
     if (searchWord === "") {
       setFilteredData([]);
-    } else {
-      setFilteredData(newFilter);
+      return;
+    }
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_HOSTNAME}/auth/search-song?q=${searchWord}`);
+      const searchResults = response.data;
+      console.log(searchResults); 
+      setFilteredData(searchResults);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -82,10 +85,10 @@ function ChooseSong({ placeholder, data, onNext }) {
                 className="dataItem"
                 onClick={() => handleSelectSong(value)}
               >
-                <img src={value.image} alt="No image" />
+                <img src={value.album.images[0].url} alt="No image" />
                 <div className="songDetails">
-                  <p className="songTitle">{value.song_title}</p>
-                  <p className="artistName">{value.artist}</p>
+                  <p className="songTitle">{value.album.name}</p>
+                  <p className="artistName">{value.album.artists.map((artist) => artist.name).join(', ')}</p>
                 </div>
               </div>
             ))}

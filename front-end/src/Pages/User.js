@@ -4,7 +4,6 @@ import "./User.css";
 import UserPost from '../Components/UserPost';
 import {useNavigate} from "react-router-dom"
 
-
 const User = () => {
   const navigate = useNavigate(); 
   const [data, setData] = useState([]);
@@ -34,7 +33,7 @@ const User = () => {
       );
       const uniqueTracks = removeDuplicateTracks(data.items);
       setRecentlyPlayed(uniqueTracks);
-      console.log(recentlyPlayed[0]);
+      //console.log(recentlyPlayed[0]);
       
     };
     fetchData();
@@ -67,8 +66,8 @@ const User = () => {
       </div>
       <div className="user-posts" >
         {data.posts &&
-          data.posts.slice(0, data.posts.length).map((post, index) => (
-            <UserPost key={index} data={data} post = {post} song = {recentlyPlayed[index].track}/>
+          data.posts.slice(0, 5).map((post, index) => (
+            <UserPost key={index} data={data} post = {post} song = {recentlyPlayed[index]}/>
           ))}
       </div>
       
