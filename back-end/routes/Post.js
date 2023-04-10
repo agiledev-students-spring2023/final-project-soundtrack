@@ -42,16 +42,13 @@ router.post('/savePost', authenticateToken, (req, res) => {
     const jsonFilePath = path.join(publicFolderPath, 'userPost.json');
     
     // Read the existing data from the JSON file, if any
-    let existingData = [];
+    const existingData = [];
     try {
       existingData = JSON.parse(fs.readFileSync(jsonFilePath));
     } catch (err) {
       // The file may not exist yet, or it may be invalid JSON
       console.error(`Error reading JSON file: ${err}`);
     }
-
-
-
     existingData.push({ ...post, userId,userName });
     // Write the updated data to the JSON file
     fs.writeFileSync(jsonFilePath, JSON.stringify(existingData, null, 2));
