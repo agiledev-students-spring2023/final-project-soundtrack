@@ -19,7 +19,7 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5002/loginCheck", {
+      const response = await axios.post("http://localhost:5002/", {
         username,
         password,
       });
@@ -27,7 +27,7 @@ function Login() {
       const token = response.data.token;
       Cookies.set("jwt", token); // Store JWT token in a cookie
       console.log("token in the cookies is " + Cookies.get("jwt"));
-      //window.location = "./Map";
+      window.location = "./Map";
 
     } catch (error) {
       console.error(error);

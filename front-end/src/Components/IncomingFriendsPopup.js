@@ -1,10 +1,12 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
+import {useNavigate} from "react-router-dom"
 
 import FriendProfileChip from "./FriendProfileChip";
 import FriendRequestChip from "./FriendRequestChip";
 
 import "./IncomingFriendsPopup.css";
+import Cookies from "js-cookie";
 
 const IncomingFriendsPopup = () => {
 
@@ -13,8 +15,13 @@ const IncomingFriendsPopup = () => {
     const [error, setError] = useState('');
 
     useEffect(() => {
+        const token = Cookies.get("jwt");
         axios
-          .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/friends`)
+          .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/friends/friendlist`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          })
           .then((result) => {
             setData(result.data);
           })
