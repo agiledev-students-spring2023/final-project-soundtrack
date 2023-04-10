@@ -8,21 +8,7 @@
   color: white;
 }
 
-.Button {
-  position: fixed;
-  bottom: 30px;
-  left:50%;
-  transform: translateX(-50%);
-  width: 150px;
-  height: 50px;
-  background-color: black;
-  color: white;
-  border: none;
-  border-radius: 1px;
-  font-size: 18px;
-  font-weight: bold;
-  cursor: pointer;
-}
+
 .ReturnButton{
   background-color: transparent;
   border: none;

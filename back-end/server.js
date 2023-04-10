@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 const express = require('express')
 const app = express(); // instantiate an Express object
 const cors = require("cors");
@@ -11,7 +12,10 @@ const userRoute = require('./routes/User')
 const browseRoute = require('./routes/Browse')
 const friendRoute = require('./routes/Friends')
 const locationProfileRoute = require('./routes/LocationProfile')
+const postRoute = require('./routes/Post')
 const loginRoute = require('./routes/Login')
+const createRoute = require('./routes/Account')
+
 
 app.use(cors());
 const corsOptions = {
@@ -19,9 +23,11 @@ const corsOptions = {
 }
 app.use(cors(corsOptions))
 app.use("/user",userRoute);
+app.use("/create",createRoute);
 app.use("/browse",browseRoute);
 app.use("/friends",friendRoute);
 app.use("/locationprofile",locationProfileRoute);
+app.use("/post",postRoute);
 app.use("/loginCheck",loginRoute);
 
 

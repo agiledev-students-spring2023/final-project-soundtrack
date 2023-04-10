@@ -21,15 +21,17 @@ function CreateAccount() {
     e.preventDefault();
     const newUser = { ...user, id: uuidv4() };
     axios
-      .post('http://localhost:5002/user', newUser)
+      .post('http://localhost:5002/Create', newUser)
       .then((response) => {
         console.log(response.data);
-        window.location = './Map';
+        res.status(201).send(newUser);
+        window.location = './';
       })
       .catch((error) => {
         console.log(error);
         if (error.response && error.response.status === 400) {
           alert('Username already exists. Please choose a different username.');
+          res.status(400).send('Username already exists');
         } else {
           alert('Error creating user. Please try again.');
         }

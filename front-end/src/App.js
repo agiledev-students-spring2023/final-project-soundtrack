@@ -1,15 +1,13 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+const { BrowserRouter, Routes, Route } = require("react-router-dom");
 import './App.css';
 import Login from './Pages/Login'; 
 import Post from './Pages/Post';
-import Camera from './Pages/Camera';
 import User from './Pages/User';
 import Friends from './Pages/Friends';
 import Browse from './Pages/Browse';
 import Map from './Pages/Map';
 import Favorites from './Pages/Favorites';
 // import Filter from './Pages/Filter';
-import Location from './Pages/Location';
 import ForgotPassword from './Pages/ForgotPassword';
 import CreateAccount from './Pages/CreateAccount';
 import Settings from "./Pages/Settings";
@@ -28,8 +26,7 @@ function App() {
           <Routes>
             <Route exact path="/" element={<Login />}></Route>
             <Route exact path="/Post" element={<Post />}></Route>
-            <Route exact path="/Camera" element={<Camera />}></Route>
-            <Route exact path="/Location" element={<Location />}></Route>
+
             <Route exact path="/User" element={<User />}></Route>
             <Route exact path="/Friends" element={<Friends />}></Route>
             <Route exact path="/Browse" element={<Browse />}></Route>
