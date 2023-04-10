@@ -8,7 +8,7 @@ const cors = require("cors");
 router.use(cors());
 
 const corsOptions = {
-  origin: 'http://localhost:7002' // replace with your front-end's URL
+  origin: 'http://localhost:7002' 
 };
 
 var spotifyApi = new SpotifyWebApi({
@@ -49,7 +49,7 @@ router.get("/callback", morgan("dev"), async (req, res, next) => {
     const { access_token, refresh_token } = response.data;
     spotifyApi.setAccessToken(access_token);
     spotifyApi.setRefreshToken(refresh_token);
-    res.send("access_token is: " +  access_token);
+    res.send("access_token received");
     //console.log(response.data); 
   } 
   catch (error) {
@@ -61,20 +61,17 @@ router.get("/callback", morgan("dev"), async (req, res, next) => {
 router.get('/recently-played', async (req,res) => {
     try {
       const result = await spotifyApi.getMyRecentlyPlayedTracks();
-      console.log(result.body);
+      //console.log(result.body);
       res.status(200).send(result.body);
     } catch (err) {
       res.status(400).send(err)
     }
   });
 
-router.get('/random-song', async (req, res) => {
+router.get('/random-songs', async (req, res) => {
     try {
-      const result = await spotifyApi.searchTracks('year:2022', { limit: 50 });
-      const tracks = result.body.tracks.items;
-      const randomIndex = Math.floor(Math.random() * tracks.length);
-      const randomTrack = tracks[randomIndex];
-      res.status(200).send(randomTrack);
+      const result = await spotifyApi.searchTracks('year:2022', { limit: 20 });
+      res.status(200).send(result.body);
     } catch (err) {
       res.status(400).send(err);
     }
@@ -89,6 +86,15 @@ router.get('/random-song', async (req, res) => {
       res.status(200).send(tracks);
     } catch (err) {
       res.status(400).send(err);
+    }
+  });
+  
+  router.get('/verify-token', async (req, res) => {
+    const token = spotifyApi.getAccessToken();
+    if (token) {
+      res.send('Access token is valid');
+    } else {
+      res.send('Access token is required');
     }
   });
   

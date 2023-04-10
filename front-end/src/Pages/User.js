@@ -24,32 +24,18 @@ const User = () => {
       });
   }, []);
 
-  const [recentlyPlayed, setRecentlyPlayed] = useState([]);
+  const [songs, setSongs] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       const { data } = await axios.get(
-        `${process.env.REACT_APP_SERVER_HOSTNAME}/auth/recently-played`
+        `${process.env.REACT_APP_SERVER_HOSTNAME}/auth/random-songs`
       );
-      const uniqueTracks = removeDuplicateTracks(data.items);
-      setRecentlyPlayed(uniqueTracks);
-      //console.log(recentlyPlayed[0]);
-      
+      setSongs(data.tracks.items);
     };
     fetchData();
   }, []);
 
-  const removeDuplicateTracks = (items) => {
-    const trackIds = new Set();
-    return items.filter((item) => {
-      if (trackIds.has(item.track.id)) {
-        return false;
-      } else {
-        trackIds.add(item.track.id);
-        return true;
-      }
-    });
-  };
 
   return (
     <div className="user-container">
@@ -67,7 +53,7 @@ const User = () => {
       <div className="user-posts" >
         {data.posts &&
           data.posts.slice(0, 5).map((post, index) => (
-            <UserPost key={index} data={data} post = {post} song = {recentlyPlayed[index]}/>
+            <UserPost key={index} data={data} post = {post} song = {songs[index]}/>
           ))}
       </div>
       
