@@ -2,15 +2,17 @@ import "./Map.css";
 import HeaderBrowseMap from "../Components/HeaderBrowseMap";
 import { useLoadScript, GoogleMap, Marker, MarkerF, Autocomplete} from "@react-google-maps/api";
 // import usePlacesAutocomplete from "use-places-autocomplete";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef , useCallback} from "react";
 import { useNavigate } from "react-router-dom";
 import Filter from "../Components/Filter";
 // import Favorites from './Favorites'
 
+
 function Map() {
+  const libraries = ["places"];
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: "AIzaSyB1D7Olh84_bINSSNaJ5N9nsU6bq933y0U",
-    libraries: ["places"],
+    libraries
   });
 
   const [center, setCenter] = useState({ lat: null, lng: null });
@@ -18,13 +20,27 @@ function Map() {
   const autocomplete = useRef(null);
   const navigate = useNavigate(); 
   const [showPopup, setShowPopup] = useState(false);
+  const [filters, setFilters] = useState([]);
   const popupRef = useRef(null);
   const map = useRef(null);
-  const [service, setService] = useState(null);
+  // const [service, setService] = useState(null); // PREV
+  const service = useRef(null);
   const [results, setResults] = useState(null);
+  const [refetch, setReFetch] = useState(true);
 
+  // function serviceSetter() { 
+  //   console.log("serviceSetter running");
+  //   return new Promise(() => {
+  //     console.log("inside Promise");
+  //     setService(new window.google.maps.places.PlacesService(map.current)); // PREV
+  //     service.current = new window.google.maps.places.PlacesService(map.current);
+  //     console.log("service set");
+  //   });
+  // };
 
   useEffect(() => {
+    console.log("in useEffect: " + filters);
+
     navigator.geolocation.getCurrentPosition(
       (position) => {
         setCenter({
@@ -39,10 +55,27 @@ function Map() {
       }
     );
 
-    if (window.google) {
-      setService(new window.google.maps.places.PlacesService(map.current));
+    // if (window.google) { // PREV
+    //   setService(new window.google.maps.places.PlacesService(map.current));
+    // }
+    if (map.current) {
+      console.log("service instantiated in useEffect");
+      service.current = new window.google.maps.places.PlacesService(map.current);
     }
-  }, []);
+  }, [filters]);
+
+  // useEffect(() => {
+  //   const handleClickOutside = (event) => {
+  //     if (popupRef.current && !popupRef.current.contains(event.target)) {
+  //       setShowPopup(false);
+  //     }
+  //   };
+  //   document.addEventListener("mousedown", handleClickOutside);
+
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutside);
+  //   };
+  // }, [popupRef]);
 
   const onPlaceChanged = () => {
     if (autocomplete.current !== null) {
@@ -63,53 +96,48 @@ function Map() {
   };
 
   function handleClick() {
-    setShowPopup(true)
+    setShowPopup(!showPopup);
   }
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (popupRef.current && !popupRef.current.contains(event.target)) {
-        setShowPopup(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
+  const filterLocations = useCallback((filters) => {
+      setFilters(filters);
 
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [popupRef]);
+      const request = {
+        location: center,
+        radius: 4000,
+        type: filters
+      };
 
-  function filterLocations(filters) {
-    // filters.forEach(x => console.log(x));
-
-    const request = {
-      location: center,
-      radius: 4000,
-      type: filters
-    };
-
-    function callback(searchResults, status) {
-      if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-        setResults(searchResults);
-      }
-    }
-
-    if (service) {
-      service.nearbySearch(request, callback);
-    } else {
-      const interval = setInterval(() => {
-        if (window.google) {
-          setService(new window.google.maps.places.PlacesService(map.current));
-          clearInterval(interval);
+      function callback(searchResults, status) {
+        console.log("callback");
+        if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+          setResults(searchResults);
+          createMarkers(results);
         }
-      }, 100);
-    }
-  };
+      }
+
+      // if (service) { // PREV
+      //   console.log("service not null");
+      //   service.nearbySearch(request, callback);
+      // } else {
+      //   console.log("service is null");
+      //   await serviceSetter();
+      //   console.log("await done");
+      //   service.nearbySearch(request, callback); 
+      //   console.log("nearbySearch called");
+      // }
+
+      service.current = new window.google.maps.places.PlacesService(map.current);
+      service.current.nearbySearch(request, callback); 
+      console.log("nearbySearch called");
+      setReFetch(!refetch);
+  });
 
   function createMarkers(locations) {
+    console.log("creating markers");
     if (locations) {
       console.log("filtered");
-      return locations.map((place) => {
+      const markers = locations.map((place) => {
         return (
           <MarkerF
             key={place.id}
@@ -117,9 +145,9 @@ function Map() {
           />
         );
       });
+      markers.forEach(m => m.setMap(map));
     } else {
-      console.log("null");
-      return (<MarkerF position={center} onClick={() => navigate("/LocationProfile")} />);
+      console.log("filters null");
     }
   };
 
@@ -149,12 +177,12 @@ function Map() {
         </Autocomplete>
       </div>
       <div className = "buttonContainer">
-        <div className='filter' onClick = {handleClick}>
-          Filter
+        <div className='filter'>
+          <div onClick = {handleClick}>Filter</div>
           {showPopup && (
             <div className="popup" ref={popupRef}>
               <div className="popup-inner">
-                <Filter filterLocations={filterLocations}/>
+                <Filter filterLocations={filterLocations} handleClick={handleClick}/>
               </div>
             </div>
           )} 
@@ -180,7 +208,7 @@ function Map() {
           ref={map} // pass the ref to the GoogleMap component
         >
           
-          {createMarkers(results)}
+          <MarkerF position={center} onClick={() => navigate("/LocationProfile")} />
         </GoogleMap>
   
       )}
