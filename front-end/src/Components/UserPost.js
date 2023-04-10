@@ -34,7 +34,7 @@ const UserPost = ({data, post, song}) => {
       <div className="location" onClick={() => {navigate("/LocationProfile"); }}> {post.location} </div>
       <img src={post.image} alt="post" className="post-image" />
       <div className="song">
-      <SongPreview track={song.track}/>
+      {/* <SongPreview track={song.track}/> */}
       </div>
       <div className="post-footer">
       <button id="like-button" onClick={handleLike}>
