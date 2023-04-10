@@ -20,7 +20,7 @@ var spotifyApi = new SpotifyWebApi({
 router.use(cors(corsOptions)); 
 
 const authEndpoint = "https://accounts.spotify.com/authorize?";
-const scopes = ["user-library-read", "playlist-read-private", "user-read-recently-played"];
+const scopes = ["user-library-read", "playlist-read-private", "user-read-recently-played", "streaming"];
 const loginEndpoint = `${authEndpoint}client_id=${process.env.SPOTIFY_CLIENT_ID}&redirect_uri=${"http://localhost:7002/auth"}&scope=${scopes.join("%20")}&response_type=code&show_dialog=true`;
 
 router.get("/",morgan("dev"),(req, res, next) => {
@@ -68,6 +68,20 @@ router.get('/recently-played', async (req,res) => {
       res.status(400).send(err)
     }
   });
+
+router.get('/random-song', async (req, res) => {
+    try {
+      const result = await spotifyApi.searchTracks('year:2022', { limit: 50 });
+      const tracks = result.body.tracks.items;
+      const randomIndex = Math.floor(Math.random() * tracks.length);
+      const randomTrack = tracks[randomIndex];
+      res.status(200).send(randomTrack);
+    } catch (err) {
+      res.status(400).send(err);
+    }
+  });
+
+  
   
 module.exports = router;
 

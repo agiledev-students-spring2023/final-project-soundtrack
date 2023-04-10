@@ -1,8 +1,9 @@
 import "./UserPost.css"; 
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import SongPreview from '../Components/SongPreview';
 
-const UserPost = ({data, post}) => {
+const UserPost = ({data, post, song}) => {
   const navigate = useNavigate();
   const [likes, setLikes] = useState(0);
 
@@ -10,11 +11,6 @@ const UserPost = ({data, post}) => {
     setLikes((prevLikes) => prevLikes + 1);
   };
 
-  const handlePlay = () => {
-    const query = post.song;
-    const url = `https://www.google.com/search?q=${query}`;
-    window.open(url);
-  };
   return (
     <div className="post">
     <div className="post-header">
@@ -24,8 +20,7 @@ const UserPost = ({data, post}) => {
       <div className="location" onClick={() => {navigate("/LocationProfile"); }}> {post.location} </div>
       <img src={post.image} alt="post" className="post-image" />
       <div className="song">
-        <button id="play-button" onClick={handlePlay}>Play</button>
-        <div>{post.song}</div>
+      <SongPreview track={song}/>
       </div>
       <div className="post-footer">
         <button id="like-button" onClick={handleLike}>Like</button>

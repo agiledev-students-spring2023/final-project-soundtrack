@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from "react-router-dom";
+import './AccessTest.css';
+import SongPreview from '../Components/SongPreview';
 
 const Auth = () => {
   const [recentlyPlayed, setRecentlyPlayed] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data } = await axios.get(`${process.env.REACT_APP_SERVER_HOSTNAME}/auth/recently-played`);
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_SERVER_HOSTNAME}/auth/recently-played`
+      );
+      //console.log(data.items[0]);
       const uniqueTracks = removeDuplicateTracks(data.items);
       setRecentlyPlayed(uniqueTracks);
     };
@@ -16,7 +20,7 @@ const Auth = () => {
 
   const removeDuplicateTracks = (items) => {
     const trackIds = new Set();
-    return items.filter(item => {
+    return items.filter((item) => {
       if (trackIds.has(item.track.id)) {
         return false;
       } else {
@@ -24,22 +28,21 @@ const Auth = () => {
         return true;
       }
     });
-  }
+  };
 
   return (
-    <div>
-      <h1>Recently Played Tracks</h1>
-      <ul>
-        {recentlyPlayed.map((item, index) => (
-          <li key={index}>
-            <img src={item.track.album.images[0].url} alt={`${item.track.name} album cover`} />
-            <p>{`${index + 1}. ${item.track.artists.map(artist => artist.name).join(', ')} - ${item.track.name}`}</p>
-          </li>
-        ))}
-      </ul>
+    <div className="recently-played-container">
+      {recentlyPlayed.slice(0, 10).map((item, index) => (
+        <SongPreview track={item.track}/>
+      ))}
     </div>
   );
-}
+};
 
 export default Auth;
+
+
+
+
+
 

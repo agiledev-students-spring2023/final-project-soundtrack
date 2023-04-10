@@ -1,0 +1,89 @@
+.song-preview {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
+    width: 370px; /* set the desired width */
+    height: 80px; /* set the desired height */
+    overflow: hidden; /* hide the overflow */
+    justify-content: normal;
+  }
+  
+  .song-details {
+    display: flex;
+    align-items: center;
+    flex: 1;
+  }
+  
+  .song-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 5px;
+    margin-right: 10px;
+  }
+  
+  .song-image-container {
+    position: relative;
+  }
+  
+  .song-icon-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .song-icon-container svg {
+    height: 2rem;
+    width: 2rem;
+  }
+  
+  .song-info {
+    display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 10px;
+  }
+  
+  .song-name {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    white-space: nowrap; /* prevent wrapping */
+    overflow: hidden; /* hide the overflow */
+    text-overflow: ellipsis; /* show an ellipsis if the text is too long */
+  }
+  
+  .song-artist {
+    margin: 0;
+    font-size: 0.8rem;
+    color: #666;
+    white-space: nowrap; /* prevent wrapping */
+    overflow: hidden; /* hide the overflow */
+    text-overflow: ellipsis; /* show an ellipsis if the text is too long */
+  }
+  
+  .song-controls {
+    display: flex;
+    align-items: center;
+  }
+  
+  .song-preview-button {
+    background-color: transparent;
+    border: none;
+    font-size: 1.2rem;
+    color: #666;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  
+  
+  .song-preview-button:hover {
+    color: #333;
+  }
+  
+  
