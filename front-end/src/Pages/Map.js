@@ -6,6 +6,7 @@ import React, { useState, useEffect, useRef , useCallback} from "react";
 import { useNavigate } from "react-router-dom";
 import Filter from "../Components/Filter";
 // import Favorites from './Favorites'
+import axios from "axios";
 
 
 function Map() {
@@ -91,6 +92,24 @@ function Map() {
     if (marker) {
       console.log(marker);
       // This is a Google Place marker, redirect to user profile page
+      const geocoder = new window.google.maps.Geocoder();
+      geocoder.geocode(
+        { location: { lat: event.latLng.lat(), lng: event.latLng.lng() } },
+        (results, status) => {
+          if (status === "OK") {
+            console.log(results[0].formatted_address);
+            axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/LocationProfile/savedLocation`, { locationName: results[0].formatted_address })
+            .then((result) => {
+               console.log("success sent locaiton name")
+              })
+            .catch((err) => {
+              console.log(err);
+            });
+          } else {
+            console.error(status);
+          }
+        }
+      );   
       navigate("/LocationProfile");
     }
   };

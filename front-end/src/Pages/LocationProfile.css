@@ -49,8 +49,12 @@
     margin-top: 50px;
 }
   
-
-  
+.no-data-message {
+    color: #333;
+    font-size: 16px;
+    padding: 0 20px;
+    text-decoration: underline;
+}
   
   
   

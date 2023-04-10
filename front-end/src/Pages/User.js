@@ -18,6 +18,8 @@ const User = () => {
 
   const token = Cookies.get("jwt"); // Get the JWT token from the cookie
 
+
+
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/user`, {
@@ -33,10 +35,8 @@ const User = () => {
       })
       .finally(() => {
         setLoading(false);
-      });
+      }); 
   }, [token]);
-
-  console.log(data);
 
   return (
     <div className="user-container">
@@ -48,7 +48,7 @@ const User = () => {
 
       <div className="user-profile">
         <img src={data.avatar} alt="Profile" />
-        <h1 className="username">@{data.username}</h1>
+        <h1 className="username">@{data[0]?.userName}</h1>
         <div onClick={() => navigate("/friends")} className="friends-link">Friends</div>
       </div>
       <div className="user-posts" >

@@ -30,7 +30,7 @@ router.get("/", authenticateToken, (req, res, next) => {
   const jsonFilePath = path.join(publicFolderPath, 'userPost.json');
 
   const userName = req.user.username;
-  const userId = req.user.userID; 
+  const userId = req.user.userId; 
   console.log("username is" + userName);
 
   fs.readFile(jsonFilePath, (err, data) => {
@@ -41,7 +41,15 @@ router.get("/", authenticateToken, (req, res, next) => {
   
     existingData = JSON.parse(fs.readFileSync(jsonFilePath));
 
-    const filteredData = existingData.filter((item) => item.userID === userId);
+    const filteredData = [];
+    for (let i = 0; i < existingData.length; i++) {
+      console.log("existingdata[i].userId is " + existingData[i].userId, userId);
+      if (existingData[i].userId === userId) {
+       
+        filteredData.push(existingData[i]);
+      }
+    }
+    
     console.log(filteredData);
     res.json(filteredData); // send data to client
   });
