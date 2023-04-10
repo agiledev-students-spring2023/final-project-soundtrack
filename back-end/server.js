@@ -28,21 +28,16 @@ app.use("/browse",browseRoute);
 app.use("/friends",friendRoute);
 app.use("/locationprofile",locationProfileRoute);
 app.use("/post",postRoute);
-app.use("/loginCheck",loginRoute);
-
-
-
+app.use("/",loginRoute);
 
 // call express's listen function to start listening to the port
-const listener = app.listen(port, function () {
+const server = app.listen(port, function () {
   console.log(`Server running on port: ${port}`)
 })
+
 // a function to stop listening to the port
 const close = () => {
-  listener.close()
+  server.close()
 }
 
-module.exports = {
-  close: close,
-}
-//run with npx nodemon server.js
+module.exports = { app, close };
