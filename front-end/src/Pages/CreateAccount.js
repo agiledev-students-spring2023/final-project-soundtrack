@@ -24,7 +24,7 @@ function CreateAccount() {
       .post('http://localhost:5002/Create', newUser)
       .then((response) => {
         console.log(response.data);
-        window.location = './Map';
+        window.location = './';
       })
       .catch((error) => {
         console.log(error);

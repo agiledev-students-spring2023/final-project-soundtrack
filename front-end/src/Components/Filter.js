@@ -46,10 +46,11 @@ function Filter(props) {
           .map((isChecked, index) => isChecked ? locationFilters[index] : null)
           .filter(Boolean);
         props.filterLocations(selectedFilters);
+        props.handleClick();
     };
 
     return (
-        <form onSubmit={applyFilters} className="FilterContainer"> 
+        <div className="FilterContainer"> 
             <div className="Title">Filter</div>
 
             {
@@ -76,8 +77,8 @@ function Filter(props) {
                 }
             </ul>
             
-            <button type="submit">Confirm</button>
-        </form>
+            <button onClick={applyFilters}>Confirm</button>
+        </div>
     );
 }
 
