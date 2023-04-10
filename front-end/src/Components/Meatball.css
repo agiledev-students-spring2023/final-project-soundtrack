@@ -1,0 +1,42 @@
+.meatball-menu {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .meatball-menu__btn {
+    width: 70px;
+    height: 30px;
+    border: none;
+    border-radius: 10%;
+    background-color: white;
+    text-decoration: none;  
+  }
+  
+  .meatball-menu__options {
+    position: absolute;
+    top: 32px;
+    right: 0;
+    width: 120px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background-color: #fff;
+    border-radius: 10%;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  }
+  
+  .meatball-menu__options li {
+    display: block;
+  }
+  
+  .meatball-menu__options a {
+    display: block;
+    padding: 8px 16px;
+    text-decoration: none;
+    color: #333;
+  }
+  
+  .meatball-menu__options a:hover {
+    background-color: #eee;
+  }
+  
