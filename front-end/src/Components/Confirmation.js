@@ -16,7 +16,7 @@ const Confirmation = ({songTitle, imageURL,locationName}) => {
     axios
       .post(`http://localhost:5002/Post/savePost`, { postItem }, {
         headers: {
-          Authorization: `Bearer ${token}`, // Include the token as a bearer token in the Authorization header
+          Authorization: `JWT ${token}`, // Include the token as a bearer token in the Authorization header
         },
       })
       .then((res) => {
@@ -48,7 +48,7 @@ const Confirmation = ({songTitle, imageURL,locationName}) => {
       <div className="choose">
         <div className = "songNameContainer">
           <div className="songName">
-            chooseSong:{songTitle}
+            chooseSong:{songTitle.track.name}
           </div>
         </div>
 

@@ -10,7 +10,7 @@ const port = process.env.PORT || 3000; // the port to listen to for incoming req
 app.use(express.json()); // decode JSON-formatted incoming POST data
 app.use(express.urlencoded({ extended: true })); // decode url-encoded incoming POST data
 
-const userRoute = require('./routes/User');
+const userRoute = require('./routes/user');
 const browseRoute = require('./routes/Browse');
 const friendRoute = require('./routes/Friends');
 const locationProfileRoute = require('./routes/LocationProfile');

@@ -1,12 +1,13 @@
 import "./ChooseSong.css";
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import SongPreview from '../Components/SongPreview';
+
 
 function ChooseSong({ placeholder, data, onNext }) {
   const [filteredData, setFilteredData] = useState([]);
   const [wordEntered, setWordEntered] = useState("");
   const [selectedSong, setSelectedSong] = useState(null);
-
   const [recentlyPlayed, setRecentlyPlayed] = useState([]);
 
   useEffect(() => {
@@ -17,7 +18,7 @@ function ChooseSong({ placeholder, data, onNext }) {
     };
     fetchData();
   }, []);
-
+  
   const removeDuplicateTracks = (items) => {
     const trackIds = new Set();
     return items.filter(item => {
@@ -45,8 +46,9 @@ function ChooseSong({ placeholder, data, onNext }) {
       console.log(error);
     }
   };
-
+//display song object in console.log
   const handleSelectSong = (song) => {
+    console.log("selected track is " + song.track.name);
     setSelectedSong(song);
   };
 
@@ -57,7 +59,7 @@ function ChooseSong({ placeholder, data, onNext }) {
 
   const handleNext = () => {
     if (selectedSong) {
-      onNext(selectedSong.song_title);
+      onNext(selectedSong);
     }
   };
 
@@ -85,34 +87,23 @@ function ChooseSong({ placeholder, data, onNext }) {
                 className="dataItem"
                 onClick={() => handleSelectSong(value)}
               >
-                <img src={value.album.images[0].url} alt="No image" />
-                <div className="songDetails">
-                  <p className="songTitle">{value.album.name}</p>
-                  <p className="artistName">{value.album.artists.map((artist) => artist.name).join(', ')}</p>
-                </div>
+                 {<SongPreview track={value}/> }
               </div>
             ))}
           </div>
         </div>
       ) : wordEntered.length === 0 ? (
         <div className="recentListenBlock">
+
   <h2 className="title">Recently Listened</h2>
   <div className="recentListen">
-    {recentlyPlayed.slice(0, 5).map((item, index) => (
+    {recentlyPlayed.slice(0, 10).map((item, index) => (
       <div
         key={index}
         className="dataItem"
-        onClick={() => handleSelectSong({
-          song_title: item.track.name,
-          artist: item.track.artists.map(artist => artist.name).join(', '),
-          image: item.track.album.images[0].url
-        })}
+        onClick={() => handleSelectSong(item)}
       >
-        <img src={item.track.album.images[0].url} alt={`${item.track.name} album cover`} />
-        <div className="songDetails">
-          <p className="songTitle">{item.track.name}</p>
-          <p className="artistName">{item.track.artists.map(artist => artist.name).join(', ')}</p>
-        </div>
+        {<SongPreview track={item.track}/> }
       </div>
     ))}
   </div>
