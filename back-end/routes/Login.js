@@ -9,9 +9,6 @@ const User = require('../models/User'); // Assuming the model is in a separate f
 // Route to log in a user
 router.post('/', async function (req, res) {
   try {
-    console.log("trying");
-    console.log(req.body.username,req.body.password);
-
 
     const user = await User.findOne({ userName: req.body.username });
 
