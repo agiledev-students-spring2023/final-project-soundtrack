@@ -2,6 +2,7 @@ import './CreateAccount.css';
 import axios from 'axios';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import Cookies from "js-cookie";
 
 function goToLogin(e) {
   e.preventDefault();
@@ -14,24 +15,27 @@ function CreateAccount() {
     username: '',
     password: '',
     email: '',
-    spotify: '',
+    spotify: ''
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const newUser = { ...user, id: uuidv4() };
+    console.log(newUser);
     axios
-      .post('http://localhost:5002/Create', newUser)
+      .post('http://localhost:5002/create', newUser)
       .then((response) => {
-        console.log(response.data);
-        window.location = './';
+        const token = response.data.token;
+        Cookies.set("jwt", token); // Store JWT token in a cookie
+        console.log("token in the cookies is " + Cookies.get("jwt"));
+        window.location = "./Map";
       })
       .catch((error) => {
         console.log(error);
-        if (error.response && error.response.status === 400) {
-          alert('Username already exists. Please choose a different username.');
+        if (error.response && error.response.status === 409) {
+          alert("Username already exists");
         } else {
-          alert('Error creating user. Please try again.');
+          alert(error);
         }
       });
   };
