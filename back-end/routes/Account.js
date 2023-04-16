@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const secretKey = "shaoxuewenlu";
 const morgan = require("morgan");
 const User = require('../models/User'); // Assuming the model is in a separate file called "userModel.js"
+const bcrypt = require('bcrypt');
 
 // Route to create a new user
 router.post('/', async function (req, res) {
@@ -14,10 +15,11 @@ router.post('/', async function (req, res) {
       return res.status(409).json({ message: 'Username already exists' });
     }
 
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
     const newUser = new User({
       firstName: req.body.name,
       userName: req.body.username,
-      password: req.body.password,
+      password: hashedPassword,
       email: req.body.email,
       spotifyUser: req.body.spotify,
       userId: req.body.id
