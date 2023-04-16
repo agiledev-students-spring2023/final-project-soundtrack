@@ -1,42 +1,29 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const fs = require("fs");
+const passport = require('passport');
+const jwt = require('jsonwebtoken');
+const secretKey = "shaoxuewenlu";
 const morgan = require("morgan");
-const path = require("path");
-const jwt = require("jsonwebtoken");
+const User = require('../models/User'); // Assuming the model is in a separate file called "userModel.js"
 
-const usersFilePath = path.join(__dirname, "users.json");
-const JWT_SECRET = "shaoxuewenlu";
+// Route to log in a user
+router.post('/', async function (req, res) {
+  try {
 
-router.use(express.json());
+    const user = await User.findOne({ userName: req.body.username });
 
-router.post("/", morgan("dev"), (req, res, next) => {
-  const { username, password } = req.body;
+    if (!user || !user.validPassword(req.body.password)) {
+      console.log("cant find user");
+      return res.status(401).json({ message: 'Invalid username or password' });
+    }
 
-  if (!username || !password) {
-    res.status(400).json({ error: "Username and password are required." });
-    return;
+    const token = jwt.sign({ id: user._id }, secretKey);
+    res.cookie('token', token, { httpOnly: true });
+    res.status(200).json({ message: 'User logged in', token });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error logging in user');
   }
-
-  fs.readFile(usersFilePath, "utf8", (err, data) => {
-    if (err) {
-      console.error(err);
-      return next(err);
-    }
-
-    const users = JSON.parse(data);
-    const user = users.find(
-      (user) => user.username === username && user.password === password
-    );
-
-    if (!user) {
-      res.status(401).json({ error: "Invalid username or password." });
-      return;
-    }
-
-    const token = jwt.sign({ userId: user.id, username: user.username }, JWT_SECRET);
-    res.status(200).json({ message: "Logged in successfully.", token });
-  });
 });
 
 module.exports = router;
