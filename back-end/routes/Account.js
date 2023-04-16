@@ -1,52 +1,37 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const fs = require('fs');
+const passport = require('passport');
+const jwt = require('jsonwebtoken');
+const secretKey = "shaoxuewenlu";
 const morgan = require("morgan");
-const path = require("path");
+const User = require('../models/User'); // Assuming the model is in a separate file called "userModel.js"
 
-const usersFilePath = path.join(__dirname, "users.json");
-
-router.use(express.json());
-
-router.get("/", morgan("dev"), (req, res, next) => {
-  fs.readFile(usersFilePath, 'utf8', (err, data) => {
-    if (err) {
-      console.error(err);
-      return next(err);
-    }
-
-    const users = JSON.parse(data);
-    res.json(users);
-  });
-});
-
-router.post("/", morgan("dev"), (req, res, next) => {
-  fs.readFile(usersFilePath, 'utf8', (err, data) => {
-    if (err) {
-      console.error(err);
-      return next(err);
-    }
-
-    const users = JSON.parse(data);
-    const newUser = req.body;
-
-    const existingUser = users.find(user => user.username === newUser.username);
+// Route to create a new user
+router.post('/', async function (req, res) {
+  try {
+    const existingUser = await User.findOne({ userName: req.body.username });
     if (existingUser) {
-      return res.status(400).json({ error: "Username already exists. Please choose a different username." });
+      return res.status(409).json({ message: 'Username already exists' });
     }
 
-    const id = Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
-    newUser.id = id;
-
-    users.push(newUser);
-    fs.writeFile(usersFilePath, JSON.stringify(users), (err) => {
-      if (err) {
-        console.error(err);
-        return next(err);
-      }
-      res.status(201).end();
+    const newUser = new User({
+      firstName: req.body.name,
+      userName: req.body.username,
+      password: req.body.password,
+      email: req.body.email,
+      spotifyUser: req.body.spotify,
+      userId: req.body.id
     });
-  });
+
+    const savedUser = await newUser.save();
+    const token = jwt.sign({ id: savedUser._id }, secretKey);
+    res.cookie('token', token, { httpOnly: true });
+    res.status(200).json({ message: 'User created and logged in', token });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error saving user to database');
+  }
 });
+
 
 module.exports = router;
