@@ -8,6 +8,12 @@ const postSchema = new Schema(
       required: true,
     },
 
+    userName:{
+      type: String,
+      ref: "User",
+      required: true,
+    },
+    
     songTitle: {
       type: Object,
       required: true,
