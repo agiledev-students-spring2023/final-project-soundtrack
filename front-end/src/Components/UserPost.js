@@ -6,13 +6,10 @@ import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import SongPreview from '../Components/SongPreview';
 import Meatball from './Meatball';
 
-const UserPost = ({data, post, song}) => {
+const UserPost = ({post}) => {
   const currentPage = window.location.pathname;
   const navigate = useNavigate();
   
-  if(song){
-    console.log(song); 
-  }
   
   const [liked, setLiked] = useState(false);
   const [likes, setLikes] = useState(0);
@@ -26,18 +23,20 @@ const UserPost = ({data, post, song}) => {
       setLikes((prevLikes) => prevLikes + 1);
     }
   };
+  console.log(post.userName);
+
 
   return (
     <div className="post">
     <div className="post-header">
-        <img src={data.avatar} alt="avatar" className="avatar" />
-        <h3>@{data.username}</h3>
+        <img src={post.avatar} alt="avatar" className="avatar" />
+        <h3>@{post.userName}</h3>
         <div className = "meatball">{currentPage === '/user' && <Meatball/>}</div>
       </div>
-      <div className="location" onClick={() => {navigate("/LocationProfile"); }}> {post.location} </div>
-      <img src={post.image} alt="post" className="post-image" />
+      <div className="location" onClick={() => {navigate("/LocationProfile"); }}> {post.locationName} </div>
+      <img src={post.imageURL} alt="post" className="post-image" />
       <div className="song">
-      {song && <SongPreview track={song}/> }
+      {post && <SongPreview track={post.songTitle.track}/> }
       </div>
       <div className="post-footer">
       <button id="like-button" onClick={handleLike}>

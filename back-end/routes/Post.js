@@ -28,13 +28,14 @@ router.post('/savePost', authenticateToken, async (req, res) => {
     const post = req.body.postItem;
     console.log({ post });
 
-    const userName = req.user.userName;
+    const userName = req.user.username;
     console.log("username is" + userName);
     const userId = req.user.userId;
     console.log('id:', userId); // Extract user ID from token
 
     const newPost = new Post({
       userId: userId,
+      userName: userName,
       songTitle: post.songTitle,
       imageURL: post.imageURL,
       locationName: post.locationName,
