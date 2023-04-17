@@ -3,10 +3,13 @@ const router = express.Router();
 const secretKey = "shaoxuewenlu";
 const jwt = require('jsonwebtoken');
 const Post = require('../models/post'); // import Post model
+const User = require('../models/User'); // Assuming the model is in a separate file called "userModel.js"
+
 
 function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
+  console.log("token is " + token);
 
   if (!token) {
     return res.status(401).send('Missing token header');
@@ -27,11 +30,13 @@ router.post('/savePost', authenticateToken, async (req, res) => {
   try {
     const post = req.body.postItem;
     console.log({ post });
-
-    const userName = req.user.username;
-    console.log("username is" + userName);
-    const userId = req.user.userId;
-    console.log('id:', userId); // Extract user ID from token
+    //fetch username from db with id from token 
+    const userId = req.user.id;
+    console.log('userid:', userId); // Extract user ID from token
+    const user = await User.findOne({ userId: userId });
+    console.log('user is:', user);
+    const userName = user.userName;
+    console.log('username: ', user.userName);   
 
     const newPost = new Post({
       userId: userId,
