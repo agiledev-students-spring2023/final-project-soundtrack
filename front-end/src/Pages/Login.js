@@ -23,10 +23,8 @@ function Login() {
         username,
         password,
       });
-      console.log(response.data);
       const token = response.data.token;
       Cookies.set("jwt", token); // Store JWT token in a cookie
-      console.log("token in the cookies is " + Cookies.get("jwt"));
       window.location = "./Map";
 
     } catch (error) {

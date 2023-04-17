@@ -52,6 +52,10 @@ const userSchema = new Schema(
     return bcrypt.compareSync(password, this.password);
   };
   
+  userSchema.methods.validEmail = function (email) {
+    return email == this.email;
+  };
+  
   const User = mongoose.model("User", userSchema);
   module.exports = User;
   
