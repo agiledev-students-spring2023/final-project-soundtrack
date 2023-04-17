@@ -44,7 +44,7 @@ const User = () => {
       </div>
       <div className="user-profile">
         <img src={data.avatar} alt="Profile" />
-        <h1 className="username">@{data[0]?.username}</h1>
+        <h1 className="username">@{data[0]?.userName}</h1>
         <div onClick={() => navigate("/friends")} className="friends-link">
           Friends
         </div>
