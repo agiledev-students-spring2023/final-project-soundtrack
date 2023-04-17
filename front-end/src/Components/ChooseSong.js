@@ -48,7 +48,7 @@ function ChooseSong({ placeholder, data, onNext }) {
   };
 //display song object in console.log
   const handleSelectSong = (song) => {
-    console.log("selected track is " + song.track.name);
+    //console.log("selected track is " + song.track.name);
     setSelectedSong(song);
   };
 
