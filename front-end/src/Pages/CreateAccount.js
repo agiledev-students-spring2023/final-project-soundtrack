@@ -18,10 +18,18 @@ function CreateAccount() {
     spotify: ''
   });
 
+  
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const newUser = { ...user, id: uuidv4() };
-    console.log(newUser);
+   
+    const validEmailRegex = /\S+@\S+\.\S+/;
+    if (!validEmailRegex.test(newUser.email)) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+    
     axios
       .post('http://localhost:5002/create', newUser)
       .then((response) => {
