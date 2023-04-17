@@ -1,8 +1,6 @@
 import './CreateAccount.css';
 import React, { useState } from "react";
 import axios from "axios";
-import Cookies from "js-cookie";
-import { Elevator } from '@mui/icons-material';
 
 function goToLogin(e) {
     e.preventDefault();
@@ -17,6 +15,7 @@ function ForgotPassword() {
       e.preventDefault();
       try {
         console.log(username,email);
+        console.log("calling");
         const response = await axios.post("http://localhost:5002/forgot", {
           username,
           email,
