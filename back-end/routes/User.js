@@ -26,7 +26,7 @@ function authenticateToken(req, res, next) {
 
 // get all posts for a user
 router.get("/", authenticateToken, (req, res) => {
-  Post.find({ userId: req.user.userId })
+  Post.find({ userId: req.user.id })
     .then((posts) => {
       for (let i = 0; i < posts.length; i++) {
         console.log("post #" + i + ": " + posts[i].userId + " has chosen song " + posts[i].songTitle.track.name + " at location " + posts[i].locationName);

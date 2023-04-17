@@ -16,8 +16,7 @@ router.post('/', async function (req, res) {
       console.log("cant find user");
       return res.status(401).json({ message: 'Invalid username or password' });
     }
-
-    const token = jwt.sign({ id: user._id, }, secretKey);
+    const token = jwt.sign({ id: user.userId }, secretKey);
     res.cookie('token', token, { httpOnly: true });
     res.status(200).json({ message: 'User logged in', token });
   } catch (error) {
