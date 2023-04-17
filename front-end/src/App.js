@@ -16,6 +16,7 @@ import ChangePassword from "./Pages/ChangePassword";
 import Privacy from "./Pages/Privacy";
 import EditProfile from "./Pages/EditProfile";
 import Auth from "./Pages/Auth"; 
+import CheckEmail from "./Pages/CheckEmail"; 
 
 
 
@@ -29,6 +30,7 @@ function App() {
             <Route exact path="/Post" element={<Post />}></Route>
 
             <Route exact path="/User" element={<User />}></Route>
+            <Route exact path="/Email" element={<CheckEmail />}></Route>
             <Route exact path="/Friends" element={<Friends />}></Route>
             <Route exact path="/Browse" element={<Browse />}></Route>
             <Route exact path="/Map" element={<Map />}></Route>
