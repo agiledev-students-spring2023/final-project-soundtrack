@@ -36,7 +36,7 @@ const UserPost = ({post}) => {
       <div className="location" onClick={() => {navigate("/LocationProfile"); }}> {post.locationName} </div>
       <img src={post.imageURL} alt="post" className="post-image" />
       <div className="song">
-      {post && <SongPreview track={post.songTitle.track}/> }
+      {post && <SongPreview track={post.songTitle}/> }
       </div>
       <div className="post-footer">
       <button id="like-button" onClick={handleLike}>

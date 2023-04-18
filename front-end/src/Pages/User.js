@@ -44,7 +44,7 @@ const User = () => {
       </div>
       <div className="user-profile">
         <img src={data.avatar} alt="Profile" />
-        <h1 className="username">@{data[0]?.userName}</h1>
+        <h1 className="username">@{data.userName}</h1>
         <div onClick={() => navigate("/friends")} className="friends-link">
           Friends
         </div>
@@ -53,11 +53,11 @@ const User = () => {
         <div className="loading-message">Loading...</div>
       ) : (
         <>
-          {data[0]?.songTitle ? (
+          {data.posts[0]?.songTitle ? (
             <div className="user-posts">
-              {data &&
-                data
-                  .slice(0, data.length)
+              {data.posts &&
+                data.posts
+                  .slice(0, data.posts.length)
                   .map((post, index) => <UserPost key={index} post={post} />)}
             </div>
           ) : (

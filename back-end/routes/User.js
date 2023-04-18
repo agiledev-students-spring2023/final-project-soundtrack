@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const Post = require("../models/post"); // or whatever your post model is called
 const jwt = require('jsonwebtoken');
 const secretKey = "shaoxuewenlu";
+const User = require('../models/User'); // Assuming the model is in a separate file called "userModel.js"
 
 
 function authenticateToken(req, res, next) {
@@ -25,13 +26,21 @@ function authenticateToken(req, res, next) {
 }
 
 // get all posts for a user
-router.get("/", authenticateToken, (req, res) => {
+router.get("/", authenticateToken, async (req, res) => {
+  
+
+    const userId = req.user.id;
+    console.log('userid:', userId); // Extract user ID from token
+    const user = await User.findOne({ userId: userId });
+    userName = user.userName;
+    console.log('user: ', userName);  
+
   Post.find({ userId: req.user.id })
     .then((posts) => {
       for (let i = 0; i < posts.length; i++) {
-        console.log("post #" + i + ": " + posts[i].userId + " has chosen song " + posts[i].songTitle.track.name + " at location " + posts[i].locationName);
+        console.log("post #" + i + ": " + posts[i].userId + " has chosen song " + posts[i].songTitle.name + " at location " + posts[i].locationName);
       }
-      res.json(posts);
+      res.json({userName, posts});
     })
     .catch((err) => {
       console.error(err);

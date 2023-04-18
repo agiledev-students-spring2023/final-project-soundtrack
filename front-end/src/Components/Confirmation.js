@@ -48,7 +48,7 @@ const Confirmation = ({songTitle, imageURL,locationName}) => {
       <div className="choose">
         <div className = "songNameContainer">
           <div className="songName">
-            chooseSong:{songTitle.track.name}
+            chooseSong:{songTitle.name}
           </div>
         </div>
 

@@ -47,10 +47,17 @@ function ChooseSong({ placeholder, data, onNext }) {
     }
   };
 //display song object in console.log
-  const handleSelectSong = (song) => {
+  const handleSearchSong = (song) => {
     //console.log("selected track is " + song.track.name);
     setSelectedSong(song);
   };
+  
+  const handleRecentSong = (song) => {
+    console.log(song.track);
+    setSelectedSong(song.track);
+  };
+
+
 
   const handleClearInput = () => {
     setFilteredData([]);
@@ -85,7 +92,7 @@ function ChooseSong({ placeholder, data, onNext }) {
               <div
                 key={key}
                 className="dataItem"
-                onClick={() => handleSelectSong(value)}
+                onClick={() => handleSearchSong(value)}
               >
                  {<SongPreview track={value}/> }
               </div>
@@ -101,7 +108,7 @@ function ChooseSong({ placeholder, data, onNext }) {
       <div
         key={index}
         className="dataItem"
-        onClick={() => handleSelectSong(item)}
+        onClick={() => handleRecentSong(item)}
       >
         {<SongPreview track={item.track}/> }
       </div>
