@@ -14,9 +14,10 @@ label{
   cursor: pointer;
 }
 .linksAccountForgot{
-  font-size: 10px;
+  font-size: 15px;
   text-decoration-line: underline;
   margin-top: 5px;
+  margin-left: 15%;
   align-items: flex-start;
   margin-right: auto;
   cursor: pointer;
@@ -80,8 +81,8 @@ input{
   background-color: lightgrey;
   justify-content: center;
   border: 0px;
-  width: 280px;
-  height: 50px;
+  width: 290px;
+  height: 60px;
   margin-top: 40px;
 }
 

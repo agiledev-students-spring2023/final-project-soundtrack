@@ -1,47 +1,74 @@
 import './CreateAccount.css';
+import React, { useState } from "react";
+import axios from "axios";
 
 function goToLogin(e) {
     e.preventDefault();
     window.location = './';
 }
 
-function handleSubmit(e){
-    e.preventDefault();
-    window.location = './';
-}
-
 function ForgotPassword() {
-  return (
-    <div className="createAccount">
-        <div className="LogoText">
-            <img 
-                src={require('../Logos/soundTrackIcon.png')} 
-                width="100px"
-                height="100px"
-                srcSet={require('../Logos/icon.svg')} />
-        </div>
-        <h2>Forgot Password</h2>
-        <div className="inputs-CreateAccount">
-            <form onSubmit={handleSubmit}>
-                <div className="input-containerCreateAccount">
-                    <input type="user" name="uname" placeholder="@username" required />
-                </div>
-                <div className="input-containerCreateAccount">
-                    <input type="mail" name="mail" placeholder="e-mail" required />
-                </div>
-                <div className="input-containerCreateAccount">
-                    <input type="spot" name="spotify" placeholder="spotify username" required />
-                </div>
-                <div className="linksAccountForgot">
-                    <label onClick={goToLogin}>Found my password! Log in</label>
-                </div>
-                <div className="login-button-container">
-                    <button type="submit">submit</button>
-                </div>
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+  
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      try {
+        const response = await axios.post("http://localhost:5002/forgot", {
+          username,
+          email,
+        });
+        window.location = "./Email";
+  
+      } catch (error) {
+        console.error(error);
+        alert(error);
+      }
+    };
+
+    return (
+        <div className="createAccount">
+          <div className="LogoText">
+            <img
+              src={require('../Logos/soundTrackIcon.png')}
+              width="100px"
+              height="100px"
+              srcSet={require('../Logos/icon.svg')}
+            />
+          </div>
+          <h2>Forgot Password</h2>
+          <div className="inputs">
+        <form onSubmit={handleSubmit}>
+          <div className="input-containerUserPass">
+            <input
+              type="username"
+              name="uname"
+              placeholder="@username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </div>
+          <div className="input-containerUserPass">
+            <input
+              type="email"
+              name="email"
+              placeholder="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+              <div className="linksAccountForgot">
+                <label onClick={goToLogin}>Found my password! Log in</label>
+              </div>
+              <div className="login-button-container">
+                <button type="submit">submit</button>
+              </div>
             </form>
+          </div>
         </div>
-    </div>
-  );
+      );
 }
 
 export default ForgotPassword;

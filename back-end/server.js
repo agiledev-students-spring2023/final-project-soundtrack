@@ -18,6 +18,10 @@ const postRoute = require('./routes/Post');
 const loginRoute = require('./routes/Login');
 const createRoute = require('./routes/Account');
 const authRoute = require('./routes/Auth');
+const forgotRoute = require('./routes/Forgot');
+const changeRoute = require('./routes/ChangePassword');
+
+
 
 
 
@@ -47,6 +51,9 @@ app.use("/locationprofile", locationProfileRoute);
 app.use("/post", postRoute);
 app.use("/", loginRoute);
 app.use("/auth", authRoute);
+app.use("/forgot", forgotRoute);
+app.use("/change", changeRoute);
+
 
 
 

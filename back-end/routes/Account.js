@@ -26,7 +26,7 @@ router.post('/', async function (req, res) {
     });
 
     const savedUser = await newUser.save();
-    const token = jwt.sign({ id: savedUser._id }, secretKey);
+    const token = jwt.sign({ id: savedUser.userId }, secretKey);
     res.cookie('token', token, { httpOnly: true });
     res.status(200).json({ message: 'User created and logged in', token });
   } catch (error) {
