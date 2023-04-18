@@ -47,7 +47,6 @@ router.post('/', async function (req, res) {
         console.log(err);
         return res.status(500).send('Error sending email');
       } else {
-        console.log('Email sent: ' + info.response);
         return res.status(200).send('Email sent');
       }
     });
