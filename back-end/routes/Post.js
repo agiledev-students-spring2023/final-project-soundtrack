@@ -33,8 +33,8 @@ router.post('/savePost', authenticateToken, async (req, res) => {
     //fetch username from db with id from token 
     const userId = req.user.id;
     console.log('userid:', userId); // Extract user ID from token
+    
     const user = await User.findOne({ userId: userId });
-    console.log('user is:', user);
     const userName = user.userName;
     console.log('username: ', user.userName);   
 
