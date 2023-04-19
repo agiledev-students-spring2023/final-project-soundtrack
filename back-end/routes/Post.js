@@ -33,8 +33,8 @@ router.post('/savePost', authenticateToken, async (req, res) => {
     //fetch username from db with id from token 
     const userId = req.user.id;
     console.log('userid:', userId); // Extract user ID from token
+    
     const user = await User.findOne({ userId: userId });
-    console.log('user is:', user);
     const userName = user.userName;
     console.log('username: ', user.userName);   
 
@@ -57,5 +57,51 @@ router.post('/savePost', authenticateToken, async (req, res) => {
     res.status(500).send("Error saving post!");
   }
 });
+
+router.delete('/deletePost/:id', authenticateToken, async (req, res) => {
+  try {
+    const postId = req.params.id;
+    const userId = req.user.id;
+
+    const post = await Post.findOne({ _id: postId, userId: userId });
+    console.log(post);
+
+    if (!post) {
+      return res.status(404).send('Post not found');
+    }
+
+    await Post.deleteOne({ _id: postId, userId: userId });
+
+    console.log(`Successfully deleted post with ID ${postId} from MongoDB`);
+    res.status(200).send(`Post ${postId} deleted successfully!`);
+  } catch (error) {
+    console.error(`Error deleting post: ${error}`);
+    res.status(500).send("Error deleting post!");
+  }
+});
+
+router.patch('/updatePrivacy/:id', authenticateToken, async (req, res) => {
+  try {
+    const postId = req.params.id;
+    const userId = req.user.id;
+    const { privacy } = req.body;
+
+    const post = await Post.findOne({ _id: postId, userId: userId });
+
+    if (!post) {
+      return res.status(404).send('Post not found');
+    }
+
+    post.privacy = privacy;
+    await post.save();
+
+    console.log(`Successfully updated privacy for post with ID ${postId} in MongoDB`);
+    res.status(200).send(`Post ${postId} privacy updated successfully!`);
+  } catch (error) {
+    console.error(`Error updating post privacy: ${error}`);
+    res.status(500).send("Error updating post privacy!");
+  }
+});
+
 
 module.exports = router;

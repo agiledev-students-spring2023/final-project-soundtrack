@@ -17,7 +17,7 @@ const User = () => {
     axios
       .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/user`, {
         headers: {
-          Authorization: `Bearer ${token}`, // Include the token as a bearer token in the Authorization header
+          Authorization: `Bearer ${token}`, 
         },
       })
       .then((result) => {
@@ -31,6 +31,33 @@ const User = () => {
       });
   }, [token]);
 
+  const handlePostDelete = (postId) => {
+    setData((prevData) => ({
+      ...prevData,
+      posts: prevData.posts.filter((post) => post._id !== postId),
+    }));
+  };
+
+  const handlePrivacyChange = (postId, privacy) => {
+    setData((prevData) => {
+      const updatedPosts = prevData.posts.map((post) => {
+        if (post._id === postId) {
+          return {
+            ...post,
+            privacy: privacy,
+          };
+        } else {
+          return post;
+        }
+      });
+      
+      return {
+        ...prevData,
+        posts: updatedPosts,
+      };
+    });
+  };
+
   return (
     <div className="user-container">
       {error && <p>{error}</p>}
@@ -43,8 +70,8 @@ const User = () => {
         </div>
       </div>
       <div className="user-profile">
-        <img src={data.avatar} alt="Profile" />
-        <h1 className="username">@{data[0]?.userName}</h1>
+      <img src={data.avatar && (data.avatar.startsWith("http") || data.avatar.startsWith("https")) ? data.avatar : `${process.env.REACT_APP_SERVER_HOSTNAME}/${data.avatar}`} alt="Profile"/>
+        <h1 className="username">@{data.userName}</h1>
         <div onClick={() => navigate("/friends")} className="friends-link">
           Friends
         </div>
@@ -53,17 +80,19 @@ const User = () => {
         <div className="loading-message">Loading...</div>
       ) : (
         <>
-          {data[0]?.songTitle ? (
+          {data.posts[0]?.songTitle ? (
             <div className="user-posts">
-              {data &&
-                data
-                  .slice(0, data.length)
-                  .map((post, index) => <UserPost key={index} post={post} />)}
+              {data.posts &&
+                data.posts
+                  .slice(0, data.posts.length)
+                  .map((post, index) => <UserPost key={index} post={post} onDelete={handlePostDelete} onPrivacyChange={handlePrivacyChange}/>)}
             </div>
           ) : (
             <div className="no-data-message" onClick={() => navigate("/post")}>
-              You haven't make any post yet.Click to post your song here.
-            </div>
+              <p>You don't have any posts yet.</p>
+              <button>Click to post here</button>
+              </div>
+            
           )}
         </>
       )}
