@@ -72,8 +72,9 @@ const UserPost = ({post, onDelete, onPrivacyChange}) => {
 
   return (
     <div className="post">
-      <div className="post-header">
-        <img src={post.avatar} alt="avatar" className="avatar" />
+    <div className="post-header">
+    <img src={post.avatar.startsWith("http") || post.avatar.startsWith("https") ? post.avatar: `${process.env.REACT_APP_SERVER_HOSTNAME}/${post.avatar}` } alt="avatar" className="avatar"/>
+
         <h3>@{post.userName}</h3>
         <div className="meatball">
           {currentPage === '/user' && <Meatball post={post} postId={post._id} onDelete={onDelete} onPrivacyChange={handlePrivacyChange}/>}

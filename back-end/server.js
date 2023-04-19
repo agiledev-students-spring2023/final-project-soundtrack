@@ -7,6 +7,8 @@ const cors = require("cors");
 require('dotenv').config({ silent: true }); // load environmental variables from a hidden file named .env
 const port = process.env.PORT || 3000; // the port to listen to for incoming requests
 
+app.use('/uploads', express.static('uploads'));
+
 app.use(cors({
   origin: 'http://localhost:7002',
   credentials: true,

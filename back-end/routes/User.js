@@ -49,5 +49,50 @@ router.get("/", authenticateToken, async (req, res) => {
     });
 });
 
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
+
+router.post('/avatar', authenticateToken, upload.single('avatar'), async (req, res) => {
+  const userId = req.user.id;
+  const user = await User.findOne({ userId: userId });
+
+  if (!user) {
+    return res.status(404).json({ error: 'User not found' });
+  }
+
+  const filePath = req.file.path;
+
+  user.avatar = filePath;
+  await user.save();
+
+  // Update the avatar in all posts made by the user
+  await Post.updateMany(
+    { userId: userId },
+    { $set: { avatar: filePath } }
+  );
+
+  res.status(200).json({ message: 'Avatar uploaded successfully', avatar: filePath });
+});
+
+
+router.patch('/username', authenticateToken, async (req, res) => {
+  const userId = req.user.id;
+  const newUsername = req.body.username;
+
+  const user = await User.findOne({ userId: userId });
+
+  if (!user) {
+    return res.status(404).json({ error: 'User not found' });
+  }
+
+  user.userName = newUsername;
+  await user.save();
+
+  res.status(200).json({ message: 'Username updated successfully', userName: newUsername });
+});
+
+
+
+
 
 module.exports = router;
