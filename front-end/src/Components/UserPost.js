@@ -24,12 +24,10 @@ const UserPost = ({post}) => {
     }
   };
 
-  console.log(post);
-
   return (
     <div className="post">
     <div className="post-header">
-        <img src={"https://static.vecteezy.com/system/resources/previews/009/734/564/original/default-avatar-profile-icon-of-social-media-user-vector.jpg"} alt="avatar" className="avatar" />
+        <img src={post.avatar} alt="avatar" className="avatar" />
         <h3>@{post.userName}</h3>
         <div className = "meatball">{currentPage === '/user' && <Meatball/>}</div>
       </div>

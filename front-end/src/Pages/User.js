@@ -31,6 +31,7 @@ const User = () => {
       });
   }, [token]);
 
+
   return (
     <div className="user-container">
       {error && <p>{error}</p>}
@@ -43,7 +44,7 @@ const User = () => {
         </div>
       </div>
       <div className="user-profile">
-        <img src={"https://static.vecteezy.com/system/resources/previews/009/734/564/original/default-avatar-profile-icon-of-social-media-user-vector.jpg"} alt="Profile" />
+        <img src={data.avatar} alt="avatar"/>
         <h1 className="username">@{data.userName}</h1>
         <div onClick={() => navigate("/friends")} className="friends-link">
           Friends
