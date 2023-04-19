@@ -9,7 +9,8 @@ const AddFriendSearchBar = () => {
 
     const [query, setQuery] = useState("");
 
-    const handleSubmit = () => {
+    const handleFriendRequestSubmit = (e) => {
+        e.preventDefault();
         const token = Cookies.get("jwt");
         axios
             .post(`http://localhost:5002/friends/newfriendrequest`, {toUser: query}, {
@@ -26,7 +27,7 @@ const AddFriendSearchBar = () => {
     }
 
     return(
-        <form onSubmit={handleSubmit}> 
+        <form onSubmit={handleFriendRequestSubmit}> 
             <div className={AddFriendSearchBarStyles.MainBox}>
                 <input
                     type="friendSearch"
