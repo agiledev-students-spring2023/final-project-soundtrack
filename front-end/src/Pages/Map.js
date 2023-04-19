@@ -1,5 +1,6 @@
 import "./Map.css";
 import HeaderBrowseMap from "../Components/HeaderBrowseMap";
+import axios from 'axios';
 import { useLoadScript, GoogleMap, Marker, MarkerF, Autocomplete} from "@react-google-maps/api";
 // import usePlacesAutocomplete from "use-places-autocomplete";
 import React, { useState, useEffect, useRef , useCallback} from "react";
@@ -37,6 +38,17 @@ function Map() {
   //     console.log("service set");
   //   });
   // };
+
+  // client credentials flow 
+  const [token, setToken] = useState(null);
+    useEffect(() => {
+      const fetchToken = async () => {
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_HOSTNAME}/client`);
+        //console.log(response); 
+        setToken(response.data);
+      };
+      fetchToken();
+    }, []);
 
   useEffect(() => {
     console.log("in useEffect: " + filters);

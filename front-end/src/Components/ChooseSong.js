@@ -12,12 +12,28 @@ function ChooseSong({ placeholder, data, onNext }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data } = await axios.get(`${process.env.REACT_APP_SERVER_HOSTNAME}/auth/recently-played`);
-      const uniqueTracks = removeDuplicateTracks(data.items);
-      setRecentlyPlayed(uniqueTracks);
+      try {
+        const { data } = await axios.get(`${process.env.REACT_APP_SERVER_HOSTNAME}/auth/recently-played`);
+        const uniqueTracks = removeDuplicateTracks(data.items);
+        setRecentlyPlayed(uniqueTracks);
+      } catch (error) {
+        //console.error(error);
+      }
     };
     fetchData();
   }, []);
+  
+
+    // client credentials flow 
+    const [token, setToken] = useState(null);
+    useEffect(() => {
+      const fetchToken = async () => {
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_HOSTNAME}/client`);
+        //console.log(response); 
+        setToken(response.data);
+      };
+      fetchToken();
+    }, []);
   
   const removeDuplicateTracks = (items) => {
     const trackIds = new Set();
@@ -38,7 +54,7 @@ function ChooseSong({ placeholder, data, onNext }) {
       return;
     }
     try {
-      const response = await axios.get(`${process.env.REACT_APP_SERVER_HOSTNAME}/auth/search-song?q=${searchWord}`);
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_HOSTNAME}/client/search-song?q=${searchWord}`);
       const searchResults = response.data;
       console.log(searchResults); 
       setFilteredData(searchResults);

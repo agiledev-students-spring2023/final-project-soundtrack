@@ -67,27 +67,6 @@ router.get('/recently-played', async (req,res) => {
       res.status(400).send(err)
     }
   });
-
-router.get('/random-songs', async (req, res) => {
-    try {
-      const result = await spotifyApi.searchTracks('year:2022', { limit: 20 });
-      res.status(200).send(result.body);
-    } catch (err) {
-      res.status(400).send(err);
-    }
-  });
-
-  router.get('/search-song', async (req, res) => {
-    const { q } = req.query;
-  
-    try {
-      const result = await spotifyApi.searchTracks(q, { limit: 20 });
-      const tracks = result.body.tracks.items;
-      res.status(200).send(tracks);
-    } catch (err) {
-      res.status(400).send(err);
-    }
-  });
   
   router.get('/verify-token', async (req, res) => {
     const token = spotifyApi.getAccessToken();

@@ -1,17 +1,17 @@
-
-const express = require("express"); 
+const express = require("express");
 const router = express.Router();
-const axios = require("axios");
-const morgan = require("morgan") 
+const mongoose = require("mongoose");
+const Post = require("../models/post");
 
+// Get all posts
+router.get("/", async (req, res) => {
+  try {
+    const posts = await Post.find();
+    res.json(posts);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+});
 
-
-router.get("/", morgan("dev"),(req, res, next) => {
-    // use axios to make a request to an API for animal data
-    axios
-      .get("https://my.api.mockaroo.com/browse.json?key=d0d8c110")
-      .then(apiResponse => res.json(apiResponse.data)) // pass data along directly to client
-      .catch(err => next(err)) // pass any errors to express
-  })
-
-  module.exports = router;
+module.exports = router;

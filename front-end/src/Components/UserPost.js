@@ -9,8 +9,6 @@ import Meatball from './Meatball';
 const UserPost = ({post}) => {
   const currentPage = window.location.pathname;
   const navigate = useNavigate();
-  
-  
   const [liked, setLiked] = useState(false);
   const [likes, setLikes] = useState(0);
 
@@ -23,8 +21,6 @@ const UserPost = ({post}) => {
       setLikes((prevLikes) => prevLikes + 1);
     }
   };
-  console.log(post.userName);
-
 
   return (
     <div className="post">
