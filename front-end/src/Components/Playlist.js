@@ -7,7 +7,7 @@ const Playlist = ({ songs, title }) => {
     <div className="playlist">
       <h2 className="playlist-title">{title}</h2>
       <div className="playlist-songs">
-        {songs && songs.slice(0, 7).map((item, index) => (
+        {songs && songs.slice(0, 10).map((item, index) => (
           <SongPreview key={index} track={item}/>
         ))}
       </div>
