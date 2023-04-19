@@ -3,6 +3,9 @@ const router = express.Router();
 const axios = require("axios");
 const morgan = require("morgan") 
 
+const User = require('../models/User');
+const Social = require("../models/Social");
+
 const secretKey = "shaoxuewenlu"
 const jwt = require('jsonwebtoken');
 
@@ -41,7 +44,7 @@ function authenticateToken(req, res, next) {
 //get all friend requests for  a user
 router.get("/getfriendrequests", authenticateToken, (req, res, next) => {
   try{
-    const user = req.user;
+    const userId = req.user.id;
 
     //return list of friend requests (mock data for now)
     axios
@@ -54,16 +57,47 @@ router.get("/getfriendrequests", authenticateToken, (req, res, next) => {
 });
 
 //post new friend request
-router.post("/newfriendrequest", authenticateToken, (req, res, next) => {
+router.post("/newfriendrequest", authenticateToken, async (req, res, next) => {
   try{
-    const fromUser = req.user;
-    const toUser = req.query.toUser;
+    //format checks
+    const toUser = req.body.toUser;
+
     if(!toUser) {
         return res.status(400).send("Malformed query (toUser not specified)");
     }
-    //send friend request
+
+
+    //check to make sure the user you're sending a request to exists
+    const requestedFriend = await User.findOne({ userName: toUser });
+    if (!requestedFriend) {
+      return res.status(409).send("User does not exist");
+    }
+
+    //can't request again if you already have a pending one
+    const existingRequest = await Social.findOne({ toUserId: requestedFriend.userId });
+    if (existingRequest) {
+      return res.status(409).send("This request already exists");
+    }
+
+    //can't request yourself
+    if(req.user.id == requestedFriend.userId) {
+      return res.status(409).send("You can't request to be friends with yourself");
+    }
+
+
+    //make our request json with the data we now are guaranteed to have
+    const newSocialRequest = new Social({
+      fromUserId: req.user.id,
+      toUserId: requestedFriend.userId
+    })
+    
+    //save to database
+    const savedRequest = await newSocialRequest.save();
+    
+    //send back the good word
     res.status(200).send("Successfully processed friend request");
   } catch(error) {
+    //otherwise something went wrong
     res.status(500).send("Error processing friend request");
   }
 });
