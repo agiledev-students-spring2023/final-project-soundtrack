@@ -70,8 +70,7 @@ const LocationProfile = () => {
                 className="no-data-message"
                 onClick={() => navigate("/post")}
               >
-                No one has posted a song at this location. Click to post your
-                song here.
+                No one has posted a song at this location. Click to post your song here.
               </div>
             )}
           </>
