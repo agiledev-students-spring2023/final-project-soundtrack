@@ -20,13 +20,12 @@ const UserPost = ({post, onDelete, onPrivacyChange}) => {
     if (liked) {
       setLiked(false);
       setLikes((prevLikes) => prevLikes - 1);
-  
+
       // Remove user from likedBy array
       console.log("local token is" + token);
       axios.patch(
-        `${process.env.REACT_APP_SERVER_HOSTNAME}/post/${post._id}/unlike`,
-        null, // pass null as the second argument if you don't need to send any request data
-        {
+        `${process.env.REACT_APP_SERVER_HOSTNAME}/post/${post._id}/unlike`,       
+         {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`, // Include the token as a bearer token in the Authorization header
@@ -43,8 +42,7 @@ const UserPost = ({post, onDelete, onPrivacyChange}) => {
       //Add user to likedBy array
       axios.patch(
         `${process.env.REACT_APP_SERVER_HOSTNAME}/post/${post._id}/like`,
-        null, // pass null as the second argument if you don't need to send any request data
-        {
+         {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`, // Include the token as a bearer token in the Authorization header
