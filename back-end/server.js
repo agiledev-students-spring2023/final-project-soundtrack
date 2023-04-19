@@ -7,6 +7,12 @@ const cors = require("cors");
 require('dotenv').config({ silent: true }); // load environmental variables from a hidden file named .env
 const port = process.env.PORT || 3000; // the port to listen to for incoming requests
 
+app.use(cors({
+  origin: 'http://localhost:7002',
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH']
+}));
+
 app.use(express.json()); // decode JSON-formatted incoming POST data
 app.use(express.urlencoded({ extended: true })); // decode url-encoded incoming POST data
 

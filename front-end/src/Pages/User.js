@@ -17,7 +17,7 @@ const User = () => {
     axios
       .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/user`, {
         headers: {
-          Authorization: `Bearer ${token}`, // Include the token as a bearer token in the Authorization header
+          Authorization: `Bearer ${token}`, 
         },
       })
       .then((result) => {
@@ -31,6 +31,34 @@ const User = () => {
       });
   }, [token]);
 
+  const handlePostDelete = (postId) => {
+    setData((prevData) => ({
+      ...prevData,
+      posts: prevData.posts.filter((post) => post._id !== postId),
+    }));
+  };
+
+  const handlePrivacyChange = (postId, privacy) => {
+    setData((prevData) => {
+      const updatedPosts = prevData.posts.map((post) => {
+        if (post._id === postId) {
+          return {
+            ...post,
+            privacy: privacy,
+          };
+        } else {
+          return post;
+        }
+      });
+      
+      return {
+        ...prevData,
+        posts: updatedPosts,
+      };
+    });
+  };
+
+  console.log(data.posts);
 
   return (
     <div className="user-container">
@@ -59,12 +87,13 @@ const User = () => {
               {data.posts &&
                 data.posts
                   .slice(0, data.posts.length)
-                  .map((post, index) => <UserPost key={index} post={post} />)}
+                  .map((post, index) => <UserPost key={index} post={post} onDelete={handlePostDelete} onPrivacyChange={handlePrivacyChange}/>)}
             </div>
           ) : (
             <div className="no-data-message" onClick={() => navigate("/post")}>
-              You haven't made any posts yet. Click to post here.
-            </div>
+              <p>You don't have any posts yet.</p>
+              <button>Click to post here</button>
+              </div>
             
           )}
         </>
