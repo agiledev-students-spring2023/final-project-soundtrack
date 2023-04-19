@@ -6,6 +6,7 @@ import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import SongPreview from '../Components/SongPreview';
 import Meatball from './Meatball';
 import axios from "axios";
+import SpotifyPlayer from "../Components/SpotifyPlayer";
 
 
 const UserPost = ({post, onDelete, onPrivacyChange}) => {
@@ -52,6 +53,7 @@ const UserPost = ({post, onDelete, onPrivacyChange}) => {
       <div className="song">
       {post && <SongPreview track={post.songTitle}/> }
       </div>
+      {/* <div> { <SpotifyPlayer track = {post.songTitle.uri}/> } </div> */}
       <div className="post-footer">
       <button id="like-button" onClick={handleLike}>
           {liked ? (
