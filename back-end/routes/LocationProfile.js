@@ -1,17 +1,33 @@
-const express = require("express"); 
+const express = require("express");
 const router = express.Router();
-const axios = require("axios");
-const morgan = require("morgan") 
+const Post = require("../models/post"); // or whatever your post model is called
+const jwt = require('jsonwebtoken');
+const secretKey = "shaoxuewenlu";
+const User = require('../models/User'); // Assuming the model is in a separate file called "userModel.js"
+let locationName = "";
 
 
-
-router.get("/", (req, res, next) => {
-    // use axios to make a request to an API for animal data
-    axios
-      .get("https://my.api.mockaroo.com/browse.json?key=d0d8c110")
-      .then(apiResponse => res.json(apiResponse.data)) // pass data along directly to client
-      .catch(err => next(err)) // pass any errors to express
-  })
+router.post('/savedLocation', async (req, res) => {
+  locationName = req.body.locationName;
+  console.log(`Received location name: ${locationName}`);
+  res.status(200).send('Location name received');
+});
 
 
-  module.exports = router;
+// get all posts for a location
+router.get("/", async (req, res) => {
+  Post.find({ locationName: locationName })
+    .then((posts) => {
+      for (let i = 0; i < posts.length; i++) {
+        console.log("post #" + i + ": " + posts[i].userId + " has chosen song " + posts[i].songTitle.name + " at location " + posts[i].locationName);
+      }
+      console.log("locationName is " + locationName);
+      res.json({locationName, posts});
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ error: err.message });
+    });
+});
+
+module.exports = router;

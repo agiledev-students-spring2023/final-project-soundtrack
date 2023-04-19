@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import SongPreview from '../Components/SongPreview';
 import Meatball from './Meatball';
+import axios from "axios";
+
 
 const UserPost = ({post, onDelete, onPrivacyChange}) => {
   const currentPage = window.location.pathname;
@@ -22,6 +24,17 @@ const UserPost = ({post, onDelete, onPrivacyChange}) => {
     }
   };
 
+  const handleLocationClick = () => {
+    console.log(post.locationName);
+    axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/LocationProfile/savedLocation`, { locationName: post.locationName })
+    .then((result) => {
+      console.log(result.data);
+      })
+      .catch((err) => {
+        console.log(err);      });
+        navigate(`/locationprofile`);
+  };
+
   const handlePrivacyChange = (postId, privacy) => {
     onPrivacyChange(postId, privacy);
   };
@@ -33,7 +46,7 @@ const UserPost = ({post, onDelete, onPrivacyChange}) => {
         <h3>@{post.userName}</h3>
         <div className = "meatball">{currentPage === '/user' && <Meatball post = {post} postId={post._id} onDelete={onDelete} onPrivacyChange={handlePrivacyChange}/>}</div>
       </div>
-      <div className="location" onClick={() => {navigate("/LocationProfile"); }}> {post.locationName} </div>
+      <div className="location" onClick={() => handleLocationClick(post.locationName)}> {post.locationName} </div>
       <img src={post.imageURL} alt="post" className="post-image" />
       <div className="song">
       {post && <SongPreview track={post.songTitle}/> }

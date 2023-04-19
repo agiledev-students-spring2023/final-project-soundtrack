@@ -34,13 +34,14 @@ router.get("/", authenticateToken, async (req, res) => {
     const user = await User.findOne({ userId: userId });
     userName = user.userName;
     console.log('user: ', userName);  
+    const avatar = user.avatar;
 
   Post.find({ userId: req.user.id })
     .then((posts) => {
       for (let i = 0; i < posts.length; i++) {
         console.log("post #" + i + ": " + posts[i].userId + " has chosen song " + posts[i].songTitle.name + " at location " + posts[i].locationName);
       }
-      res.json({userName, posts});
+      res.json({userName, posts, avatar});
     })
     .catch((err) => {
       console.error(err);
