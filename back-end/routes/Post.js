@@ -105,7 +105,7 @@ router.patch('/updatePrivacy/:id', authenticateToken, async (req, res) => {
 
 
 // Add like to post
-router.patch('/:postId/like',authenticateToken, async (req, res) => {
+router.patch('/like/:id',authenticateToken, async (req, res) => {
   try {
     const postId = req.params.id;
     const userId = req.user.id;
@@ -126,7 +126,7 @@ router.patch('/:postId/like',authenticateToken, async (req, res) => {
 });
 
 // Remove like from post
-router.patch('/:postId/unlike',authenticateToken, async (req, res) => {
+router.patch('/unlike/:id',authenticateToken, async (req, res) => {
   try {
     const post= await Post.findById(req.params.postId);
     // Check if user already liked the post

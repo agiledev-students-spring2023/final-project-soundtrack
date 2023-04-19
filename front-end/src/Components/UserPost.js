@@ -16,15 +16,15 @@ const UserPost = ({post, onDelete, onPrivacyChange}) => {
   const [liked, setLiked] = useState(false);
   const [likes, setLikes] = useState(0);
 
-  const handleLike = () => {
+  async function handleLike  (){
     if (liked) {
       setLiked(false);
       setLikes((prevLikes) => prevLikes - 1);
 
       // Remove user from likedBy array
       console.log("local token is" + token);
-      axios.patch(
-        `${process.env.REACT_APP_SERVER_HOSTNAME}/post/${post._id}/unlike`,       
+      const response = await axios.patch(
+        `${process.env.REACT_APP_SERVER_HOSTNAME}/post/unlike/${post._id}`,       
          {
           headers: {
             'Content-Type': 'application/json',
@@ -34,14 +34,16 @@ const UserPost = ({post, onDelete, onPrivacyChange}) => {
       )
         .then(() => console.log('Successfully removed like'))
         .catch((err) => console.error(err));
+        console.log(response.data);
     } else {
       setLiked(true);
       setLikes((prevLikes) => prevLikes + 1);
       console.log("postId is : " + post._id);
       console.log("local token is" + token);
+      
       //Add user to likedBy array
-      axios.patch(
-        `${process.env.REACT_APP_SERVER_HOSTNAME}/post/${post._id}/like`,
+      const response = await axios.patch(
+        `${process.env.REACT_APP_SERVER_HOSTNAME}/post/like/${post._id}`,
          {
           headers: {
             'Content-Type': 'application/json',
@@ -51,6 +53,7 @@ const UserPost = ({post, onDelete, onPrivacyChange}) => {
       )      
         .then(() => console.log('Successfully added like'))
         .catch((err) => console.error(err));
+        console.log(response.data);
     }
   };
 
