@@ -8,7 +8,7 @@ import Meatball from './Meatball';
 import axios from "axios";
 
 
-const UserPost = ({post}) => {
+const UserPost = ({post, onDelete, onPrivacyChange}) => {
   const currentPage = window.location.pathname;
   const navigate = useNavigate();
   const [liked, setLiked] = useState(false);
@@ -35,12 +35,16 @@ const UserPost = ({post}) => {
         navigate(`/locationprofile`);
   };
 
+  const handlePrivacyChange = (postId, privacy) => {
+    onPrivacyChange(postId, privacy);
+  };
+
   return (
     <div className="post">
     <div className="post-header">
         <img src={post.avatar} alt="avatar" className="avatar" />
         <h3>@{post.userName}</h3>
-        <div className = "meatball">{currentPage === '/user' && <Meatball/>}</div>
+        <div className = "meatball">{currentPage === '/user' && <Meatball post = {post} postId={post._id} onDelete={onDelete} onPrivacyChange={handlePrivacyChange}/>}</div>
       </div>
       <div className="location" onClick={() => handleLocationClick(post.locationName)}> {post.locationName} </div>
       <img src={post.imageURL} alt="post" className="post-image" />
@@ -56,6 +60,7 @@ const UserPost = ({post}) => {
           )}
         </button>
         <span>{likes} likes</span>
+        <span className="privacy-status">{post.privacy} </span>
       </div>
   </div>
   );
