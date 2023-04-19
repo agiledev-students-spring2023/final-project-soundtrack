@@ -40,6 +40,7 @@ router.post('/savePost', authenticateToken, async (req, res) => {
 
     const newPost = new Post({
       userId: userId,
+      avatar: user.avatar,
       userName: userName,
       songTitle: post.songTitle,
       imageURL: post.imageURL,
