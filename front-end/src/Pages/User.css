@@ -65,6 +65,34 @@
     align-items: center;
     margin-top: 50px;
   }
+
+  .no-data-message {
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+    width: 300px;
+    margin: 0 auto;
+    cursor: pointer;
+  }
+  
+  .no-data-message p {
+    margin: 40;
+  }
+  
+  .no-data-message button {
+    background-color: #1b1c1b;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-top: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
   
 
   
