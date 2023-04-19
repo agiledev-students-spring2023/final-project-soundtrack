@@ -16,8 +16,7 @@ router.post('/savedLocation', async (req, res) => {
 
 // get all posts for a location
 router.get("/", async (req, res) => {
-  
-
+  await new Promise((resolve) => setTimeout(resolve, 1000)); // delay for 1 second
   Post.find({ locationName: locationName, privacy: "Public" })
   .then((posts) => {
       for (let i = 0; i < posts.length; i++) {
