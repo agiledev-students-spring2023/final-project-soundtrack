@@ -6,7 +6,9 @@ import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import SongPreview from '../Components/SongPreview';
 import Meatball from './Meatball';
 import axios from "axios";
+import Cookies from "js-cookie";
 
+const token = Cookies.get("jwt"); 
 
 const UserPost = ({post, onDelete, onPrivacyChange}) => {
   const currentPage = window.location.pathname;
@@ -18,21 +20,52 @@ const UserPost = ({post, onDelete, onPrivacyChange}) => {
     if (liked) {
       setLiked(false);
       setLikes((prevLikes) => prevLikes - 1);
+  
+      // Remove user from likedBy array
+      console.log("local token is" + token);
+      axios.patch(
+        `${process.env.REACT_APP_SERVER_HOSTNAME}/post/${post._id}/unlike`,
+        null, // pass null as the second argument if you don't need to send any request data
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`, // Include the token as a bearer token in the Authorization header
+          },
+        }
+      )
+        .then(() => console.log('Successfully removed like'))
+        .catch((err) => console.error(err));
     } else {
       setLiked(true);
       setLikes((prevLikes) => prevLikes + 1);
+      console.log("postId is : " + post._id);
+      console.log("local token is" + token);
+      //Add user to likedBy array
+      axios.patch(
+        `${process.env.REACT_APP_SERVER_HOSTNAME}/post/${post._id}/like`,
+        null, // pass null as the second argument if you don't need to send any request data
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`, // Include the token as a bearer token in the Authorization header
+          },
+        }
+      )      
+        .then(() => console.log('Successfully added like'))
+        .catch((err) => console.error(err));
     }
   };
 
   const handleLocationClick = () => {
     console.log(post.locationName);
     axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/LocationProfile/savedLocation`, { locationName: post.locationName })
-    .then((result) => {
-      console.log(result.data);
+      .then((result) => {
+        console.log(result.data);
       })
       .catch((err) => {
-        console.log(err);      });
-        navigate(`/locationprofile`);
+        console.log(err);
+      });
+    navigate(`/locationprofile`);
   };
 
   const handlePrivacyChange = (postId, privacy) => {
@@ -41,18 +74,20 @@ const UserPost = ({post, onDelete, onPrivacyChange}) => {
 
   return (
     <div className="post">
-    <div className="post-header">
+      <div className="post-header">
         <img src={post.avatar} alt="avatar" className="avatar" />
         <h3>@{post.userName}</h3>
-        <div className = "meatball">{currentPage === '/user' && <Meatball post = {post} postId={post._id} onDelete={onDelete} onPrivacyChange={handlePrivacyChange}/>}</div>
+        <div className="meatball">
+          {currentPage === '/user' && <Meatball post={post} postId={post._id} onDelete={onDelete} onPrivacyChange={handlePrivacyChange}/>}
+        </div>
       </div>
       <div className="location" onClick={() => handleLocationClick(post.locationName)}> {post.locationName} </div>
       <img src={post.imageURL} alt="post" className="post-image" />
       <div className="song">
-      {post && <SongPreview track={post.songTitle}/> }
+        {post && <SongPreview track={post.songTitle}/> }
       </div>
       <div className="post-footer">
-      <button id="like-button" onClick={handleLike}>
+        <button id="like-button" onClick={handleLike}>
           {liked ? (
             <FontAwesomeIcon icon={faHeart} color="red" />
           ) : (
@@ -62,8 +97,8 @@ const UserPost = ({post, onDelete, onPrivacyChange}) => {
         <span>{likes} likes</span>
         <span className="privacy-status">{post.privacy} </span>
       </div>
-  </div>
+    </div>
   );
 };
 
-export default UserPost; 
+export default UserPost;

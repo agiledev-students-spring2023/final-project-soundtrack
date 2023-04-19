@@ -104,4 +104,47 @@ router.patch('/updatePrivacy/:id', authenticateToken, async (req, res) => {
 });
 
 
+// Add like to post
+router.patch('/:postId/like',authenticateToken, async (req, res) => {
+  try {
+    const postId = req.params.id;
+    const userId = req.user.id;
+    const post = await Post.findById(postId);
+    // Check if user already liked the post
+    if (post.likedBy.includes(userId)) {
+      return res.status(400).json({ message: 'User already liked this post' });
+    }
+    post.likes++;
+    post.likedBy.push(userId);
+
+    const savedPost = await post.save();
+    res.json(savedPost);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Remove like from post
+router.patch('/:postId/unlike',authenticateToken, async (req, res) => {
+  try {
+    const post= await Post.findById(req.params.postId);
+    // Check if user already liked the post
+    if (!post.likedBy.includes(userId)) {
+      return res.status(400).json({ message: 'User has not liked this post' });
+    }
+
+    post.likes--;
+    post.likedBy = post.likedBy.filter((id) => id.toString() !== userId.toString());
+
+    const savedPost = await post.save();
+    res.json(savedPost);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+
 module.exports = router;
