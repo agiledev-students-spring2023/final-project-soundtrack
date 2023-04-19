@@ -1,25 +1,30 @@
 import "./Map.css";
 import HeaderBrowseMap from "../Components/HeaderBrowseMap";
-import axios from 'axios';
-import { useLoadScript, GoogleMap, Marker, MarkerF, Autocomplete} from "@react-google-maps/api";
+import {
+  useLoadScript,
+  GoogleMap,
+  Marker,
+  MarkerF,
+  Autocomplete,
+} from "@react-google-maps/api";
 // import usePlacesAutocomplete from "use-places-autocomplete";
-import React, { useState, useEffect, useRef , useCallback} from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import Filter from "../Components/Filter";
 // import Favorites from './Favorites'
-
+import axios from "axios";
 
 function Map() {
   const libraries = ["places"];
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: "AIzaSyB1D7Olh84_bINSSNaJ5N9nsU6bq933y0U",
-    libraries
+    libraries,
   });
 
   const [center, setCenter] = useState({ lat: null, lng: null });
   const [loading, setLoading] = useState(true);
   const autocomplete = useRef(null);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const [showPopup, setShowPopup] = useState(false);
   const [filters, setFilters] = useState([]);
   const popupRef = useRef(null);
@@ -29,7 +34,7 @@ function Map() {
   const [results, setResults] = useState(null);
   const [refetch, setReFetch] = useState(true);
 
-  // function serviceSetter() { 
+  // function serviceSetter() {
   //   console.log("serviceSetter running");
   //   return new Promise(() => {
   //     console.log("inside Promise");
@@ -39,16 +44,6 @@ function Map() {
   //   });
   // };
 
-  // client credentials flow 
-  const [token, setToken] = useState(null);
-    useEffect(() => {
-      const fetchToken = async () => {
-        const response = await axios.get(`${process.env.REACT_APP_SERVER_HOSTNAME}/client`);
-        //console.log(response); 
-        setToken(response.data);
-      };
-      fetchToken();
-    }, []);
 
   useEffect(() => {
     console.log("in useEffect: " + filters);
@@ -72,7 +67,9 @@ function Map() {
     // }
     if (map.current) {
       console.log("service instantiated in useEffect");
-      service.current = new window.google.maps.places.PlacesService(map.current);
+      service.current = new window.google.maps.places.PlacesService(
+        map.current
+      );
     }
   }, [filters]);
 
@@ -103,6 +100,28 @@ function Map() {
     if (marker) {
       console.log(marker);
       // This is a Google Place marker, redirect to user profile page
+      const geocoder = new window.google.maps.Geocoder();
+      geocoder.geocode(
+        { location: { lat: event.latLng.lat(), lng: event.latLng.lng() } },
+        (results, status) => {
+          if (status === "OK") {
+            console.log(results[0].formatted_address);
+            axios
+              .post(
+                `${process.env.REACT_APP_SERVER_HOSTNAME}/LocationProfile/savedLocation`,
+                { locationName: results[0].formatted_address }
+              )
+              .then((result) => {
+                console.log("success sent locaiton name");
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          } else {
+            console.error(status);
+          }
+        }
+      );
       navigate("/LocationProfile");
     }
   };
@@ -112,38 +131,63 @@ function Map() {
   }
 
   const filterLocations = useCallback((filters) => {
-      setFilters(filters);
+    setFilters(filters);
 
-      const request = {
-        location: center,
-        radius: 4000,
-        type: filters
-      };
+    const request = {
+      location: center,
+      radius: 4000,
+      type: filters,
+    };
 
-      function callback(searchResults, status) {
-        console.log("callback");
-        if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-          setResults(searchResults);
-          createMarkers(results);
-        }
+    function callback(searchResults, status) {
+      console.log("callback");
+      if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+        setResults(searchResults);
+        createMarkers(results);
       }
+    }
 
-      // if (service) { // PREV
-      //   console.log("service not null");
-      //   service.nearbySearch(request, callback);
-      // } else {
-      //   console.log("service is null");
-      //   await serviceSetter();
-      //   console.log("await done");
-      //   service.nearbySearch(request, callback); 
-      //   console.log("nearbySearch called");
-      // }
+    // if (service) { // PREV
+    //   console.log("service not null");
+    //   service.nearbySearch(request, callback);
+    // } else {
+    //   console.log("service is null");
+    //   await serviceSetter();
+    //   console.log("await done");
+    //   service.nearbySearch(request, callback);
+    //   console.log("nearbySearch called");
+    // }
 
-      service.current = new window.google.maps.places.PlacesService(map.current);
-      service.current.nearbySearch(request, callback); 
-      console.log("nearbySearch called");
-      setReFetch(!refetch);
+    service.current = new window.google.maps.places.PlacesService(map.current);
+    service.current.nearbySearch(request, callback);
+    console.log("nearbySearch called");
+    setReFetch(!refetch);
   });
+
+  useEffect(() => {
+    function countVisibleMarkers() {
+      if (map.current) {
+        const bounds = map.current.getBounds();
+        let visibleMarkers = 0;
+        if (results) {
+          results.forEach((location) => {
+            const position = {
+              lat: location.geometry.location.lat(),
+              lng: location.geometry.location.lng(),
+            };
+            if (bounds.contains(position)) {
+              visibleMarkers++;
+            }
+          });
+        }
+        console.log(`Number of visible markers: ${visibleMarkers}`);
+      }
+    }
+  
+    countVisibleMarkers();
+  }, []);
+  
+
 
   function createMarkers(locations) {
     console.log("creating markers");
@@ -153,15 +197,18 @@ function Map() {
         return (
           <MarkerF
             key={place.id}
-            position={{ lat: place.geometry.location.lat(), lng: place.geometry.location.lng() }}
+            position={{
+              lat: place.geometry.location.lat(),
+              lng: place.geometry.location.lng(),
+            }}
           />
         );
       });
-      markers.forEach(m => m.setMap(map));
+      markers.forEach((m) => m.setMap(map));
     } else {
       console.log("filters null");
     }
-  };
+  }
 
   if (loadError) return "Error loading maps";
   if (!isLoaded) return "Loading Maps";
@@ -177,7 +224,7 @@ function Map() {
         <HeaderBrowseMap />
       </div>
       <div className="autocomplete-container">
-        <Autocomplete    
+        <Autocomplete
           onLoad={(auto) => (autocomplete.current = auto)}
           onPlaceChanged={onPlaceChanged}
         >
@@ -188,24 +235,30 @@ function Map() {
           />
         </Autocomplete>
       </div>
-      <div className = "buttonContainer">
-        <div className='filter'>
-          <div onClick = {handleClick}>Filter</div>
+      <div className="buttonContainer">
+        <div className="filter">
+          <div onClick={handleClick}>Filter</div>
           {showPopup && (
             <div className="popup" ref={popupRef}>
               <div className="popup-inner">
-                <Filter filterLocations={filterLocations} handleClick={handleClick}/>
+                <Filter
+                  filterLocations={filterLocations}
+                  handleClick={handleClick}
+                />
               </div>
             </div>
-          )} 
+          )}
         </div>
-        <div className='favorites' onClick = {() => {
-            navigate("/Favorites")
-            }}>
-          Favorites  
+        <div
+          className="favorites"
+          onClick={() => {
+            navigate("/Favorites");
+          }}
+        >
+          Favorites
         </div>
       </div>
-    
+
       {loading ? (
         <div className="loading-container">Loading...</div>
       ) : (
@@ -216,13 +269,14 @@ function Map() {
           options={{
             mapTypeControl: false,
           }}
-          onClick={handleMarkerClick} 
+          onClick={handleMarkerClick}
           ref={map} // pass the ref to the GoogleMap component
         >
-          
-          <MarkerF position={center} onClick={() => navigate("/LocationProfile")} />
+          <MarkerF
+            position={center}
+            onClick={() => navigate("/LocationProfile")}
+          />
         </GoogleMap>
-  
       )}
     </div>
   );
