@@ -43,6 +43,32 @@ function Map() {
   //     console.log("service set");
   //   });
   // };
+  
+  // const [visibleMarkers, setVisibleMarkers] = useState(0);
+
+  // useEffect(() => {
+  //   if (loading) return; // Don't run until we have the user's location
+  //   const bounds = map.current.getBounds();
+  //   let count = 0;
+  
+  //   if (map.current) {
+  //     console.log("service instantiated in useEffect")
+  //   }
+  
+  //   map
+  //     .getMarkers()
+  //     .forEach(marker => {
+  //       if (bounds.contains(marker.getPosition())) {
+  //         console.log(marker.getPosition());
+          
+  //         count++;
+  //       }
+  //     });
+  //   setVisibleMarkers(count);
+  //   console.log("visible marker" + visibleMarkers);
+  // }, [map, loading]);
+  
+
 
 
   useEffect(() => {
@@ -163,30 +189,6 @@ function Map() {
     console.log("nearbySearch called");
     setReFetch(!refetch);
   });
-
-  useEffect(() => {
-    function countVisibleMarkers() {
-      if (map.current) {
-        const bounds = map.current.getBounds();
-        let visibleMarkers = 0;
-        if (results) {
-          results.forEach((location) => {
-            const position = {
-              lat: location.geometry.location.lat(),
-              lng: location.geometry.location.lng(),
-            };
-            if (bounds.contains(position)) {
-              visibleMarkers++;
-            }
-          });
-        }
-        console.log(`Number of visible markers: ${visibleMarkers}`);
-      }
-    }
-  
-    countVisibleMarkers();
-  }, []);
-  
 
 
   function createMarkers(locations) {
