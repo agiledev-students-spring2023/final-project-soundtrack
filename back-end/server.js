@@ -20,14 +20,9 @@ const createRoute = require('./routes/Account');
 const authRoute = require('./routes/Auth');
 const forgotRoute = require('./routes/Forgot');
 const changeRoute = require('./routes/ChangePassword');
-
-
-
-
-
+const clientRoute = require('./routes/Client');
 
 //why it is not being read in from the .env file?
-
 
 mongoose.connect(process.env.MONG_URL)
   .then(() => {
@@ -53,6 +48,7 @@ app.use("/", loginRoute);
 app.use("/auth", authRoute);
 app.use("/forgot", forgotRoute);
 app.use("/change", changeRoute);
+app.use("/client", clientRoute);
 
 
 

@@ -43,7 +43,7 @@ const User = () => {
         </div>
       </div>
       <div className="user-profile">
-        <img src={data.avatar} alt="Profile" />
+        <img src={"https://static.vecteezy.com/system/resources/previews/009/734/564/original/default-avatar-profile-icon-of-social-media-user-vector.jpg"} alt="Profile" />
         <h1 className="username">@{data.userName}</h1>
         <div onClick={() => navigate("/friends")} className="friends-link">
           Friends
@@ -62,8 +62,9 @@ const User = () => {
             </div>
           ) : (
             <div className="no-data-message" onClick={() => navigate("/post")}>
-              You haven't make any post yet.Click to post your song here.
+              You haven't made any posts yet. Click to post here.
             </div>
+            
           )}
         </>
       )}
