@@ -6,7 +6,7 @@ const Post = require("../models/post");
 // Get all posts
 router.get("/", async (req, res) => {
   try {
-    const posts = await Post.find();
+    const posts = await Post.find({ privacy: "Public"});
     res.json(posts);
   } catch (err) {
     console.error(err);

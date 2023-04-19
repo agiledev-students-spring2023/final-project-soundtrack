@@ -16,8 +16,10 @@ router.post('/savedLocation', async (req, res) => {
 
 // get all posts for a location
 router.get("/", async (req, res) => {
-  Post.find({ locationName: locationName })
-    .then((posts) => {
+  
+
+  Post.find({ locationName: locationName, privacy: "Public" })
+  .then((posts) => {
       for (let i = 0; i < posts.length; i++) {
         console.log("post #" + i + ": " + posts[i].userId + " has chosen song " + posts[i].songTitle.name + " at location " + posts[i].locationName);
       }
