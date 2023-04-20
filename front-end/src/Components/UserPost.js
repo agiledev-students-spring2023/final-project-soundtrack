@@ -16,23 +16,30 @@ const UserPost = ({ post, onDelete, onPrivacyChange }) => {
   const [likes, setLikes] = useState(0);
 
   useEffect(() => {
-    const token = Cookies.get("jwt"); // Get the JWT token from the cookie
-     axios
-      .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/post/getLike/${post._id}`,
-      {
-        headers: {
-          Authorization: `JWT ${token}`, // Include the token as a bearer token in the Authorization header
-        },
-      })
-      .then((result) => {
-        console.log(result.data);
-        setLikes(result.data.likesNumber);
-        setLiked(result.data.liked);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    const token = Cookies.get("jwt");
+    if (token) {
+      // Get the JWT token from the cookie
+      axios
+        .get(
+          `${process.env.REACT_APP_SERVER_HOSTNAME}/post/getLike/${post._id}`,
+          {
+            headers: {
+              Authorization: `JWT ${token}`, // Include the token as a bearer token in the Authorization header
+            },
+          }
+        )
+        .then((result) => {
+          console.log(result.data);
+          setLikes(result.data.likesNumber);
+          setLiked(result.data.liked);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      //without token can only view likes number, can't like or unlike
+    } 
   }, []);
+
 
   async function handleLike() {
     const token = Cookies.get("jwt"); // Get the JWT token from the cookie
@@ -71,7 +78,7 @@ const UserPost = ({ post, onDelete, onPrivacyChange }) => {
           console.log("Successfully added like");
           setLikes((prevLikes) => prevLikes + 1);
           setLiked(true);
-    })
+        })
         .catch((err) => console.error(err));
     }
   }
