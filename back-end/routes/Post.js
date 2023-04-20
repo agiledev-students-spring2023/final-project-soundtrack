@@ -40,6 +40,7 @@ router.post('/savePost', authenticateToken, async (req, res) => {
 
     const newPost = new Post({
       userId: userId,
+      avatar: user.avatar,
       userName: userName,
       songTitle: post.songTitle,
       imageURL: post.imageURL,
@@ -104,19 +105,38 @@ router.patch('/updatePrivacy/:id', authenticateToken, async (req, res) => {
 });
 
 
-// Add like to post
-router.patch('/like/:id',authenticateToken, async (req, res) => {
+
+
+
+router.get('/getLike/:id',authenticateToken, async (req, res) => {
+  const userId = req.user.id;
+  const post= await Post.findById(req.params.id);
+  let postLikes = false; 
+  if(post.likedBy.includes(userId)){
+     postLikes = true; 
+  }
   try {
-    const postId = req.params.id;
+    const post= await Post.findById(req.params.id);
+    res.json({likesNumber: post.likes, liked:postLikes});
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+// Add like to post
+router.patch('/like/:id', authenticateToken, async (req, res) => {
+  try {
     const userId = req.user.id;
-    const post = await Post.findById(postId);
-    // Check if user already liked the post
-    if (post.likedBy.includes(userId)) {
-      return res.status(400).json({ message: 'User already liked this post' });
+    const post= await Post.findById(req.params.id);
+    if(post.likedBy.includes(userId)){
+      return res.status(403).send('Already liked');
     }
     post.likes++;
+    console.log(post.likedBy);
     post.likedBy.push(userId);
-
+    console.log(post.likedBy);
     const savedPost = await post.save();
     res.json(savedPost);
   } catch (err) {
@@ -128,15 +148,17 @@ router.patch('/like/:id',authenticateToken, async (req, res) => {
 // Remove like from post
 router.patch('/unlike/:id',authenticateToken, async (req, res) => {
   try {
-    const post= await Post.findById(req.params.postId);
-    // Check if user already liked the post
-    if (!post.likedBy.includes(userId)) {
-      return res.status(400).json({ message: 'User has not liked this post' });
+    const userId = req.user.id;
+    const post= await Post.findById(req.params.id);
+    if(!post.likedBy.includes(userId)){
+      return res.status(403).send('Already unliked');
     }
 
     post.likes--;
-    post.likedBy = post.likedBy.filter((id) => id.toString() !== userId.toString());
-
+    console.log(post.likedBy);
+    const index = post.likedBy.indexOf(userId);
+    post.likedBy.splice(index, 1);
+    console.log(post.likedBy);
     const savedPost = await post.save();
     res.json(savedPost);
   } catch (err) {
