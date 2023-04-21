@@ -80,7 +80,7 @@ const User = () => {
         <div className="loading-message">Loading...</div>
       ) : (
         <>
-          {data.posts[0]?.songTitle ? (
+          {data.posts.length != 0 ? (
             <div className="user-posts">
               {data.posts &&
                 data.posts
