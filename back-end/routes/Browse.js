@@ -1,12 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const mongoose = require("mongoose");
 const Post = require("../models/post");
 
 // Get all posts
 router.get("/", async (req, res) => {
   try {
-    const posts = await Post.find({ privacy: "Public"});
+    const posts = await Post.find({ privacy: "Public" })
+      .sort({ createdAt: -1 }) // sort by update time in descending order
     res.json(posts);
   } catch (err) {
     console.error(err);

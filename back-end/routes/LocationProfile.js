@@ -16,6 +16,7 @@ router.post("/savedLocation", async (req, res) => {
 router.get("/", async (req, res) => {
   await new Promise((resolve) => setTimeout(resolve, 1000)); // delay for 1 second
   Post.find({ locationName: locationName, privacy: "Public" })
+    .sort({ createdAt: -1 }) // sort by update time in descending order
     .then((posts) => {
       for (let i = 0; i < posts.length; i++) {
         console.log(
