@@ -70,7 +70,7 @@ const User = () => {
         </div>
       </div>
       <div className="user-profile">
-      <img src={data.avatar && (data.avatar.startsWith("http") || data.avatar.startsWith("https")) ? data.avatar : `${process.env.REACT_APP_SERVER_HOSTNAME}/${data.avatar}`} alt="Profile"/>
+      <img src={data.avatar} alt="Profile"/>
         <h1 className="username">@{data.userName}</h1>
         <div onClick={() => navigate("/friends")} className="friends-link">
           Friends

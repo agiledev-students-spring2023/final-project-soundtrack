@@ -29,7 +29,7 @@ const UserPost = ({ post, onDelete, onPrivacyChange }) => {
           }
         )
         .then((result) => {
-          console.log(result.data);
+          //console.log(result.data);
           setLikes(result.data.likesNumber);
           setLiked(result.data.liked);
         })
@@ -107,11 +107,7 @@ const UserPost = ({ post, onDelete, onPrivacyChange }) => {
     <div className="post">
       <div className="post-header">
         <img
-          src={
-            post.avatar.startsWith("http") || post.avatar.startsWith("https")
-              ? post.avatar
-              : `${process.env.REACT_APP_SERVER_HOSTNAME}/${post.avatar}`
-          }
+          src={post.avatar}
           alt="avatar"
           className="avatar"
         />

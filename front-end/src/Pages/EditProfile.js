@@ -95,7 +95,7 @@ async function handleSubmit(e) {
         </div>
         <div> Edit profile </div>
         <div className="user-profile">
-        <img src={data.avatar && (data.avatar.startsWith("http") || data.avatar.startsWith("https")) ? data.avatar : `${process.env.REACT_APP_SERVER_HOSTNAME}/${data.avatar}`} alt="Profile"/>
+        <img src={data.avatar} alt="Profile"/>
 
         </div>
         <div></div>
