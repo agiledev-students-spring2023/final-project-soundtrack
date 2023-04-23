@@ -22,6 +22,7 @@ router.post('/', async function (req, res) {
 
     // Set the user's new password
     user.password = hashedPassword;
+    user.needToChangePass = true; 
     await user.save();
 
     // Create a transporter to send the email
