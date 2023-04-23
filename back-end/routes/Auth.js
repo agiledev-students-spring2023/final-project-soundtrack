@@ -20,7 +20,7 @@ var spotifyApi = new SpotifyWebApi({
 router.use(cors(corsOptions)); 
 
 const authEndpoint = "https://accounts.spotify.com/authorize?";
-const scopes = ["user-library-read", "playlist-read-private", "user-read-recently-played", "streaming"];
+const scopes = ["user-library-read", "playlist-read-private", "user-read-recently-played", "streaming", "user-read-email", "user-read-private", "user-read-playback-state", "user-modify-playback-state"];
 const loginEndpoint = `${authEndpoint}client_id=${process.env.SPOTIFY_CLIENT_ID}&redirect_uri=${process.env.SPOTIFY_REDIRECT_URI}&scope=${scopes.join("%20")}&response_type=code&show_dialog=true`;
 
 router.get("/",morgan("dev"),(req, res, next) => {
@@ -59,6 +59,7 @@ router.get("/callback", morgan("dev"), async (req, res, next) => {
 });
 
 router.get('/recently-played', async (req,res) => {
+  await refreshAccessTokenIfNeeded();
     try {
       const result = await spotifyApi.getMyRecentlyPlayedTracks();
       //console.log(result.body);
@@ -67,15 +68,32 @@ router.get('/recently-played', async (req,res) => {
       res.status(400).send(err)
     }
   });
+
+  router.get('/get-access-token', async (req, res) => {
+    await refreshAccessTokenIfNeeded();
   
-  router.get('/verify-token', async (req, res) => {
     const token = spotifyApi.getAccessToken();
     if (token) {
-      res.send('Access token is valid');
+      res.send({ access_token: token });
     } else {
-      res.send('Access token is required');
+      res.status(400).send('Access token is required');
     }
   });
+
+  async function refreshAccessTokenIfNeeded() {
+    try {
+      const tokenExpiration = spotifyApi.getAccessTokenExpirationTimeRemaining();
+      if (tokenExpiration <= 60) { // 60 seconds buffer
+        const refreshResponse = await spotifyApi.refreshAccessToken();
+        const newAccessToken = refreshResponse.body.access_token;
+        spotifyApi.setAccessToken(newAccessToken);
+        console.log('Access token refreshed');
+      }
+    } catch (error) {
+      console.error('Error refreshing access token', error);
+    }
+  }
+  
   
 module.exports = router;
 

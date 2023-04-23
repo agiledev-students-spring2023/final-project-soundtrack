@@ -42,7 +42,7 @@ const postSchema = new Schema(
     },
     likedBy: [
       {
-        type: Schema.Types.ObjectId,
+        type: String,
         ref: "User",
       },
     ],
