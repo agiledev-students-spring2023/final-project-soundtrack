@@ -27,14 +27,15 @@ function Login() {
       Cookies.set("jwt", token); // Store JWT token in a cookie
       console.log(token);
   
-      const userResponse = await axios.get("http://localhost:5002/return", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const userResponse = await axios.post("http://localhost:5002/return", {
+        }, {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          },
+        });
       const user = userResponse.data;
   
-      if (user.needToChange) {
+      if (user.needToChangePass) {
         window.location = "./ChangePassword";
       } else {
         window.location = "./Map";

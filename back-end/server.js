@@ -29,8 +29,7 @@ const authRoute = require('./routes/Auth');
 const forgotRoute = require('./routes/Forgot');
 const changeRoute = require('./routes/ChangePassword');
 const clientRoute = require('./routes/Client');
-const retRoute = require('./routes/userReturn');
-
+const returnRoute = require('./routes/Return');
 
 //why it is not being read in from the .env file?
 
@@ -59,7 +58,7 @@ app.use("/auth", authRoute);
 app.use("/forgot", forgotRoute);
 app.use("/change", changeRoute);
 app.use("/client", clientRoute);
-app.use("/return", retRoute);
+app.use("/return", returnRoute);
 
 
 
