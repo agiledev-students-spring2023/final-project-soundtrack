@@ -1,10 +1,13 @@
 import React from 'react';
 import './Settings.css';
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import SpotifyPlayer from '../Components/SpotifyPlayer';
+import axios from 'axios';
+import Cookies from "js-cookie";
+
 
 function Settings() {
-   const navigate = useNavigate(); 
+  const navigate = useNavigate(); 
 
   function handlePrivacy() {
     // code to handle privacy click
@@ -19,17 +22,28 @@ function Settings() {
     // code to handle notifications click
   }
 
+  const handleLogout = async () => {
+    try {
+      await axios.post('http://localhost:5002/logout');
+      Cookies.remove('jwt');
+      navigate('/');
+    } catch (error) {
+      console.error(error);
+      alert('Failed to log out. Please try again.');
+    }
+  }
+
   return (
     <div className="settings-page">
-        <div className="settings-header"> 
+      <div className="settings-header"> 
         <div onClick={() => navigate("/user")} className="back-link">Back</div>
-        </div>
-        <div className="LogoText">
-          <img 
-              src={require('../Logos/soundTrackFullLogo.png')} 
-              width="200px"
-              height="200px"
-              srcSet={require('../Logos/fullLogo.svg')} />
+      </div>
+      <div className="LogoText">
+        <img 
+          src={require('../Logos/soundTrackFullLogo.png')} 
+          width="200px"
+          height="200px"
+          srcSet={require('../Logos/fullLogo.svg')} />
       </div>
       {/* <div> <SpotifyPlayer track = "spotify:track:2sLVs5iX0osogh4jcsAJkv"/> </div> */}
       <div className="opList">
