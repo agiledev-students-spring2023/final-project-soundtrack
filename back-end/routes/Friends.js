@@ -42,15 +42,25 @@ function authenticateToken(req, res, next) {
 }
 
 //get all friend requests for  a user
-router.get("/getfriendrequests", authenticateToken, (req, res, next) => {
+router.get("/getfriendrequests", authenticateToken, async (req, res, next) => {
   try{
     const userId = req.user.id;
 
+    Social.find({toUserId: req.user.id})
+      .then((incomingRequests) => {
+        for (let i = 0; i < incomingRequests.length; i++) {
+          console.log("Friend request number "+ i + " is coming from userId "+ incomingRequests[i].fromUserId);
+        }
+        console.log(incomingRequests);
+        res.json({incomingRequests});
+      });
+    
+
     //return list of friend requests (mock data for now)
-    axios
-      .get("https://my.api.mockaroo.com/browse.json?key=d0d8c110")
-      .then(apiResponse => res.json(apiResponse.data)) // pass data along directly to client
-      .catch(err => next(err)) // pass any errors to express
+    // axios
+    //   .get("https://my.api.mockaroo.com/browse.json?key=d0d8c110")
+    //   .then(apiResponse => res.json(apiResponse.data)) // pass data along directly to client
+    //   .catch(err => next(err)) // pass any errors to express
   } catch(error) {
     res.status(500).send("Error processing query");
   }

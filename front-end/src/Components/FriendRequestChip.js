@@ -1,8 +1,23 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
+import axios from "axios";
 
 import "./FriendRequestChip.css";
 
-const FriendRequestChip = ({data}) => {
+const FriendRequestChip = ({parentData}) => {
+
+    const [data, setData] = useState([]);
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        axios
+            .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/user`)
+            .then((result) => {
+            setData(result.data);
+            })
+            .catch((err) => {
+            setError('Failed to fetch data from the server');
+            });
+    }, []);
 
     return(
         <div className="MainBox">

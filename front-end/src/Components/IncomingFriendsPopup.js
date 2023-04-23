@@ -11,13 +11,12 @@ import Cookies from "js-cookie";
 const IncomingFriendsPopup = () => {
 
     const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
     useEffect(() => {
         const token = Cookies.get("jwt");
         axios
-          .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/friends/friendlist`, {
+          .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/friends/getfriendrequests`, {
             headers: {
               Authorization: `Bearer ${token}`
             }
@@ -27,17 +26,16 @@ const IncomingFriendsPopup = () => {
           })
           .catch((err) => {
             setError('Failed to fetch data from the server');
-          })
-          .finally(() => {
-            setLoading(false);
           });
       }, []);
 
-    if(!Object.keys(data).length == 0) { //only display popup if the user has friend requests (check if our api data has entries)
+    if(data.incomingRequests && !Object.keys(data.incomingRequests).length == 0) { //only display popup if the user has friend requests (check if our api data has entries)
         return(
             <div className="MainContainer">
                 <h3>Incoming Requests</h3>
-                {data.map((chip, index) => (<FriendRequestChip key={index} data={chip}/>))} 
+                {data.incomingRequests
+                .slice(0, data.length)
+                .map((request, index) => (<FriendRequestChip key={index} data={request}/>))}
             </div>
         );
     } else { //otherwise don't
