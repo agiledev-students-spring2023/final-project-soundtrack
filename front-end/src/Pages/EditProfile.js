@@ -93,17 +93,19 @@ async function handleSubmit(e) {
         <div className = "settings-header"> 
         <div onClick={() => navigate("/settings")} className="back-link">Back</div>
         </div>
-        <div> Edit profile </div>
+        <h1> Edit profile </h1>
         <div className="user-profile">
         <img src={data.avatar} alt="Profile"/>
 
         </div>
-        <div></div>
+       
         <div className="file-upload-container">
+        <h2>Change Profile Picture:</h2>
         <input type="file" accept="image/*" onChange={handleFileUpload} className="file-upload-input" />
         {selectedFile && <p>Selected file: {selectedFile.name}</p>}
       </div>
         <div className="inputs-CreateAccount">
+          <h2>Change Username:</h2>
             <form onSubmit={handleSubmit}>
             <div className="input-containerCreateAccount">
             <input
