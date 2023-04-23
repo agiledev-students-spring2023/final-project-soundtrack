@@ -18,7 +18,7 @@ function authenticateToken(req, res, next) {
     if (err) {
       return res.status(403).send("Invalid token");
     }
-    console.log("user:", user);
+    //console.log("user:", user);
     req.user = user;
     next();
   });
@@ -27,11 +27,7 @@ function authenticateToken(req, res, next) {
 // get all posts for a user
 router.get("/", authenticateToken, async (req, res) => {
   const userId = req.user.id;
-  console.log("userid:", userId); // Extract user ID from token
-  const user = await User.findOne({ userId: userId });
-  userName = user.userName;
-  console.log("user: ", userName);
-  const avatar = user.avatar;
+  //console.log("userid:", userId); // Extract user ID from token
 
   Post.find({ userId: req.user.id })
     .sort({ createdAt: -1 }) // sort by update time in descending order
@@ -48,6 +44,8 @@ router.get("/", authenticateToken, async (req, res) => {
             posts[i].locationName
         );
       }
+      userName = posts[0].userName;
+      avatar = posts[0].avatar;
       res.json({ userName, posts, avatar });
     })
     .catch((err) => {
@@ -55,6 +53,40 @@ router.get("/", authenticateToken, async (req, res) => {
       res.status(500).json({ error: err.message });
     });
 });
+
+router.get('/:userId', (req, res) => {
+  const userId = req.params.userId;
+  console.log("Reached /user/:userId route");
+  Post.find({ userId: userId })
+    .sort({ createdAt: -1 }) // sort by update time in descending order
+    .then(async (posts) => {
+      for (let i = 0; i < posts.length; i++) {
+        console.log(
+          "post #" +
+            i +
+            ": " +
+            posts[i].userId +
+            " has chosen song " +
+            posts[i].songTitle.name +
+            " at location " +
+            posts[i].locationName
+        );
+      }
+      userName = posts[0].userName;
+      avatar = posts[0].avatar;
+      res.json({ userName, posts, avatar });
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ error: err.message });
+    });
+});
+
+
+
+
+
+
 
 const multer = require("multer");
 const fs = require("fs");

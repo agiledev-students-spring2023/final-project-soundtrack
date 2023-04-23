@@ -83,12 +83,12 @@ const UserPost = ({ post, onDelete, onPrivacyChange }) => {
     }
   }
 
-  const handleLocationClick = () => {
+  const handleLocationClick = (locationName) => {
     console.log(post.locationName);
     axios
       .post(
         `${process.env.REACT_APP_SERVER_HOSTNAME}/LocationProfile/savedLocation`,
-        { locationName: post.locationName }
+        { locationName: locationName}
       )
       .then((result) => {
         console.log(result.data);
@@ -98,6 +98,15 @@ const UserPost = ({ post, onDelete, onPrivacyChange }) => {
       });
     navigate(`/locationprofile`);
   };
+  
+
+const handleUserName = () => {
+  let userID = post.userId;
+  console.log(userID);
+  navigate(`/UserProfile/${userID}`);
+};
+
+
 
   const handlePrivacyChange = (postId, privacy) => {
     onPrivacyChange(postId, privacy);
@@ -106,13 +115,13 @@ const UserPost = ({ post, onDelete, onPrivacyChange }) => {
   return (
     <div className="post">
       <div className="post-header">
-        <img
+        <img onClick={() => handleUserName(post.userName)}
           src={post.avatar}
           alt="avatar"
           className="avatar"
         />
 
-        <h3>@{post.userName}</h3>
+        <h3  onClick={() => handleUserName(post.userName)}>@{post.userName}</h3>
         <div className="meatball">
           {currentPage === "/user" && (
             <Meatball

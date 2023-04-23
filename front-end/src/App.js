@@ -17,7 +17,7 @@ import Privacy from "./Pages/Privacy";
 import EditProfile from "./Pages/EditProfile";
 import Auth from "./Pages/Auth"; 
 import CheckEmail from "./Pages/CheckEmail"; 
-
+import UserProfilePage from "./Pages/UserProfilePage";
 
 
 function App() {
@@ -28,7 +28,7 @@ function App() {
           <Routes>
             <Route exact path="/" element={<Login />}></Route>
             <Route exact path="/Post" element={<Post />}></Route>
-
+            <Route path="/UserProfile/:userId" element={<UserProfilePage />} />
             <Route exact path="/User" element={<User />}></Route>
             <Route exact path="/Email" element={<CheckEmail />}></Route>
             <Route exact path="/Friends" element={<Friends />}></Route>
