@@ -6,8 +6,8 @@ import User from './Pages/User';
 import Friends from './Pages/Friends';
 import Browse from './Pages/Browse';
 import Map from './Pages/Map';
+import Mapbox from './Pages/Mapbox';
 import Favorites from './Pages/Favorites';
-// import Filter from './Pages/Filter';
 import ForgotPassword from './Pages/ForgotPassword';
 import CreateAccount from './Pages/CreateAccount';
 import Settings from "./Pages/Settings";
@@ -33,9 +33,9 @@ function App() {
             <Route exact path="/Email" element={<CheckEmail />}></Route>
             <Route exact path="/Friends" element={<Friends />}></Route>
             <Route exact path="/Browse" element={<Browse />}></Route>
-            <Route exact path="/Map" element={<Map />}></Route>
+            {/* <Route exact path="/Map" element={<Map />}></Route> */}
+            <Route exact path="/Map" element={<Mapbox />}></Route>
             <Route exact path="/Favorites" element={<Favorites />}></Route>
-            {/* <Route exact path="/Filter" element={<Filter />}></Route> */}
             <Route exact path="/CreateAccount" element={<CreateAccount />}></Route>
             <Route exact path="/ForgotPassword" element={<ForgotPassword />}></Route>
             <Route exact path="/Settings" element={<Settings />}></Route>
