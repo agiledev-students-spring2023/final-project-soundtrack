@@ -1,6 +1,6 @@
 .confirmButton{
 position: fixed;
-bottom: 30px;
+bottom: 20px;
 left:50%;
 transform: translateX(-50%);
 width: 200px;
@@ -12,3 +12,11 @@ border-radius: 5px;
 font-size: 18px;
 font-weight: bold;
 cursor: pointer;}
+
+.location-name{
+    font-size: 20px;
+    font-weight: bold;
+    color: black;
+    margin: 0;
+    padding: 0;
+}

@@ -12,7 +12,15 @@
   display: flex;
   flex-direction: column;
 }
-
+.backSong{
+    position: fixed;
+    font-size: 20px;
+    top: 200px;
+    left: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 img {
   max-width: 100%;
   height: auto;
@@ -42,7 +50,7 @@ img {
   padding: 10px; 
   font-size: 1.2rem;
   font-weight: bold;
-  width: 220px; /* fixed width for the dropdown title */
+  width: 300px; /* fixed width for the dropdown title */
   text-align: left
 }
 
