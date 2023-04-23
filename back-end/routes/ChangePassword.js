@@ -29,12 +29,13 @@ router.post('/', async function (req, res) {
   
       // Generate a new password
       const newPassword = req.body.password; // Generates a random 8-character alphanumeric string
-  
+      
       // Hash the new password with bcrypt
       const hashedPassword = await bcrypt.hash(newPassword, 10);
   
       // Set the user's new password
       user.password = hashedPassword;
+      user.needToChangePass = false;
       await user.save();
   
       // Create a transporter to send the email
