@@ -57,33 +57,29 @@ router.get("/", authenticateToken, async (req, res) => {
 });
 
 const multer = require("multer");
+const fs = require("fs");
 const upload = multer({ dest: "uploads/" });
 
-router.post(
-  "/avatar",
-  authenticateToken,
-  upload.single("avatar"),
-  async (req, res) => {
-    const userId = req.user.id;
-    const user = await User.findOne({ userId: userId });
+router.post("/avatar", authenticateToken, upload.single("avatar"), async (req, res) => {
+  const userId = req.user.id;
+  const user = await User.findOne({ userId: userId });
 
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
-
-    const filePath = req.file.path;
-
-    user.avatar = filePath;
-    await user.save();
-
-    // Update the avatar in all posts made by the user
-    await Post.updateMany({ userId: userId }, { $set: { avatar: filePath } });
-
-    res
-      .status(200)
-      .json({ message: "Avatar uploaded successfully", avatar: filePath });
+  if (!user) {
+    return res.status(404).json({ error: "User not found" });
   }
-);
+
+  const filePath = req.file.path;
+  const fileData = fs.readFileSync(filePath);
+  const base64Image = `data:image/jpeg;base64,${fileData.toString("base64")}`;
+  fs.unlinkSync(filePath);
+
+  user.avatar = base64Image;
+  await user.save();
+  await Post.updateMany({ userId: userId }, { $set: { avatar: base64Image } });
+
+  res.status(200).json({ message: "Avatar uploaded successfully", avatar: base64Image });
+});
+
 
 router.patch("/username", authenticateToken, async (req, res) => {
   const userId = req.user.id;
