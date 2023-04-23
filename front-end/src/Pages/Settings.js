@@ -32,23 +32,25 @@ function Settings() {
               srcSet={require('../Logos/fullLogo.svg')} />
       </div>
       {/* <div> <SpotifyPlayer track = "spotify:track:2sLVs5iX0osogh4jcsAJkv"/> </div> */}
-      <div className="option">
-      <a href="#" onClick= {() => {navigate("/EditProfile") }} >Edit Profile</a>
-      </div>
-      <div className="option">
-      <a href="#" onClick= {() => {navigate("/ChangePassword") }} >Change Password</a>
-      </div>
-      <div className="option">
-        <a href="#" onClick={() => {navigate("/Privacy") }}>Privacy</a>
-      </div>
-      <div className="option">
-        <a href="#" onClick={() => {navigate("/Auth") }}>Link Spotify</a>
-      </div>
-      <div className="option">
-        <a href="#" onClick={handleAbout}>About</a>
-      </div>
-      <div className="option">
-        <a href="#" onClick= {() => {navigate("/") }} >Log Out</a>
+      <div className="opList">
+        <div className="option">
+        <a href="#" onClick= {() => {navigate("/EditProfile") }} >Edit Profile</a>
+        </div>
+        <div className="option">
+        <a href="#" onClick= {() => {navigate("/ChangePassword") }} >Change Password</a>
+        </div>
+        <div className="option">
+          <a href="#" onClick={() => {navigate("/Privacy") }}>Privacy</a>
+        </div>
+        <div className="option">
+          <a href="#" onClick={() => {navigate("/Auth") }}>Link Spotify</a>
+        </div>
+        <div className="option">
+          <a href="#" onClick={handleAbout}>About</a>
+        </div>
+        <div className="option">
+          <a href="#" onClick= {() => {navigate("/") }} >Log Out</a>
+        </div>
       </div>
     </div>
     
