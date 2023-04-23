@@ -115,7 +115,7 @@ const handleUserName = () => {
   return (
     <div className="post">
       <div className="post-header">
-        <img
+        <img onClick={() => handleUserName(post.userName)}
           src={post.avatar}
           alt="avatar"
           className="avatar"
