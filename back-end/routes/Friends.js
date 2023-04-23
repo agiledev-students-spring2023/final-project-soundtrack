@@ -94,6 +94,8 @@ router.post("/newfriendrequest", authenticateToken, async (req, res, next) => {
       return res.status(409).send("You can't request to be friends with yourself");
     }
 
+    //TODO: make sure the requested user is not already a friend
+
 
     //make our request json with the data we now are guaranteed to have
     const newSocialRequest = new Social({
