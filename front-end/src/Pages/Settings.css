@@ -1,4 +1,7 @@
-
+  .opList{
+    margin-top: 40px;
+  }
+  
   .settings-header {
     padding-bottom: 2vh;
     display: flex;
@@ -19,10 +22,9 @@
   .options{
     color: #333;
     font-size: 18px;
-    padding: 0 20px;
     text-decoration: none;
     display: block;
-    padding: 10px;
+    padding: 20px;
     background-color: #f9f9f9;
     border-radius: 5px;
     color: #333;
