@@ -7,11 +7,9 @@ import {
   MarkerF,
   Autocomplete,
 } from "@react-google-maps/api";
-// import usePlacesAutocomplete from "use-places-autocomplete";
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import Filter from "../Components/Filter";
-// import Favorites from './Favorites'
 import axios from "axios";
 
 function Map() {
@@ -29,7 +27,6 @@ function Map() {
   const [filters, setFilters] = useState([]);
   const popupRef = useRef(null);
   const map = useRef(null);
-  // const [service, setService] = useState(null); // PREV
   const service = useRef(null);
   const [results, setResults] = useState(null);
   const [refetch, setReFetch] = useState(true);
@@ -38,7 +35,6 @@ function Map() {
   //   console.log("serviceSetter running");
   //   return new Promise(() => {
   //     console.log("inside Promise");
-  //     setService(new window.google.maps.places.PlacesService(map.current)); // PREV
   //     service.current = new window.google.maps.places.PlacesService(map.current);
   //     console.log("service set");
   //   });
@@ -88,9 +84,6 @@ function Map() {
       }
     );
 
-    // if (window.google) { // PREV
-    //   setService(new window.google.maps.places.PlacesService(map.current));
-    // }
     if (map.current) {
       console.log("service instantiated in useEffect");
       service.current = new window.google.maps.places.PlacesService(
@@ -99,18 +92,18 @@ function Map() {
     }
   }, [filters]);
 
-  // useEffect(() => {
-  //   const handleClickOutside = (event) => {
-  //     if (popupRef.current && !popupRef.current.contains(event.target)) {
-  //       setShowPopup(false);
-  //     }
-  //   };
-  //   document.addEventListener("mousedown", handleClickOutside);
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (popupRef.current && !popupRef.current.contains(event.target)) {
+        setShowPopup(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
 
-  //   return () => {
-  //     document.removeEventListener("mousedown", handleClickOutside);
-  //   };
-  // }, [popupRef]);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [popupRef]);
 
   const onPlaceChanged = () => {
     if (autocomplete.current !== null) {
@@ -172,17 +165,6 @@ function Map() {
         createMarkers(results);
       }
     }
-
-    // if (service) { // PREV
-    //   console.log("service not null");
-    //   service.nearbySearch(request, callback);
-    // } else {
-    //   console.log("service is null");
-    //   await serviceSetter();
-    //   console.log("await done");
-    //   service.nearbySearch(request, callback);
-    //   console.log("nearbySearch called");
-    // }
 
     service.current = new window.google.maps.places.PlacesService(map.current);
     service.current.nearbySearch(request, callback);

@@ -1,25 +1,21 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./User.css";
-import UserPost from "../Components/UserPost";
+import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
+import UserPost from "../Components/UserPost";
 
-const User = () => {
+
+function UserProfilePage() {
   const navigate = useNavigate();
-  const [data, setData] = useState([]);
+  const { userId } = useParams(); // Get the userName parameter from the URL
+  const [data, setData] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const token = Cookies.get("jwt"); // Get the JWT token from the cookie
-
   useEffect(() => {
+    console.log(userId);
     axios
-      .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/user`, {
-        headers: {
-          Authorization: `Bearer ${token}`, 
-        },
-      })
+      .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/user/${userId}`)
       .then((result) => {
         setData(result.data);
       })
@@ -29,40 +25,14 @@ const User = () => {
       .finally(() => {
         setLoading(false);
       });
-  }, [token]);
-
-  const handlePostDelete = (postId) => {
-    setData((prevData) => ({
-      ...prevData,
-      posts: prevData.posts.filter((post) => post._id !== postId),
-    }));
-  };
-
-  const handlePrivacyChange = (postId, privacy) => {
-    setData((prevData) => {
-      const updatedPosts = prevData.posts.map((post) => {
-        if (post._id === postId) {
-          return {
-            ...post,
-            privacy: privacy,
-          };
-        } else {
-          return post;
-        }
-      });
-      
-      return {
-        ...prevData,
-        posts: updatedPosts,
-      };
-    });
-  };
+  }, [userId]);
+  
 
   return (
     <div className="user-container">
       {error && <p>{error}</p>}
       <div className="user-header">
-        <div onClick={() => navigate("/map")} className="back-link">
+        <div onClick={() => navigate("/browse")} className="back-link">
           Back
         </div>
         <div onClick={() => navigate("/settings")} className="settings-link">
@@ -72,20 +42,17 @@ const User = () => {
       <div className="user-profile">
       <img src={data.avatar} alt="Profile"/>
         <h1 className="username">@{data.userName}</h1>
-        <div onClick={() => navigate("/friends")} className="friends-link">
-          Friends
-        </div>
       </div>
       {loading ? (
         <div className="loading-message">Loading...</div>
       ) : (
         <>
-          {data.posts.length != 0 ? (
+          {data.posts.length !== 0 ? (
             <div className="user-posts">
               {data.posts &&
                 data.posts
                   .slice(0, data.posts.length)
-                  .map((post, index) => <UserPost key={index} post={post} onDelete={handlePostDelete} onPrivacyChange={handlePrivacyChange}/>)}
+                  .map((post, index) => <UserPost key={index} post={post}/>)}
             </div>
           ) : (
             <div className="no-data-message" onClick={() => navigate("/post")}>
@@ -98,6 +65,9 @@ const User = () => {
       )}
     </div>
   );
-};
+          }
+ export default UserProfilePage;
 
-export default User;
+
+
+
