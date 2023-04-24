@@ -34,20 +34,7 @@ function Settings() {
     }
   }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const token = Cookies.get('jwt');
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      };
-      const response = await axios.get(`${process.env.REACT_APP_SERVER_HOSTNAME}/auth/refresh`, config);      
-      console.log("spotify access refreshed"); 
-    };
-    fetchData();
-  }, []);
+
 
   return (
     <div className="settings-page">
