@@ -1,11 +1,18 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import HeaderBrowseMap from "../Components/HeaderBrowseMap";
 import { useNavigate } from "react-router-dom";
 import Filter from "../Components/Filter";
-import mapboxgl from 'mapbox-gl';
+import mapboxgl, { accessToken } from 'mapbox-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
-
+// import Map, {
+//     Marker,
+//     Popup,
+//     NavigationControl,
+//     FullscreenControl,
+//     ScaleControl,
+//     GeolocateControl
+//   } from 'react-map-gl';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiZGl5YWpvbGllIiwiYSI6ImNsZ3BqNmZoajBodjMzZmtibTQ5azdoOTEifQ.Rk9743jXcNV6k3tVuLVY4A';
 
@@ -45,7 +52,7 @@ function Mapbox() {
         else {
             map.current = new mapboxgl.Map({
                 container: mapContainer.current,
-                style: 'mapbox://styles/mapbox/streets-v11',
+                style: 'mapbox://styles/mapbox/streets-v12',
                 center: [lng, lat],
                 zoom: zoom
             });
@@ -61,18 +68,7 @@ function Mapbox() {
             
             map.current.addControl(geocoderRef.current, "top-left");
         }
-    });
-
-    // useEffect(() => {
-    //     const geocoder = new MapboxGeocoder({
-    //         accessToken: mapboxgl.accessToken,
-    //         mapboxgl: mapboxgl,
-    //         marker: false,
-    //         placeholder: "Search for a location",
-    //     });
-
-    //     map.current.addControl(geocoder, "top-left");
-    // }, [map]);
+    }, [lng, lat, zoom]);
 
     function handleClick() {
         setShowPopup(!showPopup);
@@ -110,7 +106,24 @@ function Mapbox() {
                     Favorites
                 </div>
             </div>
-            <div ref={mapContainer} style={{height: '400px'}}></div>
+            <div ref={mapContainer} style={{ width: '100%', height: '400px' }}></div>
+            {/* {lat && lng && zoom && (
+                <Map
+                    width="100%"
+                    height="100%"
+                    latitude={lat}
+                    longitude={lng}
+                    zoom={zoom}
+                    onViewportChange={(viewport) => {
+                        setLng(viewport.longitude);
+                        setLat(viewport.latitude);
+                        setZoom(viewport.zoom);
+                    }}
+                    mapboxApiAccessToken={mapboxgl.accessToken}
+                >
+                    <Marker longitude={lng} latitude={lat} anchor="bottom"></Marker>
+                </Map>
+            )} */}
         </div>
     );
 }
