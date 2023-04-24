@@ -13,6 +13,7 @@ const IncomingFriendsPopup = () => {
     const [data, setData] = useState([]);
     const [error, setError] = useState('');
 
+
     useEffect(() => {
         const token = Cookies.get("jwt");
         axios
