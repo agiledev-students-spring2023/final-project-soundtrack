@@ -23,36 +23,54 @@ function authenticateToken(req, res, next) {
     next();
   });
 }
-
 // get all posts for a user
 router.get("/", authenticateToken, async (req, res) => {
   const userId = req.user.id;
+  let userName;
+  let avatar;
   //console.log("userid:", userId); // Extract user ID from token
+  console.log("User ID is " + userId);
 
-  Post.find({ userId: req.user.id })
-    .sort({ createdAt: -1 }) // sort by update time in descending order
-    .then((posts) => {
-      for (let i = 0; i < posts.length; i++) {
-        console.log(
-          "post #" +
-            i +
-            ": " +
-            posts[i].userId +
-            " has chosen song " +
-            posts[i].songTitle.name +
-            " at location " +
-            posts[i].locationName
-        );
-      }
-      userName = posts[0].userName;
-      avatar = posts[0].avatar;
-      res.json({ userName, posts, avatar });
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).json({ error: err.message });
-    });
+  try {
+    const user = await User.findOne({ userId: req.user.id });
+    userName = user.userName;
+    avatar = user.avatar;
+    // do something with userName and avatar here
+  } catch (err) {
+    // handle any errors here
+  }
+  
+  try {
+    await Post.find({ userId: req.user.id })
+      .sort({ createdAt: -1 }) // sort by update time in descending order
+      .then((posts) => {
+        for (let i = 0; i < posts.length; i++) {
+          console.log(
+            "post #" +
+              i +
+              ": " +
+              posts[i].userId +
+              " has chosen song " +
+              posts[i].songTitle.name +
+              " at location " +
+              posts[i].locationName
+          );
+        }
+        if (posts.length == 0) {
+          console.log("No posts found for user " + userName);
+        }
+        res.json({ userName, posts, avatar });
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).json({ error: err.message });
+      });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
 });
+
 
 router.get('/:userId', (req, res) => {
   const userId = req.params.userId;

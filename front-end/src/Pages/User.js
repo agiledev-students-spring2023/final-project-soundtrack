@@ -22,6 +22,7 @@ const User = () => {
       })
       .then((result) => {
         setData(result.data);
+        console.log(result.data);
       })
       .catch((err) => {
         setError("Failed to fetch data from the server");
@@ -80,7 +81,7 @@ const User = () => {
         <div className="loading-message">Loading...</div>
       ) : (
         <>
-          {data.posts.length != 0 ? (
+          {data.posts.length !== 0 ? (
             <div className="user-posts">
               {data.posts &&
                 data.posts
