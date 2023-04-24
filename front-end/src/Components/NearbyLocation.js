@@ -60,7 +60,7 @@ function NearbyLocation({onNext}) {
 
   const mapContainerStyle = {
     width: "100%",
-    height: "600px",
+    height: "550px",
   };
 
   return (
