@@ -5,7 +5,7 @@ import {useNavigate} from "react-router-dom"
 import Cookies from "js-cookie";
 
 
-const Confirmation = ({songTitle, imageURL,locationName}) => {
+const Confirmation = ({songTitle, imageURL,locationName, onBack}) => {
   const [open, setOpen] = useState(false);
   const [privacy, setPrivacy] = useState('Public');
   const navigate = useNavigate(); 
@@ -38,17 +38,19 @@ const Confirmation = ({songTitle, imageURL,locationName}) => {
     setOpen(false);
   };
 
-
   return (
     <div className='container'>
       <div className='imageContainer'>
-      {<img src={imageURL} alt='no Image'/>}
+        <div className='backSong' onClick={onBack}>
+          X
+        </div>
+        {<img src={imageURL} alt='no Image'/>}
       </div>
 
       <div className="choose">
         <div className = "songNameContainer">
           <div className="songName">
-            chooseSong:{songTitle.name}
+            ChooseSong:{songTitle.name}
           </div>
         </div>
 
@@ -72,9 +74,12 @@ const Confirmation = ({songTitle, imageURL,locationName}) => {
           ) : null}
         </div>
       </div>
-      <button onClick={handleSendPost} className='next-btn'>
-        Post
-      </button>
+
+      <div className='buttons'>
+        <button onClick={handleSendPost} className='next-btn'>
+          Post
+        </button>
+      </div>
     </div>
   );
 };

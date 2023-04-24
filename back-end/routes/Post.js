@@ -20,7 +20,7 @@ function authenticateToken(req, res, next) {
       return res.status(403).send('Invalid token');
     }
 
-    console.log('user:', user);
+    //console.log('user:', user);
     req.user = user;
     next();
   });
