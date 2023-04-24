@@ -5,71 +5,26 @@ import {
   GoogleMap,
   Marker,
   MarkerF,
-  Autocomplete,
+  MarkerClustererF,
 } from "@react-google-maps/api";
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { Autocomplete } from "@react-google-maps/api";
 import { useNavigate } from "react-router-dom";
-import Filter from "../Components/Filter";
-import axios from "axios";
 
 function Map() {
-  const libraries = ["places"];
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: "AIzaSyB1D7Olh84_bINSSNaJ5N9nsU6bq933y0U",
-    libraries,
+    libraries: ["places"],
   });
 
   const [center, setCenter] = useState({ lat: null, lng: null });
   const [loading, setLoading] = useState(true);
   const autocomplete = useRef(null);
   const navigate = useNavigate();
-  const [showPopup, setShowPopup] = useState(false);
-  const [filters, setFilters] = useState([]);
-  const popupRef = useRef(null);
-  const map = useRef(null);
-  const service = useRef(null);
-  const [results, setResults] = useState(null);
-  const [refetch, setReFetch] = useState(true);
-
-  // function serviceSetter() {
-  //   console.log("serviceSetter running");
-  //   return new Promise(() => {
-  //     console.log("inside Promise");
-  //     service.current = new window.google.maps.places.PlacesService(map.current);
-  //     console.log("service set");
-  //   });
-  // };
-  
-  // const [visibleMarkers, setVisibleMarkers] = useState(0);
-
-  // useEffect(() => {
-  //   if (loading) return; // Don't run until we have the user's location
-  //   const bounds = map.current.getBounds();
-  //   let count = 0;
-  
-  //   if (map.current) {
-  //     console.log("service instantiated in useEffect")
-  //   }
-  
-  //   map
-  //     .getMarkers()
-  //     .forEach(marker => {
-  //       if (bounds.contains(marker.getPosition())) {
-  //         console.log(marker.getPosition());
-          
-  //         count++;
-  //       }
-  //     });
-  //   setVisibleMarkers(count);
-  //   console.log("visible marker" + visibleMarkers);
-  // }, [map, loading]);
-  
-
-
+  const [mapRef, setMapRef] = useState(null);
+  const [placeIds, setPlaceIds] = useState([]);
 
   useEffect(() => {
-    console.log("in useEffect: " + filters);
-
     navigator.geolocation.getCurrentPosition(
       (position) => {
         setCenter({
@@ -83,27 +38,31 @@ function Map() {
         setLoading(false);
       }
     );
+  }, []);
 
-    if (map.current) {
-      console.log("service instantiated in useEffect");
-      service.current = new window.google.maps.places.PlacesService(
-        map.current
-      );
-    }
-  }, [filters]);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (popupRef.current && !popupRef.current.contains(event.target)) {
-        setShowPopup(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [popupRef]);
+  //get map reference
+  const handleMapLoad = (map) => {
+    setMapRef(map);
+    //console.log(map)
+    console.log(mapRef);
+    console.log(map.getBounds());
+    map.addListener("bounds_changed", () => {
+      const bounds = map.getBounds();
+      const service = new window.google.maps.places.PlacesService(map);
+      const request = {
+        bounds: bounds,
+        type: ["restaurant"],
+      };
+      service.nearbySearch(request, (results, status) => {
+        if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+          const result = results.map((result) => result);
+          const placeIds = results.map((result) => result.place_id);
+          setPlaceIds(placeIds);
+          console.log(result);
+        }
+      });
+    });
+  };
 
   const onPlaceChanged = () => {
     if (autocomplete.current !== null) {
@@ -117,82 +76,10 @@ function Map() {
   const handleMarkerClick = (event) => {
     const marker = event?.placeId;
     if (marker) {
-      console.log(marker);
       // This is a Google Place marker, redirect to user profile page
-      const geocoder = new window.google.maps.Geocoder();
-      geocoder.geocode(
-        { location: { lat: event.latLng.lat(), lng: event.latLng.lng() } },
-        (results, status) => {
-          if (status === "OK") {
-            console.log(results[0].formatted_address);
-            axios
-              .post(
-                `${process.env.REACT_APP_SERVER_HOSTNAME}/LocationProfile/savedLocation`,
-                { locationName: results[0].formatted_address }
-              )
-              .then((result) => {
-                console.log("success sent locaiton name");
-              })
-              .catch((err) => {
-                console.log(err);
-              });
-          } else {
-            console.error(status);
-          }
-        }
-      );
       navigate("/LocationProfile");
     }
   };
-
-  function handleClick() {
-    setShowPopup(!showPopup);
-  }
-
-  const filterLocations = useCallback((filters) => {
-    setFilters(filters);
-
-    const request = {
-      location: center,
-      radius: 4000,
-      type: filters,
-    };
-
-    function callback(searchResults, status) {
-      console.log("callback");
-      if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-        setResults(searchResults);
-        createMarkers(results);
-      }
-    }
-
-    service.current = new window.google.maps.places.PlacesService(map.current);
-    service.current.nearbySearch(request, callback);
-    console.log("nearbySearch called");
-    setReFetch(!refetch);
-  });
-
-
-  function createMarkers(locations) {
-    console.log("creating markers");
-    if (locations) {
-      console.log("filtered");
-      const markers = locations.map((place) => {
-        return (
-          <MarkerF
-            key={place.id}
-            position={{
-              lat: place.geometry.location.lat(),
-              lng: place.geometry.location.lng(),
-            }}
-          />
-        );
-      });
-      markers.forEach((m) => m.setMap(map));
-    } else {
-      console.log("filters null");
-    }
-  }
 
   if (loadError) return "Error loading maps";
   if (!isLoaded) return "Loading Maps";
@@ -220,18 +107,13 @@ function Map() {
         </Autocomplete>
       </div>
       <div className="buttonContainer">
-        <div className="filter">
-          <div onClick={handleClick}>Filter</div>
-          {showPopup && (
-            <div className="popup" ref={popupRef}>
-              <div className="popup-inner">
-                <Filter
-                  filterLocations={filterLocations}
-                  handleClick={handleClick}
-                />
-              </div>
-            </div>
-          )}
+        <div
+          className="filter"
+          onClick={() => {
+            navigate("/Filter");
+          }}
+        >
+          Filter
         </div>
         <div
           className="favorites"
@@ -239,7 +121,7 @@ function Map() {
             navigate("/Favorites");
           }}
         >
-          Favorites
+          Favorite
         </div>
       </div>
 
@@ -247,6 +129,7 @@ function Map() {
         <div className="loading-container">Loading...</div>
       ) : (
         <GoogleMap
+          onLoad={handleMapLoad}
           mapContainerStyle={mapContainerStyle}
           center={center}
           zoom={15}
@@ -254,8 +137,13 @@ function Map() {
             mapTypeControl: false,
           }}
           onClick={handleMarkerClick}
-          ref={map} // pass the ref to the GoogleMap component
         >
+          {placeIds.map((placeId) => (
+            <MarkerF
+              key={placeId}
+              position = {{lat: 43.6532, lng: -79.3832}}
+            />
+          ))}
           <MarkerF
             position={center}
             onClick={() => navigate("/LocationProfile")}
