@@ -2,6 +2,8 @@ import React from 'react';
 import './Settings.css';
 import {useNavigate} from "react-router-dom";
 import SpotifyPlayer from '../Components/SpotifyPlayer';
+import { useEffect } from 'react';
+import axios from "axios"; 
 
 function Settings() {
    const navigate = useNavigate(); 
@@ -31,7 +33,6 @@ function Settings() {
               height="200px"
               srcSet={require('../Logos/fullLogo.svg')} />
       </div>
-      {/* <div> <SpotifyPlayer track = "spotify:track:2sLVs5iX0osogh4jcsAJkv"/> </div> */}
       <div className="option">
       <a href="#" onClick= {() => {navigate("/EditProfile") }} >Edit Profile</a>
       </div>
