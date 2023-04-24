@@ -25,6 +25,7 @@ function Settings() {
   const handleLogout = async () => {
     try {
       await axios.post('http://localhost:5002/logout');
+      await axios.get(`${process.env.REACT_APP_SERVER_HOSTNAME}/auth/reset`);
       Cookies.remove('jwt');
       navigate('/');
     } catch (error) {
@@ -62,7 +63,7 @@ function Settings() {
         <a href="#" onClick={handleAbout}>About</a>
       </div>
       <div className="option">
-        <a href="#" onClick= {() => {navigate("/") }} >Log Out</a>
+        <a href="#" onClick= {handleLogout} >Log Out</a>
       </div>
     </div>
     

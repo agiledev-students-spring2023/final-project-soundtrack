@@ -115,12 +115,13 @@ router.get('/recently-played', async (req,res) => {
       .catch(error => {
         res.send(error);
       });
-  })
+  });
+
 
 function setAccessTokenExpirationTime(expiresIn) {
   const currentTime = new Date();
   tokenExpirationTime = new Date(currentTime.getTime() + expiresIn * 1000);
-}
+};
 
 async function refreshAccessTokenIfNeeded() {
   try {
@@ -146,7 +147,17 @@ async function refreshAccessTokenIfNeeded() {
   } catch (error) {
     console.error('Error refreshing access token', error);
   }
-}
+};
+
+router.get('/reset', async (req, res) => {
+  try {
+    spotifyApi.resetCredentials();
+    res.send("reset all credentials"); 
+  }
+  catch(err){
+    res.status(400).send(err)
+  }
+});
 
 module.exports = router;
 
