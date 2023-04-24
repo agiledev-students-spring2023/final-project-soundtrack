@@ -71,7 +71,6 @@ router.get("/callback", morgan("dev"), authenticateToken, async (req, res, next)
       if (!user) {
         return res.status(404).json({ error: "User not found" });
       }
-      user.auth.access_token = spotifyApi.getAccessToken(); 
       user.auth.refresh_token = spotifyApi.getRefreshToken(); 
       await user.save();
 

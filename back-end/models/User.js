@@ -31,7 +31,6 @@ const userSchema = new Schema(
       },
       auth: {
         refresh_token: String,
-        access_token: String, 
       },
       userId: {
         type: String,
