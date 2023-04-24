@@ -160,7 +160,7 @@ router.patch("/username", authenticateToken, async (req, res) => {
 
 router.patch("/privacy", authenticateToken, async (req, res) => {
   const userId = req.user.id;
-  const newPrivacy = req.body.privacy;
+  const newPrivacyBool = req.body.privacy;
 
   const user = await User.findOne({ userId: userId });
 
@@ -168,7 +168,10 @@ router.patch("/privacy", authenticateToken, async (req, res) => {
     return res.status(404).json({ error: "User not found" });
   }
 
-  user.privacy = newPrivacy;
+  user.privacy = newPrivacyBool;
+  const newPrivacy = newPrivacyBool ? 'Private' : 'Public';
+  await Post.updateMany({ userId: userId }, { privacy: newPrivacy });
+
   await user.save();
 
   res
