@@ -9,7 +9,10 @@ import Cookies from "js-cookie";
 const FriendRequestChip = ({data}) => {
 
     const [fromUserData, setFromUserData] = useState([]);
+    const [fromUserProfileData, setFromUserProfileData] = useState([]);
     const [error, setError] = useState('');
+    const [profileDataError, setProfileDataError] = useState("");
+    const [loadingProfileData, setLoadingProfileData] = useState(true);
 
     //TODO: this should be getting avatar and username
     useEffect(() => {
@@ -20,6 +23,21 @@ const FriendRequestChip = ({data}) => {
             })
             .catch((err) => {
             setError('Failed to fetch data from the server');
+            });
+    }, []);
+
+    //get data for avatar & username
+    useEffect(() => {
+        axios
+            .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/user/getUserInfo/${data.fromUserId}`) //have to change this to always be other user
+            .then((result) => {
+                setFromUserProfileData(result.data);
+            })
+            .catch((err) => {
+                setError('Failed to fetch data from the server');
+            })     
+            .finally(() => {
+                setLoadingProfileData(false);
             });
     }, []);
     
@@ -87,8 +105,8 @@ const FriendRequestChip = ({data}) => {
         <div className="MainBox">
             {/* left aligned */}
             <div className="PictureAndUsername">
-                <img src={data.avatar} alt="avatar" className="Avatar" /> 
-                <div> @{data.fromUserId}</div>
+                <img src={fromUserProfileData.avatar} alt="avatar" className="Avatar" /> 
+                <div> @{loadingProfileData ? "Loading..." : fromUserProfileData.userName}</div>
             </div>
 
             {/* right aligned (buttons) */}

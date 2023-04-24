@@ -100,6 +100,21 @@ router.get('/:userId', (req, res) => {
     });
 });
 
+//Get user info (username, avatar) without using Posts
+router.get('/getUserInfo/:userId', (req, res) => {
+  const userId = req.params.userId;
+  User.findOne({ userId: userId })
+    .then(async (returnedUser) => {
+      userName = returnedUser.userName;
+      avatar = returnedUser.avatar;
+      res.json({ userName, avatar });
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ error: err.message });
+    });
+});
+
 const multer = require("multer");
 const fs = require("fs");
 const upload = multer({ dest: "uploads/" });
