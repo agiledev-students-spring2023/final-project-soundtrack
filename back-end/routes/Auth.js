@@ -6,12 +6,27 @@ const SpotifyWebApi = require('spotify-web-api-node');
 const jwt = require("jsonwebtoken");
 const secretKey = "shaoxuewenlu";
 const User = require("../models/User"); 
+const jwtEncryptionKey = process.env.JWT_ENCRYPTION_KEY;
 
 var spotifyApi = new SpotifyWebApi({
   clientId: process.env.SPOTIFY_CLIENT_ID,
   clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
   redirectUri: process.env.SPOTIFY_REDIRECT_URI
 });
+
+function encryptWithJWT(text) {
+  return jwt.sign({ token: text }, jwtEncryptionKey, { algorithm: 'HS256' });
+}
+
+function decryptWithJWT(token) {
+  try {
+    const decrypted = jwt.verify(token, jwtEncryptionKey, { algorithms: ['HS256'] });
+    return decrypted.token;
+  } catch (error) {
+    console.error('Error decrypting JWT:', error);
+    return null;
+  }
+}
 
 const authEndpoint = "https://accounts.spotify.com/authorize?";
 const scopes = ["user-library-read", "playlist-read-private", "user-read-recently-played", "streaming", "user-read-email", "user-read-private", "user-read-playback-state", "user-modify-playback-state"];
@@ -71,7 +86,8 @@ router.get("/callback", morgan("dev"), authenticateToken, async (req, res, next)
       if (!user) {
         return res.status(404).json({ error: "User not found" });
       }
-      user.auth = spotifyApi.getRefreshToken(); 
+
+      user.auth = encryptWithJWT(spotifyApi.getRefreshToken());
       await user.save();
 
       res.send("received access");
@@ -152,7 +168,7 @@ router.get('/refresh', authenticateToken, async(req,res) => {
   if (!user) {
     return res.status(404).json({ error: "User not found" });
   }
- const refresh_token = user.auth; 
+ const refresh_token = decryptWithJWT(user.auth);
  spotifyApi.setRefreshToken(refresh_token);
   axios({
     method: 'post',

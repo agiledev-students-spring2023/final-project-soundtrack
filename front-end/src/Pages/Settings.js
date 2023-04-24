@@ -44,7 +44,7 @@ function Settings() {
         },
       };
       const response = await axios.get(`${process.env.REACT_APP_SERVER_HOSTNAME}/auth/refresh`, config);      
-      console.log("spotify access ok"); 
+      console.log("spotify access refreshed"); 
     };
     fetchData();
   }, []);
