@@ -3,13 +3,9 @@ const router = express.Router();
 const axios = require("axios");
 const morgan = require("morgan") 
 const SpotifyWebApi = require('spotify-web-api-node');
-const cors = require("cors");
-
-router.use(cors());
-
-const corsOptions = {
-  origin: 'http://localhost:7002' 
-};
+const jwt = require("jsonwebtoken");
+const secretKey = "shaoxuewenlu";
+const User = require("../models/User"); 
 
 var spotifyApi = new SpotifyWebApi({
   clientId: process.env.SPOTIFY_CLIENT_ID,
@@ -17,18 +13,33 @@ var spotifyApi = new SpotifyWebApi({
   redirectUri: process.env.SPOTIFY_REDIRECT_URI
 });
 
-router.use(cors(corsOptions)); 
-
 const authEndpoint = "https://accounts.spotify.com/authorize?";
 const scopes = ["user-library-read", "playlist-read-private", "user-read-recently-played", "streaming", "user-read-email", "user-read-private", "user-read-playback-state", "user-modify-playback-state"];
 const loginEndpoint = `${authEndpoint}client_id=${process.env.SPOTIFY_CLIENT_ID}&redirect_uri=${process.env.SPOTIFY_REDIRECT_URI}&scope=${scopes.join("%20")}&response_type=code&show_dialog=true`;
 let tokenExpirationTime = null; 
 
-router.get("/",morgan("dev"),(req, res, next) => {
+
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers["authorization"];
+  console.log("Headers:", req.headers); 
+  const token = authHeader && authHeader.split(" ")[1];
+  if (!token) {
+    return res.status(401).send("Missing token header");
+  }
+  jwt.verify(token, secretKey, (err, user) => {
+    if (err) {
+      return res.status(403).send("Invalid token");
+    }
+    req.user = user;
+    next();
+  });
+}
+
+router.get("/", morgan("dev"),(req, res, next) => {
   res.send(loginEndpoint); 
 });
 
-router.get("/callback", morgan("dev"), async (req, res, next) => {
+router.get("/callback", morgan("dev"), authenticateToken, async (req, res, next) => {
   const { code } = req.query;
 
   try {
@@ -53,6 +64,16 @@ router.get("/callback", morgan("dev"), async (req, res, next) => {
       setAccessTokenExpirationTime(expires_in);
       spotifyApi.setAccessToken(access_token);
       spotifyApi.setRefreshToken(refresh_token);
+
+      // saving access and refresh tokens to user schema 
+      const userId = req.user.id;
+      const user = await User.findOne({ userId: userId });
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+      user.auth.refresh_token = spotifyApi.getRefreshToken(); 
+      await user.save();
+
       res.send("received access");
     } else {
       throw new Error(`Error in token request: status code ${response.status}`);
@@ -94,33 +115,10 @@ router.get('/recently-played', async (req,res) => {
     }
   });
 
-  router.get('/refresh-token', async(req,res) => {
-    axios({
-      method: 'post',
-      url: 'https://accounts.spotify.com/api/token',
-      data: {
-        grant_type: 'refresh_token',
-        refresh_token: spotifyApi.getRefreshToken()
-      },
-      headers: {
-        'content-type': 'application/x-www-form-urlencoded',
-        Authorization: `Basic ${new Buffer.from(`${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`).toString('base64')}`,
-      },
-    })
-      .then(response => {
-        spotifyApi.setAccessToken(response.data.access_token); 
-        res.send(response.data);
-        console.log(response); 
-      })
-      .catch(error => {
-        res.send(error);
-      });
-  })
-
 function setAccessTokenExpirationTime(expiresIn) {
   const currentTime = new Date();
   tokenExpirationTime = new Date(currentTime.getTime() + expiresIn * 1000);
-}
+};
 
 async function refreshAccessTokenIfNeeded() {
   try {
@@ -146,7 +144,47 @@ async function refreshAccessTokenIfNeeded() {
   } catch (error) {
     console.error('Error refreshing access token', error);
   }
-}
+};
+
+router.get('/refresh', authenticateToken, async(req,res) => {
+  const userId = req.user.id;
+  const user = await User.findOne({ userId: userId });
+  if (!user) {
+    return res.status(404).json({ error: "User not found" });
+  }
+ const refresh_token = user.auth.refresh_token; 
+ spotifyApi.setRefreshToken(refresh_token);
+  axios({
+    method: 'post',
+    url: 'https://accounts.spotify.com/api/token',
+    data: {
+      grant_type: 'refresh_token',
+      refresh_token: spotifyApi.getRefreshToken()
+    },
+    headers: {
+      'content-type': 'application/x-www-form-urlencoded',
+      Authorization: `Basic ${new Buffer.from(`${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`).toString('base64')}`,
+    },
+  })
+    .then(response => {
+      spotifyApi.setAccessToken(response.data.access_token); 
+      res.send(response.data);
+      console.log(response); 
+    })
+    .catch(error => {
+      res.send(error);
+    });
+});
+
+router.get('/reset', async (req, res) => {
+  try {
+    spotifyApi.resetCredentials();
+    res.send("reset all credentials"); 
+  }
+  catch(err){
+    res.status(400).send(err)
+  }
+});
 
 module.exports = router;
 
