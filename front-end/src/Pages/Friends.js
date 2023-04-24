@@ -17,16 +17,20 @@ const Friends = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
+    let hasFriends = false;
+    let friendsDisplay = null;
+
     useEffect(() => {
         const token = Cookies.get("jwt");
         axios
-          .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/friends/friendlist`, {
+          .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/relationships/getfriends`, {
             headers: {
               Authorization: `Bearer ${token}`
             }
           })
           .then((result) => {
             setData(result.data);
+
           })
           .catch((err) => {
             setError('Failed to fetch data from the server');
@@ -35,6 +39,25 @@ const Friends = () => {
             setLoading(false);
           });
       }, []);
+
+
+      try{
+        hasFriends = (data.friendsList[0] != null);
+      } catch(error) {
+        hasFriends = null;
+      }
+      // hasFriends = (data.friendsList != null);
+      if(hasFriends) {
+        friendsDisplay = data.friendsList
+          .slice(0, data.length)
+          .map((data, index) => (<FriendProfileChip key={index} data={data}/>))
+      } else {
+        friendsDisplay = null;
+      }
+      console.log(hasFriends);
+      console.log(data.friendsList);
+      
+      
 
     return(
         <div>
@@ -52,8 +75,20 @@ const Friends = () => {
           <div className="FriendsMainContainer">
             <AddFriendArea/>
             <IncomingFriendsPopup/>
+            
               <div className="FriendsItemsDisplayColumn">
-                {data.map((chip, index) => (<FriendProfileChip key={index} data={chip}/>))} 
+                {/* {data.map((chip, index) => (<FriendProfileChip key={index} data={chip}/>))}  */}
+
+                
+                {/* {[data.friendsList]
+                  .slice(0, data.length)
+                  .map((data, index) => (<FriendProfileChip key={index} data={data}/>))} */}
+                {friendsDisplay}
+
+
+                {/* <div>
+                  {data.friendsList}
+                </div> */}
               </div>
           </div>
         </div>
