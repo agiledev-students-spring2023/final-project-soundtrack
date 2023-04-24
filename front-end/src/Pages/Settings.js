@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import SpotifyPlayer from '../Components/SpotifyPlayer';
 import axios from 'axios';
 import Cookies from "js-cookie";
-
+import {useEffect} from 'react'; 
 
 function Settings() {
   const navigate = useNavigate(); 
@@ -33,6 +33,21 @@ function Settings() {
       alert('Failed to log out. Please try again.');
     }
   }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = Cookies.get('jwt');
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_HOSTNAME}/auth/refresh`, config);      
+      console.log("spotify access ok"); 
+    };
+    fetchData();
+  }, []);
 
   return (
     <div className="settings-page">
