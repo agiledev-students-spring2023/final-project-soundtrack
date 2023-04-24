@@ -26,7 +26,6 @@ const FriendRequestChip = ({data}) => {
 
     //accept friend request
     const acceptFunction = () => {
-        console.log("accepted");
         //post new relationship
         const token = Cookies.get("jwt");
         axios
@@ -36,15 +35,52 @@ const FriendRequestChip = ({data}) => {
                 }
             })
             .then((res) => {
+                // console.log(res.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        
+        //delete now-accepted and thus expired friend request
+        axios
+            .delete(`http://localhost:5002/friends/rejectfriendrequest`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+                data: {
+                    fromUserId: data.fromUserId,
+                    toUserId: data.toUserId
+                }
+            })
+            .then((res) => {
                 console.log(res.data);
             })
             .catch((err) => {
                 console.log(err);
             });
+        window.location.reload();
     }
 
     const rejectFunction = () => {
         console.log("rejected");
+        const token = Cookies.get("jwt");
+        axios
+            .delete(`http://localhost:5002/friends/rejectfriendrequest`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+                data: {
+                    fromUserId: data.fromUserId,
+                    toUserId: data.toUserId
+                }
+            })
+            .then((res) => {
+                console.log(res.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        window.location.reload();
     }
 
     return(

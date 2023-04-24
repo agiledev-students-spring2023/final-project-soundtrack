@@ -10,15 +10,15 @@ const secretKey = "shaoxuewenlu"
 const jwt = require('jsonwebtoken');
 
 //get a list of all of a user's friends
-router.get("/friendlist", authenticateToken, (req, res, next) => {
-  const user = req.user;
+// router.get("/friendlist", authenticateToken, (req, res, next) => {
+//   const user = req.user;
 
-  //mock data
-  axios
-    .get("https://my.api.mockaroo.com/browse.json?key=d0d8c110")
-    .then(apiResponse => res.json(apiResponse.data)) // pass data along directly to client
-    .catch(err => next(err)) // pass any errors to express
-});
+//   //mock data
+//   axios
+//     .get("https://my.api.mockaroo.com/browse.json?key=d0d8c110")
+//     .then(apiResponse => res.json(apiResponse.data)) // pass data along directly to client
+//     .catch(err => next(err)) // pass any errors to express
+// });
 
 
 //auth function (for editing friend requests)
@@ -115,35 +115,25 @@ router.post("/newfriendrequest", authenticateToken, async (req, res, next) => {
 });
 
 //reject existing friend request
-router.post("/rejectfriendrequest", authenticateToken, (req, res, next) => {
+router.delete("/rejectfriendrequest", authenticateToken, async (req, res, next) => {
   try{
     //auth needs to match decidingUser
-    const decidingUser = req.user;
-    const requestId = req.query.requestId;
-    if(!requestId) {
+    const decidingUserId = req.user.id;
+    const fromUserId = req.body.fromUserId;
+    if(!fromUserId) {
         return res.status(400).send("Malformed query (requestId not specificed)");
     }
     //update friend request to rejected, delete from database
+    console.log("Trying to delete from: "+ fromUserId+" to our user, :"+decidingUserId);
+    await Social.deleteOne({fromUserId: fromUserId, toUserId: decidingUserId});
+
     res.status(200).send("Successfully rejected friend request");
   } catch(error) {
+    console.log(error);
     res.status(500).send("Error processing friend request rejection");
   }
 });
 
-//accept existing friend request
-router.post("/acceptfriendrequest", authenticateToken, (req, res, next) => {
-  try{
-    const decidingUser = req.user;
-    const requestId = req.query.requestId;
-    if(!requestId) {
-        return res.status(400).send("Malformed query (requestId not specificed)");
-    }
-    //update friend request to rejected, delete from database
-    res.status(200).send("Successfully accepted friend request");
-  } catch(error) {
-    res.status(500).send("Error processing friend request acceptance");
-  }
-});
 
 
 module.exports = router;

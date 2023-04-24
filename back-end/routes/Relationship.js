@@ -35,14 +35,16 @@ function authenticateToken(req, res, next) {
 router.post("/newrelationship", authenticateToken, async (req, res, next) => {
     try{
         //format check
-        if(!req.userAId || !req.userBId) {
+        console.log(req.body.userAId+" AND "+req.body.userBId);
+
+        if(!req.body.userAId || !req.body.userBId) {
             return res.status(400).send("Malformed query (user(s) not specified)");
         }   
   
         //make our request json with the data we now are guaranteed to have
         const relationshipToPost = new Relationship({
-            userAId: req.userAId,
-            userBId: req.userBId,
+            userAId: req.body.userAId,
+            userBId: req.body.userBId,
         })
         
         //save to database
@@ -52,7 +54,29 @@ router.post("/newrelationship", authenticateToken, async (req, res, next) => {
         res.status(200).send("Successfully processed request");
     } catch(error) {
         //otherwise something went wrong
+        console.log(error);
         res.status(500).send("Error processing request");
+    }
+});
+
+
+
+//get all a given user's friends IDs
+router.get("/getfriends", authenticateToken, async (req, res, next) => {
+    try{
+        const queryUserId = req.user.id;
+
+        //find relationships where this user is either userA or userB
+        Relationship.find({$or:[{userAId: queryUserId},{userBId: queryUserId}]})
+            .then((friendsList) => {
+                // console.log("Sending:" + friendsList); //debug
+                res.json({friendsList});
+            });
+        
+        
+    } catch(error) {
+        res.status(500).send("Error processing query");
+        console.log(error);
     }
 });
 
