@@ -33,8 +33,7 @@ function App() {
             <Route exact path="/Email" element={<CheckEmail />}></Route>
             <Route exact path="/Friends" element={<Friends />}></Route>
             <Route exact path="/Browse" element={<Browse />}></Route>
-            {/* <Route exact path="/Map" element={<Map />}></Route> */}
-            <Route exact path="/Map" element={<Mapbox />}></Route>
+            <Route exact path="/Map" element={<Map />}></Route>
             <Route exact path="/Favorites" element={<Favorites />}></Route>
             <Route exact path="/CreateAccount" element={<CreateAccount />}></Route>
             <Route exact path="/ForgotPassword" element={<ForgotPassword />}></Route>
