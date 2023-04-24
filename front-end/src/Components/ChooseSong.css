@@ -128,3 +128,6 @@ input[type="text"] {
   color: #666;
   text-align: left;
 }
+auth {
+  text-decoration: underline;
+}

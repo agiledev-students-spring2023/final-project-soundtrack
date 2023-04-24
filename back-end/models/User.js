@@ -34,6 +34,10 @@ const userSchema = new Schema(
         ref: "User",
         required: true,
       },
+      needToChangePass: {
+        type: Boolean,
+        default: false
+      }
     },
     {
       // Add `toJSON` and `toObject` transform to remove password field
