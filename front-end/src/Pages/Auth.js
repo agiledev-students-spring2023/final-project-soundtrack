@@ -7,6 +7,7 @@ const Auth = () => {
   const [url, setUrl] = useState('');
   const navigate = useNavigate(); 
   const [token, setToken] = useState('');
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,7 +29,18 @@ const Auth = () => {
     };
     fetchData();
   }, []);
-  
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await axios.get(`${process.env.REACT_APP_SERVER_HOSTNAME}/auth/get-access-token`);
+        setToken(true);
+      } catch (err) {
+        setError(`Error fetching access token: ${err.message}`);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <div>
