@@ -5,6 +5,8 @@ import Cookies from "js-cookie";
 import React, { useState, useEffect } from 'react';
 import './User.css';
 import {useNavigate} from "react-router-dom"
+import Compressor from 'compressorjs';
+
 
 
 function handleSubmit(e){
@@ -40,28 +42,39 @@ const [error, setError] = useState("");
       });
   }, [token]);
 
-async function handleFileUpload(event) {
-  const file = event.target.files[0];
-  setSelectedFile(file);
 
-  const formData = new FormData();
-  formData.append('avatar', file);
-
-  const token = Cookies.get('jwt');
-
-  try {
-    const response = await axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/user/avatar`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        Authorization: `Bearer ${token}`,
+  async function handleFileUpload(event) {
+    const file = event.target.files[0];
+  
+    new Compressor(file, {
+      quality: 0.6,
+      success: async (compressedFile) => {
+        setSelectedFile(compressedFile);
+  
+        const formData = new FormData();
+        formData.append('avatar', compressedFile);
+  
+        const token = Cookies.get('jwt');
+  
+        try {
+          const response = await axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/user/avatar`, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: `Bearer ${token}`,
+            },
+          });
+  
+          console.log(response.data);
+        } catch (error) {
+          console.error(error);
+        }
+      },
+      error: (error) => {
+        console.error(error.message);
       },
     });
-
-    console.log(response.data);
-  } catch (error) {
-    console.error(error);
   }
-}
+  
 
 
 async function handleSubmit(e) {
