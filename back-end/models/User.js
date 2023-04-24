@@ -30,7 +30,8 @@ const userSchema = new Schema(
         default: 0,
       },
       auth: {
-        refresh_token: String,
+        type: String,
+        default:0,
       },
       userId: {
         type: String,
