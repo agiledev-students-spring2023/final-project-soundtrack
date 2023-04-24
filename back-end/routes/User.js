@@ -82,12 +82,6 @@ router.get('/:userId', (req, res) => {
     });
 });
 
-
-
-
-
-
-
 const multer = require("multer");
 const fs = require("fs");
 const upload = multer({ dest: "uploads/" });
@@ -130,5 +124,24 @@ router.patch("/username", authenticateToken, async (req, res) => {
     .status(200)
     .json({ message: "Username updated successfully", userName: newUsername });
 });
+
+router.patch("/privacy", authenticateToken, async (req, res) => {
+  const userId = req.user.id;
+  const newPrivacy = req.body.privacy;
+
+  const user = await User.findOne({ userId: userId });
+
+  if (!user) {
+    return res.status(404).json({ error: "User not found" });
+  }
+
+  user.privacy = newPrivacy;
+  await user.save();
+
+  res
+    .status(200)
+    .json({ message: "Privacy setting updated successfully", privacy: newPrivacy });
+});
+
 
 module.exports = router;

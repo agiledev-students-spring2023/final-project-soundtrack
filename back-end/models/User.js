@@ -34,6 +34,10 @@ const userSchema = new Schema(
         ref: "User",
         required: true,
       },
+      privacy: {
+        type: Boolean,
+        default: false,
+      },
       needToChangePass: {
         type: Boolean,
         default: false
