@@ -43,6 +43,7 @@ function Camera({ onBack, onNext }) {
             ref={webcamRef}
             screenshotFormat="image/jpeg"
             videoConstraints={videoConstraints}
+            mirrored={true}
           />
         ) : (
           <img src={image} alt="Captured" />
