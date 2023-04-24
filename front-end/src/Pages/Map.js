@@ -1,5 +1,6 @@
 import "./Map.css";
 import HeaderBrowseMap from "../Components/HeaderBrowseMap";
+import Filter from "../Components/Filter";
 import {
   useLoadScript,
   GoogleMap,
@@ -21,8 +22,11 @@ function Map() {
   const [loading, setLoading] = useState(true);
   const autocomplete = useRef(null);
   const navigate = useNavigate();
+  const [showPopup, setShowPopup] = useState(false);
+  const popupRef = useRef(null);
   const [mapRef, setMapRef] = useState(null);
   const [placeIds, setPlaceIds] = useState([]);
+  const [filters, setFilters] = useState([]);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -40,28 +44,41 @@ function Map() {
     );
   }, []);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (popupRef.current && !popupRef.current.contains(event.target)) {
+        setShowPopup(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [popupRef]);
+
   //get map reference
   const handleMapLoad = (map) => {
     setMapRef(map);
     //console.log(map)
     console.log(mapRef);
     console.log(map.getBounds());
-    map.addListener("bounds_changed", () => {
-      const bounds = map.getBounds();
-      const service = new window.google.maps.places.PlacesService(map);
-      const request = {
-        bounds: bounds,
-        type: ["restaurant"],
-      };
-      service.nearbySearch(request, (results, status) => {
-        if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-          const result = results.map((result) => result);
-          const placeIds = results.map((result) => result.place_id);
-          setPlaceIds(placeIds);
-          console.log(result);
-        }
-      });
-    });
+    // map.addListener("bounds_changed", () => {
+    //   const bounds = map.getBounds();
+    //   const service = new window.google.maps.places.PlacesService(map);
+    //   const request = {
+    //     bounds: bounds,
+    //     type: ['restaurant'],
+    //   };
+    //   service.nearbySearch(request, (results, status) => {
+    //     if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+    //       const result = results.map((result) => result);
+    //       const placeIds = results.map((result) => result.place_id);
+    //       setPlaceIds(placeIds);
+    //       console.log(result);
+    //     }
+    //   });
+    // });
   };
 
   const onPlaceChanged = () => {
@@ -80,6 +97,31 @@ function Map() {
       navigate("/LocationProfile");
     }
   };
+
+  function handleClick() {
+    setShowPopup(!showPopup);
+  }
+
+  const filterLocations = (filters) => {
+    setFilters(filters);
+    console.log(filters);
+
+    const service = new window.google.maps.places.PlacesService(mapRef);
+      const request = {
+        location: center,
+        radius: 4000,
+        types: filters,
+      };
+      service.nearbySearch(request, (results, status) => {
+        if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+          const result = results.map((result) => result);
+          const placeIds = results.map((result) => result.place_id);
+          setPlaceIds(placeIds);
+          console.log(result);
+        }
+      });
+  };
+
 
   if (loadError) return "Error loading maps";
   if (!isLoaded) return "Loading Maps";
@@ -107,13 +149,18 @@ function Map() {
         </Autocomplete>
       </div>
       <div className="buttonContainer">
-        <div
-          className="filter"
-          onClick={() => {
-            navigate("/Filter");
-          }}
-        >
-          Filter
+      <div className="filter">
+          <div onClick={handleClick}>Filter</div>
+          {showPopup && (
+            <div className="popup" ref={popupRef}>
+              <div className="popup-inner">
+                <Filter
+                  filterLocations={filterLocations}
+                  handleClick={handleClick}
+                />
+              </div>
+            </div>
+          )}
         </div>
         <div
           className="favorites"
