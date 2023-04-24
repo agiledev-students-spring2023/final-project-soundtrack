@@ -71,7 +71,7 @@ router.get("/callback", morgan("dev"), authenticateToken, async (req, res, next)
       if (!user) {
         return res.status(404).json({ error: "User not found" });
       }
-      user.auth.refresh_token = spotifyApi.getRefreshToken(); 
+      user.auth = spotifyApi.getRefreshToken(); 
       await user.save();
 
       res.send("received access");
@@ -152,7 +152,7 @@ router.get('/refresh', authenticateToken, async(req,res) => {
   if (!user) {
     return res.status(404).json({ error: "User not found" });
   }
- const refresh_token = user.auth.refresh_token; 
+ const refresh_token = user.auth; 
  spotifyApi.setRefreshToken(refresh_token);
   axios({
     method: 'post',
