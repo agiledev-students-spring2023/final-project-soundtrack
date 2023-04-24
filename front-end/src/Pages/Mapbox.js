@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 import Filter from "../Components/Filter";
 import mapboxgl, { accessToken } from 'mapbox-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
-import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
+//import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
+
 // import Map, {
 //     Marker,
 //     Popup,
