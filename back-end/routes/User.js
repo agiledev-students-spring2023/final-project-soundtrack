@@ -75,7 +75,7 @@ router.get("/", authenticateToken, async (req, res) => {
 router.get('/:userId', (req, res) => {
   const userId = req.params.userId;
   console.log("Reached /user/:userId route");
-  Post.find({ userId: userId })
+  Post.find({ userId: userId, privacy: "Public"})
     .sort({ createdAt: -1 }) // sort by update time in descending order
     .then(async (posts) => {
       for (let i = 0; i < posts.length; i++) {
@@ -90,9 +90,7 @@ router.get('/:userId', (req, res) => {
             posts[i].locationName
         );
       }
-      userName = posts[0].userName;
-      avatar = posts[0].avatar;
-      res.json({ userName, posts, avatar });
+      res.json({posts});
     })
     .catch((err) => {
       console.error(err);
