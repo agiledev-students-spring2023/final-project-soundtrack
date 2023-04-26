@@ -127,8 +127,8 @@ const handleUserName = () => {
         className="location"
         onClick={() => handleLocationClick(post.locationName.placeId)}
       >
-        {" "}
-        {post.locationName.name}{" "}
+        <div className= "place_name"> {post.locationName.name}</div>
+        <div className= "place_address"></div>{post.locationName.formatted_address}
       </div>
       <img src={post.imageURL} alt="post" className="post-image" />
       <div className="song">
