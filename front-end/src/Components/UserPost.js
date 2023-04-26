@@ -83,23 +83,13 @@ const UserPost = ({ post, onDelete, onPrivacyChange }) => {
     }
   }
 
-  const handleLocationClick = (locationName) => {
-    console.log(post.locationName);
-    axios
-      .post(
-        `${process.env.REACT_APP_SERVER_HOSTNAME}/LocationProfile/savedLocation`,
-        { locationName: locationName}
-      )
-      .then((result) => {
-        console.log(result.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    navigate(`/locationprofile`);
+
+  const handleLocationClick = (locationId) => {
+    let locationID = locationId
+    console.log(locationID);
+    navigate(`/LocationProfile/${locationID}`);
   };
   
-
 const handleUserName = () => {
   let userID = post.userId;
   console.log(userID);
@@ -135,10 +125,10 @@ const handleUserName = () => {
       </div>
       <div
         className="location"
-        onClick={() => handleLocationClick(post.locationName)}
+        onClick={() => handleLocationClick(post.locationName.placeId)}
       >
-        {" "}
-        {post.locationName}{" "}
+        <div className= "place_name"> {post.locationName.name}</div>
+        <div className= "place_address"></div>{post.locationName.formatted_address}
       </div>
       <img src={post.imageURL} alt="post" className="post-image" />
       <div className="song">
