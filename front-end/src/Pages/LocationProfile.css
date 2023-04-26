@@ -51,10 +51,11 @@
     object-fit: cover;
 }
   
-.locationname {
-    margin-top: 10px;
+.locationName {
+    margin-top: 20px;
     font-size: 24px;
     font-weight: bold;
+    margin-bottom: 0px;
 }
   
 .locationAddress {

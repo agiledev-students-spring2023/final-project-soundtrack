@@ -16,9 +16,11 @@ import axios from "axios";
 
 
 function Map() {
+  const libraries = ["places"];
+  
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: "AIzaSyB1D7Olh84_bINSSNaJ5N9nsU6bq933y0U",
-    libraries: ["places"],
+    libraries,
   });
 
   const [center, setCenter] = useState({ lat: null, lng: null });
@@ -93,32 +95,19 @@ function Map() {
   const handleMarkerClick = (event) => {
     const marker = event?.placeId;
     if (marker) {
-      console.log(marker);
+      //console.log(marker);
       // This is a Google Place marker, redirect to user profile page
       const geocoder = new window.google.maps.Geocoder();
       geocoder.geocode(
         { location: { lat: event.latLng.lat(), lng: event.latLng.lng() } },
         (results, status) => {
           if (status === "OK") {
-            console.log(results);
-            console.log(results[0].formatted_address);
-            axios
-              .post(
-                `${process.env.REACT_APP_SERVER_HOSTNAME}/LocationProfile/savedLocation`,
-                { locationName: results[0].formatted_address }
-              )
-              .then((result) => {
-                console.log("success sent locaiton name");
-              })
-              .catch((err) => {
-                console.log(err);
-              });
+            console.log(results[0].place_id);
+            const locationID = results[0].place_id;
+            navigate(`/LocationProfile/${locationID}`);
           } else {
-            console.error(status);
-          }
-        }
-      );
-      navigate("/LocationProfile");
+            console.log("Geocode was not successful for the following reason: " + status);
+          }})
     }
   };
 
