@@ -87,11 +87,11 @@
   
 }
   .place_name {
-    font-size: 24px;
-    font-weight: normal;
+    font-size: 20px;
+    font-weight: bold;
 }
   
 .place_address {
-    font-size: 16px;
+    font-size: 13px;
     font-weight: normal;
 }

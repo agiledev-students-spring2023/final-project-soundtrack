@@ -51,10 +51,10 @@ router.post("/savePost", authenticateToken, async (req, res) => {
 
     await newPost.save();
     // Update all posts with a different location name
-    await Post.updateMany(
-      { userId: userId, locationName: { $ne: post.locationName } },
-      { $set: { locationName: post.locationName } }
-    );
+    // await Post.updateMany(
+    //   { userId: userId, locationName: { $ne: post.locationName } },
+    //   { $set: { locationName: post.locationName } }
+    // );
 
     console.log(`Successfully added post with ID ${newPost._id} to MongoDB`);
     res.status(200).send(`Post ${newPost._id} added successfully!`);
