@@ -41,7 +41,7 @@ function App() {
             <Route exact path="/Settings" element={<Settings />}></Route>
             <Route exact path="/ChangePassword" element={<ChangePassword />}></Route>
             <Route exact path="/Privacy" element={<Privacy />}></Route>
-            <Route exact path="/LocationProfile" element={<LocationProfile />}></Route>
+            <Route exact path="/LocationProfile/:locationID" element={<LocationProfile />}></Route>
             <Route exact path="/EditProfile" element={<EditProfile />}></Route>
             <Route exact path="/Auth" element={<Auth />}></Route>
           </Routes>

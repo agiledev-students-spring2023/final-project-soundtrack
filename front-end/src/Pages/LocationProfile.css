@@ -37,11 +37,16 @@
 }
   
 .locationname {
-    margin-top: 20px;
+    margin-top: 10px;
     font-size: 24px;
+    font-weight: bold;
 }
   
-  
+.locationAddress {
+    font-size: 16px;
+    font-weight: normal;
+}
+
 .location-posts {
     display: flex;
     flex-direction: column;

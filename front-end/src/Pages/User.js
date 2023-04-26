@@ -10,14 +10,13 @@ const User = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
   const token = Cookies.get("jwt"); // Get the JWT token from the cookie
 
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/user`, {
         headers: {
-          Authorization: `Bearer ${token}`, 
+          Authorization: `Bearer ${token}`,
         },
       })
       .then((result) => {
@@ -25,12 +24,14 @@ const User = () => {
         console.log(result.data);
       })
       .catch((err) => {
-        setError("Failed to fetch data from the server");
+        const errorMessage = err.response?.data?.message || "Failed to fetch data from the server";
+        setError(errorMessage);
       })
       .finally(() => {
         setLoading(false);
       });
   }, [token]);
+  
 
   const handlePostDelete = (postId) => {
     setData((prevData) => ({
