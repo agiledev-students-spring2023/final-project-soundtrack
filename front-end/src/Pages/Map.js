@@ -13,6 +13,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { Autocomplete } from "@react-google-maps/api";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import logoIcon from "../Logos/soundTrackIcon.png";
+
 
 function Map() {
   const libraries = ["places"];
@@ -34,6 +36,8 @@ function Map() {
   const [placeIds, setPlaceIds] = useState([]);
   const [filters, setFilters] = useState([]);
   const [bounds, setBounds] = useState(null);
+  const [error, setError] = useState("");
+
 
   const handleMapLoad = (map) => {
     setMapRef(map);
@@ -50,6 +54,7 @@ function Map() {
     }
   }, [mapRef]);
 
+  //set current location as center
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -66,6 +71,70 @@ function Map() {
     );
   }, []);
 
+
+  useEffect(() => {
+    if (mapRef && bounds) {
+      const ne = bounds.getNorthEast();
+      const sw = bounds.getSouthWest();
+      console.log("bound is", ne.lat(), ne.lng());
+      axios
+        .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/map`, {
+          params: {
+            bounds: `${sw.lat()},${sw.lng()},${ne.lat()},${ne.lng()}`
+          },
+        })
+        .then((result) => {
+          console.log(result.data);
+          for(let i = 0; i < result.data.locationNames.length; i++){
+            console.log(result.data.locationNames[i].placeId);
+            createSongMarkers(result.data.locationNames[i]);
+          }
+        })
+        .catch((err) => {
+          setError(err);
+        });
+    }
+  }, [bounds, mapRef]);
+  
+
+//create marker based on filter 
+function createSongMarkers(locationName) {
+  if (locationName && locationName.geo && locationName.geo.location) {
+    const marker = new window.google.maps.Marker({
+      key: locationName.placeId,
+      position: {
+        lat: locationName.geo.location.lat,
+        lng: locationName.geo.location.lng,
+      },
+      title: locationName.name,
+      icon: {
+        url: logoIcon,
+        scaledSize: new window.google.maps.Size(40, 40),
+      },
+      clickable: true,
+    });
+    marker.addListener("click", () => {
+      console.log("marker place id: " + marker.key);
+      handleCustomMarkerClick(marker.key);
+    });
+    //console.log(marker.position.lat())
+    marker.setMap(mapRef);
+    console.log(mapRef)
+    return marker;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+  //handle filter pop up
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -82,6 +151,7 @@ function Map() {
     };
   }, [popupRefFilter]);
 
+  //handle filter pop up 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -98,6 +168,7 @@ function Map() {
     };
   }, [popupRefFavorites]);
 
+  //handle search bar
   const onPlaceChanged = () => {
     if (autocomplete.current !== null) {
       setCenter({
@@ -107,6 +178,7 @@ function Map() {
     }
   };
 
+  //handle google map marker
   const handleMarkerClick = (event) => {
     const marker = event?.placeId;
     if (marker) {
@@ -130,12 +202,12 @@ function Map() {
     }
   };
 
+
+  //handle custom marker click
   const handleCustomMarkerClick = (locationID) => {
     console.log(locationID);
     navigate(`/LocationProfile/${locationID}`);
   }
-
-
 
 
   function handleFilterClick() {
@@ -146,6 +218,7 @@ function Map() {
     setShowFavoritesPopup(!showFavoritesPopup);
   }
 
+  //filter locations 
   const filterLocations = (filters) => {
     setFilters(filters);
     console.log(filters);
@@ -168,6 +241,7 @@ function Map() {
     });
   };
 
+  //create marker based on filter 
   function createMarkers(locations) {
     console.log("creating markers");
     if (locations) {
