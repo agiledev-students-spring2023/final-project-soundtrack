@@ -49,7 +49,6 @@ img {
 .dropdownTitle {
   padding: 10px; 
   font-size: 1.2rem;
-  font-weight: bold;
   width: 300px; /* fixed width for the dropdown title */
   text-align: left
 }

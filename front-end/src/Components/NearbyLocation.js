@@ -1,12 +1,17 @@
-import { useLoadScript, GoogleMap, Marker,MarkerF } from "@react-google-maps/api";
+import {
+  useLoadScript,
+  GoogleMap,
+  Marker,
+  MarkerF,
+} from "@react-google-maps/api";
 import React, { useState, useEffect } from "react";
 import "./NearbyLocation.css";
 
-function NearbyLocation({onNext}) {
+function NearbyLocation({ onNext }) {
   const libraries = ["places"];
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: "AIzaSyB1D7Olh84_bINSSNaJ5N9nsU6bq933y0U",
-    libraries
+    libraries,
   });
 
   const [center, setCenter] = useState({ lat: null, lng: null });
@@ -14,8 +19,12 @@ function NearbyLocation({onNext}) {
   const [confirm, setConfirm] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [locationName, setLocationName] = useState(null);
+  const [mapRef, setMapRef] = useState(null);
 
-
+  const handleMapLoad = (map) => {
+    setMapRef(map);
+    console.log(mapRef);
+  };
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -38,17 +47,45 @@ function NearbyLocation({onNext}) {
     setConfirm(true);
     const geocoder = new window.google.maps.Geocoder();
     geocoder.geocode(
-  { location: { lat: event.latLng.lat(), lng: event.latLng.lng() } },
-  (results, status) => {
-    if (status === "OK") {
-      setLocationName(results[0].formatted_address);
-    } else {
-      console.error(status);
-    }
-  }
-);
-  };
+      { location: { lat: event.latLng.lat(), lng: event.latLng.lng() } },
+      (results, status) => {
+        if (status === "OK") {
+          if (results[0]) {
+            const placeId = results[0].place_id;
+            const service = new window.google.maps.places.PlacesService(mapRef);
+            service.getDetails(
+              {
+                placeId,
+                fields: ["name"],
+              },
+              (place, status) => {
+                if (status === "OK" && place) {
+                  const locationProfile ={
+                    name: place.name,
+                    formatted_address: results[0].formatted_address,
+                    geo: results[0].geometry,
+                    placeId: placeId
+                  }
+                  setLocationName(locationProfile);
+                  console.log(locationProfile);
+                  console.log(locationName);
 
+                  
+                } else {
+                  console.log("No results found");
+                }
+              }
+            );
+          } else {
+            console.log("No results found");
+          }
+        } else {
+          console.log("Geocoder failed due to: " + status);
+        }
+      }
+    );
+  };
+  
   const handleNext = () => {
     if (locationName) {
       onNext(locationName);
@@ -69,6 +106,7 @@ function NearbyLocation({onNext}) {
         <div className="loading-container">Loading...</div>
       ) : (
         <GoogleMap
+          onLoad={handleMapLoad}
           mapContainerStyle={mapContainerStyle}
           center={center}
           zoom={15}
@@ -81,11 +119,14 @@ function NearbyLocation({onNext}) {
         </GoogleMap>
       )}
       {locationName && (
-  <div className="location-name">{locationName}</div>
-)}
+        <div className = "location-container">
+        <div className="location-name">{locationName.name}</div>
+        <div className="location-address">{locationName.formatted_address}</div>
+        </div>
+      )}
       <div>
         {confirm && (
-          <button className="confirmButton" onClick={handleNext} >
+          <button className="confirmButton" onClick={handleNext}>
             I am here!
           </button>
         )}
