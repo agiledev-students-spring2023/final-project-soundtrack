@@ -1,7 +1,5 @@
 import React from "react";
 import "./Filter.css";
-import {useNavigate} from "react-router-dom"
-
 
 function Filter(props) {
     const locationFilters = [

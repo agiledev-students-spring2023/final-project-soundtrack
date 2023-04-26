@@ -1,3 +1,11 @@
+.FilterContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    column-count: 1;
+    padding: 10px;
+}
+
 .Title{
     background-color: #282c34;
     min-height: 20vh;
@@ -7,14 +15,6 @@
     justify-content: center;
     font-size: calc(10px + 1vmin);
     color: white;
-}
-
-.FilterContainer{
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    column-count: 1;
-    padding: 10px;
 }
 
 .Filter {
