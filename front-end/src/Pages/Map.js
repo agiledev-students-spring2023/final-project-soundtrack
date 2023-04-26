@@ -14,26 +14,41 @@ import { Autocomplete } from "@react-google-maps/api";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-
 function Map() {
   const libraries = ["places"];
-  
+
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: "AIzaSyB1D7Olh84_bINSSNaJ5N9nsU6bq933y0U",
     libraries,
   });
 
-  const [center, setCenter] = useState({ lat: null, lng: null });
-  const [loading, setLoading] = useState(true);
   const autocomplete = useRef(null);
   const navigate = useNavigate();
-  const [showFilterPopup, setShowFilterPopup] = useState(false);
-  const [showFavoritesPopup, setShowFavoritesPopup] = useState(false);
   const popupRefFilter = useRef(null);
   const popupRefFavorites = useRef(null);
+  const [center, setCenter] = useState({ lat: null, lng: null });
+  const [loading, setLoading] = useState(true);
+  const [showFilterPopup, setShowFilterPopup] = useState(false);
+  const [showFavoritesPopup, setShowFavoritesPopup] = useState(false);
   const [mapRef, setMapRef] = useState(null);
   const [placeIds, setPlaceIds] = useState([]);
   const [filters, setFilters] = useState([]);
+  const [bounds, setBounds] = useState(null);
+
+  const handleMapLoad = (map) => {
+    setMapRef(map);
+    console.log(mapRef);
+  };
+
+  //get bounds of the map
+  useEffect(() => {
+    if (mapRef) {
+      mapRef.addListener("idle", () => {
+        const bound = mapRef.getBounds();
+        setBounds(bound);
+      });
+    }
+  }, [mapRef]);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -53,7 +68,10 @@ function Map() {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (popupRefFilter.current && !popupRefFilter.current.contains(event.target)) {
+      if (
+        popupRefFilter.current &&
+        !popupRefFilter.current.contains(event.target)
+      ) {
         setShowFilterPopup(false);
       }
     };
@@ -66,7 +84,10 @@ function Map() {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (popupRefFavorites.current && !popupRefFavorites.current.contains(event.target)) {
+      if (
+        popupRefFavorites.current &&
+        !popupRefFavorites.current.contains(event.target)
+      ) {
         setShowFavoritesPopup(false);
       }
     };
@@ -76,12 +97,6 @@ function Map() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [popupRefFavorites]);
-
-  const handleMapLoad = (map) => {
-    setMapRef(map);
-    console.log(mapRef);
-    console.log(map.getBounds());
-  };
 
   const onPlaceChanged = () => {
     if (autocomplete.current !== null) {
@@ -95,7 +110,7 @@ function Map() {
   const handleMarkerClick = (event) => {
     const marker = event?.placeId;
     if (marker) {
-      //console.log(marker);
+      console.log(marker);
       // This is a Google Place marker, redirect to user profile page
       const geocoder = new window.google.maps.Geocoder();
       geocoder.geocode(
@@ -106,10 +121,22 @@ function Map() {
             const locationID = results[0].place_id;
             navigate(`/LocationProfile/${locationID}`);
           } else {
-            console.log("Geocode was not successful for the following reason: " + status);
-          }})
+            console.log(
+              "Geocode was not successful for the following reason: " + status
+            );
+          }
+        }
+      );
     }
   };
+
+  const handleCustomMarkerClick = (locationID) => {
+    console.log(locationID);
+    navigate(`/LocationProfile/${locationID}`);
+  }
+
+
+
 
   function handleFilterClick() {
     setShowFilterPopup(!showFilterPopup);
@@ -124,20 +151,21 @@ function Map() {
     console.log(filters);
 
     const service = new window.google.maps.places.PlacesService(mapRef);
-      const request = {
-        location: center,
-        radius: 4000,
-        types: filters,
-      };
-      service.nearbySearch(request, (results, status) => {
-        if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-          const result = results.map((result) => result);
-          const placeIds = results.map((result) => result.place_id);
-          setPlaceIds(placeIds);
-          createMarkers(results);
-          console.log(result);
-        }
-      });
+    const request = {
+      location: center,
+      bound: bounds,
+      radius: "500",
+      types: filters,
+    };
+    service.nearbySearch(request, (results, status) => {
+      if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+        const result = results.map((result) => result);
+        const placeIds = results.map((result) => result.place_id);
+        setPlaceIds(placeIds);
+        createMarkers(results);
+        console.log(result);
+      }
+    });
   };
 
   function createMarkers(locations) {
@@ -145,22 +173,27 @@ function Map() {
     if (locations) {
       console.log("filtered");
       const markers = locations.map((place) => {
-        return (
-          new window.google.maps.Marker({
-            key: place.id,
-            position: {
-              lat: place.geometry.location.lat(),
-              lng: place.geometry.location.lng(),
-            }
-          })
-        );
+        console.log(place.place_id);
+        const marker = new window.google.maps.Marker({
+          key: place.place_id,
+          position: {
+            lat: place.geometry.location.lat(),
+            lng: place.geometry.location.lng(),
+          },
+          clickable: true,
+        });
+        marker.addListener("click", () => {
+          console.log("marker place id: " + marker.key);
+          handleCustomMarkerClick(marker.key);
+        });
+        return marker;
       });
       markers.forEach((m) => m.setMap(mapRef));
+      console.log(markers);
     } else {
       console.log("filters null");
     }
   }
-
 
   if (loadError) return "Error loading maps";
   if (!isLoaded) return "Loading Maps";
@@ -189,27 +222,27 @@ function Map() {
       </div>
       <div className="buttonContainer">
         <div className="filter">
-            <div onClick={handleFilterClick}>Filter</div>
-            {showFilterPopup && (
-              <div className="popup" ref={popupRefFilter}>
-                <div className="popup-inner">
-                  <Filter
-                    filterLocations={filterLocations}
-                    handleClick={handleFilterClick}
-                  />
-                </div>
+          <div onClick={handleFilterClick}>Filter</div>
+          {showFilterPopup && (
+            <div className="popup" ref={popupRefFilter}>
+              <div className="popup-inner">
+                <Filter
+                  filterLocations={filterLocations}
+                  handleClick={handleFilterClick}
+                />
               </div>
-            )}
+            </div>
+          )}
         </div>
         <div className="favorites">
-            <div onClick={handleFavoritesClick}>Favorites</div>
-            {showFavoritesPopup && (
-              <div className="popup" ref={popupRefFavorites}>
-                <div className="popup-inner">
-                  <Favorites/>
-                </div>
+          <div onClick={handleFavoritesClick}>Favorites</div>
+          {showFavoritesPopup && (
+            <div className="popup" ref={popupRefFavorites}>
+              <div className="popup-inner">
+                <Favorites />
               </div>
-            )}
+            </div>
+          )}
         </div>
       </div>
 
@@ -226,16 +259,7 @@ function Map() {
           }}
           onClick={handleMarkerClick}
         >
-          {placeIds.map((placeId) => (
-            <MarkerF
-              key={placeId}
-              position = {{lat: 43.6532, lng: -79.3832}}
-            />
-          ))}
-          <MarkerF
-            position={center}
-            onClick={() => navigate("/LocationProfile")}
-          />
+          <MarkerF position={center} />
         </GoogleMap>
       )}
     </div>
