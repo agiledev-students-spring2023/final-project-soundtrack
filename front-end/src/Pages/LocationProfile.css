@@ -20,6 +20,21 @@
     padding: 0 20px;
     text-decoration: underline;
 }
+
+.favorite-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 3rem;
+    height: 4vh;
+
+    background-color: lightgray;
+    border-radius: 10px;
+
+    text-align: center;
+    font-size: small;
+}
   
   
 .location-profile {

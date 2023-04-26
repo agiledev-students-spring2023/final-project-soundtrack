@@ -45,6 +45,9 @@ const LocationProfile = () => {
         <div onClick={() => navigate("/map")} className="back-link">
           Back
         </div>
+        <div onClick = {() => {console.log("Location Favorited")}} className="favorite-button">
+          Favorite
+        </div>
       </div>
 
       {loading ? (

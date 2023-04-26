@@ -19,6 +19,10 @@
     padding-right: 20px;
 }
 
+.favorite{
+    padding-left: 20px;
+}
+
 .popup {
   position: fixed;
   top: 50%;
@@ -33,10 +37,6 @@
   overflow: auto;
   padding: 20px;
   box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
-}
-
-.favorite{
-    padding-left: 20px;
 }
 
   .autocomplete-container {
