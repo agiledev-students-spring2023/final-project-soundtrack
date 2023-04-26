@@ -1,6 +1,7 @@
 import "./Map.css";
 import HeaderBrowseMap from "../Components/HeaderBrowseMap";
 import Filter from "../Components/Filter";
+import Favorites from "../Components/Favorites";
 import {
   useLoadScript,
   GoogleMap,
@@ -24,8 +25,10 @@ function Map() {
   const [loading, setLoading] = useState(true);
   const autocomplete = useRef(null);
   const navigate = useNavigate();
-  const [showPopup, setShowPopup] = useState(false);
-  const popupRef = useRef(null);
+  const [showFilterPopup, setShowFilterPopup] = useState(false);
+  const [showFavoritesPopup, setShowFavoritesPopup] = useState(false);
+  const popupRefFilter = useRef(null);
+  const popupRefFavorites = useRef(null);
   const [mapRef, setMapRef] = useState(null);
   const [placeIds, setPlaceIds] = useState([]);
   const [filters, setFilters] = useState([]);
@@ -48,8 +51,8 @@ function Map() {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (popupRef.current && !popupRef.current.contains(event.target)) {
-        setShowPopup(false);
+      if (popupRefFilter.current && !popupRefFilter.current.contains(event.target)) {
+        setShowFilterPopup(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -57,7 +60,20 @@ function Map() {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [popupRef]);
+  }, [popupRefFilter]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (popupRefFavorites.current && !popupRefFavorites.current.contains(event.target)) {
+        setShowFavoritesPopup(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [popupRefFavorites]);
 
   const handleMapLoad = (map) => {
     setMapRef(map);
@@ -106,8 +122,12 @@ function Map() {
     }
   };
 
-  function handleClick() {
-    setShowPopup(!showPopup);
+  function handleFilterClick() {
+    setShowFilterPopup(!showFilterPopup);
+  }
+
+  function handleFavoritesClick() {
+    setShowFavoritesPopup(!showFavoritesPopup);
   }
 
   const filterLocations = (filters) => {
@@ -179,26 +199,28 @@ function Map() {
         </Autocomplete>
       </div>
       <div className="buttonContainer">
-      <div className="filter">
-          <div onClick={handleClick}>Filter</div>
-          {showPopup && (
-            <div className="popup" ref={popupRef}>
-              <div className="popup-inner">
-                <Filter
-                  filterLocations={filterLocations}
-                  handleClick={handleClick}
-                />
+        <div className="filter">
+            <div onClick={handleFilterClick}>Filter</div>
+            {showFilterPopup && (
+              <div className="popup" ref={popupRefFilter}>
+                <div className="popup-inner">
+                  <Filter
+                    filterLocations={filterLocations}
+                    handleClick={handleFilterClick}
+                  />
+                </div>
               </div>
-            </div>
-          )}
+            )}
         </div>
-        <div
-          className="favorites"
-          onClick={() => {
-            navigate("/Favorites");
-          }}
-        >
-          Favorite
+        <div className="favorites">
+            <div onClick={handleFavoritesClick}>Favorites</div>
+            {showFavoritesPopup && (
+              <div className="popup" ref={popupRefFavorites}>
+                <div className="popup-inner">
+                  <Favorites/>
+                </div>
+              </div>
+            )}
         </div>
       </div>
 
