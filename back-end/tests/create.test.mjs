@@ -1,70 +1,97 @@
-import request from "supertest";
-import express from "express";
-import accountsRouter from "../routes/Account.js";
-import { expect } from 'chai';
-import fs from 'fs';
-import path from "path";
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
+import express from 'express';
+import { Router } from 'express';
+import passport from 'passport';
+import jwt from 'jsonwebtoken';
+import morgan from 'morgan';
+import User from '../models/User.js';
+import bcrypt from 'bcrypt';
+import chai from 'chai';
+import chaiHttp from 'chai-http';
+import sinon from 'sinon';
+
+import { app, close } from '../server.js';
+
+chai.use(chaiHttp);
+const expect = chai.expect;
+const secretKey = "shaoxuewenlu";
 
 
-const app = express();
-app.use(express.json());
-app.use("/create", accountsRouter);
-
-describe("Accounts API", () => {
-  const usersFilePath = path.join(__dirname, "../routes/users.json");
-  let existingUsers = [];
-
+describe('User registration', () => {
+  // Connect to the database before the tests
   before(async () => {
-    if (fs.existsSync(usersFilePath)) {
-      const usersData = fs.readFileSync(usersFilePath);
-      existingUsers = JSON.parse(usersData);
-      for (let user of existingUsers) {
-        await request(app)
-          .post("/create")
-          .send(user);
-      }
-    }
-  });
-
-  afterEach(async () => {
-    if (fs.existsSync(usersFilePath)) {
-      const usersData = fs.readFileSync(usersFilePath);
-      existingUsers = JSON.parse(usersData);
-
-      // Delete the test user if it exists
-      const testUserIndex = existingUsers.findIndex(user => user.username === "testuser");
-      if (testUserIndex !== -1) {
-        existingUsers.splice(testUserIndex, 1);
-        fs.writeFileSync(usersFilePath, JSON.stringify(existingUsers));
-      }
-    }
-  });
-
-  it("GET /accounts should return a list of accounts", async () => {
-    const response = await request(app).get("/create");
-    expect(response.status).to.equal(200);
-    expect(response.body).to.deep.equal(existingUsers);
-  });
-
-  it("POST /accounts/create should create a new account", async () => {
-    const newAccount = {
-      username: "testuser",
-      password: "testpassword"
+    const testUser = {
+      firstName: 'Jane',
+      userName: 'janedoe',
+      password: 'password456',
+      email: 'janedoe@example.com',
+      spotifyUser: 'janedoe123',
+      userId: 2
     };
-    const response = await request(app).post("/create").send(newAccount);
-    expect(response.status).to.equal(201);
+    await User.deleteOne({ userName: testUser.userName });
+    const user = new User(testUser);
+    await user.save();
   });
 
-  it("POST /create should return an error if username already exists", async () => {
-    const existingAccount = existingUsers[0];
-    const response = await request(app).post("/create").send(existingAccount);
-    expect(response.status).to.equal(400);
-    expect(response.body.error).to.equal("Username already exists. Please choose a different username.");
-  });
+  // Close the app after the tests
+ 
+  // Test the POST route for creating a new user
+  describe('POST /create', () => {
+    it('should create a new user with valid credentials', async () => {
+      const res = await chai.request(app)
+        .post('/create')
+        .send({
+          name: 'John Doe',
+          username: 'johndoe',
+          password: 'password123',
+          email: 'johndoe@example.com',
+          spotify: 'johndoe123',
+          id: 1
+        });
+      expect(res).to.have.status(200);
+      expect(res.body).to.have.property('message', 'User created and logged in');
+      expect(res.body).to.have.property('token');
+      const decoded = jwt.verify(res.body.token, secretKey);
+      console.log(decoded);
+      expect(decoded).to.have.property('id', '1');
+      const user = await User.findOne({ userName: 'johndoe' });
+      expect(user).to.not.be.null;
+      const match = await bcrypt.compare('password123', user.password);
+      expect(match).to.be.true;
+    });
 
-  after(() => {
-    // Reset users.json to its original state
-    fs.writeFileSync(usersFilePath, JSON.stringify(existingUsers));
+    it('should not create a new user if the username already exists', async () => {
+      const res = await chai.request(app)
+        .post('/create')
+        .send({
+          name: 'John Doe',
+          username: 'janedoe',
+          password: 'password123',
+          email: 'johndoe@example.com',
+          spotify: 'johndoe123',
+          id: 1
+        });
+      expect(res).to.have.status(409);
+      expect(res.body).to.have.property('message', 'Username already exists');
+      const user = await User.findOne({ userName: 'janedoe' });
+      expect(user.password).to.equal('password456');
+    });
+
+    it('should return an error if there is a server-side issue', async () => {
+      const stub = sinon.stub(User.prototype, 'save').throws();
+      const res = await chai.request(app)
+        .post('/create')
+        .send({
+          name: 'John Doe',
+          username: 'johndoe',
+          password: 'password123',
+          email: 'johndoe@example.com',
+          spotify: 'johndoe123',
+          id: 1
+        });
+      expect(res).to.have.status(500);
+      expect(res.text).to.equal('Error saving user to database');
+      stub.restore();
+    });
   });
 });
+

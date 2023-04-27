@@ -31,7 +31,7 @@ router.post('/', async function (req, res) {
     res.status(200).json({ message: 'User created and logged in', token });
   } catch (error) {
     console.error(error);
-    res.status(500).send('Error saving user to database');
+    res.status(500).json({ message: 'Error saving user to database' });
   }
 });
 
