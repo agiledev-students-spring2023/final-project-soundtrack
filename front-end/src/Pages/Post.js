@@ -58,7 +58,7 @@ const Post = () => {
         <h1>Create Your Post</h1>
       </div>
 
-      <div>
+      <div className="container">
         {activeComponent === "ChooseSong" && (
           <ChooseSong
             placeholder={"Search Song"}
