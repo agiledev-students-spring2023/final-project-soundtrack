@@ -6,7 +6,6 @@ const Post = require('../models/post');
 router.get('/', async function(req, res) {
   const { bounds } = req.query;
   const [swLat, swLng, neLat, neLng] = bounds.split(',');
-  ,
   try {
     const posts = await Post.find({
       privacy: 'Public',
