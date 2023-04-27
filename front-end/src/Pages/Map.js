@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import logoIcon from "../Logos/soundTrackIcon.png";
 import mapStyle from './mapStyle.json'; // assuming the JSON is saved in a separate file
+import Cookies from "js-cookie";
  
 
 function Map() {
