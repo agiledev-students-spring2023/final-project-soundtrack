@@ -10,7 +10,7 @@ import "./NearbyLocation.css";
 function NearbyLocation({ onNext }) {
   const libraries = ["places"];
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: "AIzaSyB1D7Olh84_bINSSNaJ5N9nsU6bq933y0U",
+    googleMapsApiKey: process.env.REACT_APP_MAP_KEY,
     libraries,
   });
 
