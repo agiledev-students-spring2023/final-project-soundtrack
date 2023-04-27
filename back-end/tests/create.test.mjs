@@ -18,19 +18,22 @@ const secretKey = "shaoxuewenlu";
 
 describe('User registration', () => {
   // Connect to the database before the tests
-  before(async () => {
-    const testUser = {
+  beforeEach(async () => {
+    const userToDelete = await User.findOne({ userName: 'johndoe' });
+    if (userToDelete) {
+      await User.deleteOne({ userName: 'johndoe' });
+    }
+    const user = new User({
       firstName: 'Jane',
       userName: 'janedoe',
       password: 'password456',
       email: 'janedoe@example.com',
       spotifyUser: 'janedoe123',
       userId: 2
-    };
-    await User.deleteOne({ userName: testUser.userName });
-    const user = new User(testUser);
+    });
     await user.save();
   });
+
 
   // Close the app after the tests
  
@@ -51,7 +54,6 @@ describe('User registration', () => {
       expect(res.body).to.have.property('message', 'User created and logged in');
       expect(res.body).to.have.property('token');
       const decoded = jwt.verify(res.body.token, secretKey);
-      console.log(decoded);
       expect(decoded).to.have.property('id', '1');
       const user = await User.findOne({ userName: 'johndoe' });
       expect(user).to.not.be.null;
@@ -77,7 +79,8 @@ describe('User registration', () => {
     });
 
     it('should return an error if there is a server-side issue', async () => {
-      const stub = sinon.stub(User.prototype, 'save').throws();
+      const errorMessage = 'Error saving user to database';
+      const stub = sinon.stub(User.prototype, 'save').throws(new Error(errorMessage));
       const res = await chai.request(app)
         .post('/create')
         .send({
@@ -89,9 +92,15 @@ describe('User registration', () => {
           id: 1
         });
       expect(res).to.have.status(500);
-      expect(res.text).to.equal('Error saving user to database');
+      expect(res.body).to.have.property('message', "Error saving user to database");
       stub.restore();
-    });
+    });    
   });
+
+  
+  after(() => {
+    close();
+  });
+  
 });
 
