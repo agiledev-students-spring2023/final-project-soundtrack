@@ -1,7 +1,6 @@
 import "./Map.css";
 import HeaderBrowseMap from "../Components/HeaderBrowseMap";
 import Filter from "../Components/Filter";
-import Cookies from "js-cookie";
 import Favorites from "../Components/Favorites";
 import {
   useLoadScript,
@@ -14,14 +13,16 @@ import React, { useState, useEffect, useRef } from "react";
 import { Autocomplete } from "@react-google-maps/api";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import logoIcon from "../Logos/soundTrackIcon.png";
+import mapStyle from './mapStyle.json'; // assuming the JSON is saved in a separate file
+ 
 
 function Map() {
   const libraries = ["places"];
 
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: "AIzaSyB1D7Olh84_bINSSNaJ5N9nsU6bq933y0U",
-    libraries: ["places"],
+    libraries,
   });
 
   const autocomplete = useRef(null);
@@ -35,6 +36,24 @@ function Map() {
   const [mapRef, setMapRef] = useState(null);
   const [placeIds, setPlaceIds] = useState([]);
   const [filters, setFilters] = useState([]);
+  const [bounds, setBounds] = useState(null);
+  const [error, setError] = useState("");
+
+
+  const handleMapLoad = (map) => {
+    setMapRef(map);
+    console.log(mapRef);
+  };
+
+  //get bounds of the map
+  useEffect(() => {
+    if (mapRef) {
+      mapRef.addListener("idle", () => {
+        const bound = mapRef.getBounds();
+        setBounds(bound);
+      });
+    }
+  }, [mapRef]);
 
   //set current location as center
   useEffect(() => {

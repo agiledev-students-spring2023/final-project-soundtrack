@@ -7,9 +7,6 @@
   font-size: calc(0.75rem + 1vmin); /* smaller font size */
   color: white;
 }
-.container{
-  align-items: center;
-}
 
 
 .ReturnButton{
