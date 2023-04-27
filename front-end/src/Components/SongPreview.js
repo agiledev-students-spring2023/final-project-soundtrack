@@ -7,6 +7,8 @@ const SongPreview = ({ track }) => {
   const [audio, setAudio] = useState(null);
   const [playing, setPlaying] = useState(false);
 
+  //console.log(track); 
+
   const playPreview = async (previewUrl) => {
     if (!previewUrl) {
       return;

@@ -1,6 +1,7 @@
 import "./ChooseSong.css";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Cookies from "js-cookie";
 import SongPreview from "../Components/SongPreview";
 import {useNavigate} from "react-router-dom"
 
@@ -11,6 +12,21 @@ function ChooseSong({ placeholder, data, onNext }) {
   const [selectedSong, setSelectedSong] = useState(null);
   const [recentlyPlayed, setRecentlyPlayed] = useState([]);
   const navigate = useNavigate(); 
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = Cookies.get('jwt');
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_HOSTNAME}/auth/refresh`, config);      
+      console.log("spotify access refreshed"); 
+    };
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,6 +41,19 @@ function ChooseSong({ placeholder, data, onNext }) {
       }
     };
     fetchData();
+  }, []);
+
+  // client credentials flow
+  const [token, setToken] = useState(null);
+  useEffect(() => {
+    const fetchToken = async () => {
+      const response = await axios.get(
+        `${process.env.REACT_APP_SERVER_HOSTNAME}/client`
+      );
+      //console.log(response);
+      setToken(response.data);
+    };
+    fetchToken();
   }, []);
 
   const removeDuplicateTracks = (items) => {
