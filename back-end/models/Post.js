@@ -29,7 +29,7 @@ const postSchema = new Schema(
       required: true,
     },
     locationName: {
-      type: String,
+      type: Object,
       required: true,
     },
     privacy: {

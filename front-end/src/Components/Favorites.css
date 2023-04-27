@@ -1,3 +1,11 @@
+.FavoritesContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    column-count: 1;
+    padding: 10px;
+}
+
 .Title{
     background-color: #282c34;
     min-height: 20vh;

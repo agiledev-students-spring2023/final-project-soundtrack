@@ -1,23 +1,22 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 const secretKey = "shaoxuewenlu";
-const jwt = require('jsonwebtoken');
-const Post = require('../models/post'); // import Post model
-const User = require('../models/User'); // Assuming the model is in a separate file called "userModel.js"
-
+const jwt = require("jsonwebtoken");
+const Post = require("../models/post"); // import Post model
+const User = require("../models/User"); // Assuming the model is in a separate file called "userModel.js"
 
 function authenticateToken(req, res, next) {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
   console.log("token is " + token);
 
   if (!token) {
-    return res.status(401).send('Missing token header');
+    return res.status(401).send("Missing token header");
   }
 
   jwt.verify(token, secretKey, (err, user) => {
     if (err) {
-      return res.status(403).send('Invalid token');
+      return res.status(403).send("Invalid token");
     }
 
     //console.log('user:', user);
@@ -26,17 +25,17 @@ function authenticateToken(req, res, next) {
   });
 }
 
-router.post('/savePost', authenticateToken, async (req, res) => {
+router.post("/savePost", authenticateToken, async (req, res) => {
   try {
     const post = req.body.postItem;
     console.log({ post });
-    //fetch username from db with id from token 
+    //fetch username from db with id from token
     const userId = req.user.id;
-    console.log('userid:', userId); // Extract user ID from token
-    
+    console.log("userid:", userId); // Extract user ID from token
+
     const user = await User.findOne({ userId: userId });
     const userName = user.userName;
-    console.log('username: ', user.userName);   
+    console.log("username: ", user.userName);
 
     const newPost = new Post({
       userId: userId,
@@ -47,10 +46,16 @@ router.post('/savePost', authenticateToken, async (req, res) => {
       locationName: post.locationName,
       privacy: post.privacy,
       likes: 0,
-      likedBy: []
+      likedBy: [],
     });
 
     await newPost.save();
+    // Update all posts with a different location name
+    // await Post.updateMany(
+    //   { userId: userId, locationName: { $ne: post.locationName } },
+    //   { $set: { locationName: post.locationName } }
+    // );
+
     console.log(`Successfully added post with ID ${newPost._id} to MongoDB`);
     res.status(200).send(`Post ${newPost._id} added successfully!`);
   } catch (error) {
@@ -59,7 +64,7 @@ router.post('/savePost', authenticateToken, async (req, res) => {
   }
 });
 
-router.delete('/deletePost/:id', authenticateToken, async (req, res) => {
+router.delete("/deletePost/:id", authenticateToken, async (req, res) => {
   try {
     const postId = req.params.id;
     const userId = req.user.id;
@@ -68,7 +73,7 @@ router.delete('/deletePost/:id', authenticateToken, async (req, res) => {
     console.log(post);
 
     if (!post) {
-      return res.status(404).send('Post not found');
+      return res.status(404).send("Post not found");
     }
 
     await Post.deleteOne({ _id: postId, userId: userId });
@@ -81,7 +86,7 @@ router.delete('/deletePost/:id', authenticateToken, async (req, res) => {
   }
 });
 
-router.patch('/updatePrivacy/:id', authenticateToken, async (req, res) => {
+router.patch("/updatePrivacy/:id", authenticateToken, async (req, res) => {
   try {
     const postId = req.params.id;
     const userId = req.user.id;
@@ -90,13 +95,15 @@ router.patch('/updatePrivacy/:id', authenticateToken, async (req, res) => {
     const post = await Post.findOne({ _id: postId, userId: userId });
 
     if (!post) {
-      return res.status(404).send('Post not found');
+      return res.status(404).send("Post not found");
     }
 
     post.privacy = privacy;
     await post.save();
 
-    console.log(`Successfully updated privacy for post with ID ${postId} in MongoDB`);
+    console.log(
+      `Successfully updated privacy for post with ID ${postId} in MongoDB`
+    );
     res.status(200).send(`Post ${postId} privacy updated successfully!`);
   } catch (error) {
     console.error(`Error updating post privacy: ${error}`);
@@ -104,34 +111,29 @@ router.patch('/updatePrivacy/:id', authenticateToken, async (req, res) => {
   }
 });
 
-
-
-
-
-router.get('/getLike/:id',authenticateToken, async (req, res) => {
+router.get("/getLike/:id", authenticateToken, async (req, res) => {
   const userId = req.user.id;
-  const post= await Post.findById(req.params.id);
-  let postLikes = false; 
-  if(post.likedBy.includes(userId)){
-     postLikes = true; 
+  const post = await Post.findById(req.params.id);
+  let postLikes = false;
+  if (post.likedBy.includes(userId)) {
+    postLikes = true;
   }
   try {
-    const post= await Post.findById(req.params.id);
-    res.json({likesNumber: post.likes, liked:postLikes});
+    const post = await Post.findById(req.params.id);
+    res.json({ likesNumber: post.likes, liked: postLikes });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: err.message });
   }
 });
 
-
 // Add like to post
-router.patch('/like/:id', authenticateToken, async (req, res) => {
+router.patch("/like/:id", authenticateToken, async (req, res) => {
   try {
     const userId = req.user.id;
-    const post= await Post.findById(req.params.id);
-    if(post.likedBy.includes(userId)){
-      return res.status(403).send('Already liked');
+    const post = await Post.findById(req.params.id);
+    if (post.likedBy.includes(userId)) {
+      return res.status(403).send("Already liked");
     }
     post.likes++;
     console.log(post.likedBy);
@@ -146,12 +148,12 @@ router.patch('/like/:id', authenticateToken, async (req, res) => {
 });
 
 // Remove like from post
-router.patch('/unlike/:id',authenticateToken, async (req, res) => {
+router.patch("/unlike/:id", authenticateToken, async (req, res) => {
   try {
     const userId = req.user.id;
-    const post= await Post.findById(req.params.id);
-    if(!post.likedBy.includes(userId)){
-      return res.status(403).send('Already unliked');
+    const post = await Post.findById(req.params.id);
+    if (!post.likedBy.includes(userId)) {
+      return res.status(403).send("Already unliked");
     }
 
     post.likes--;
@@ -166,7 +168,5 @@ router.patch('/unlike/:id',authenticateToken, async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
-
 
 module.exports = router;

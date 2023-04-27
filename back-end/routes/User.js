@@ -169,7 +169,6 @@ router.patch("/privacy", authenticateToken, async (req, res) => {
   user.privacy = newPrivacyBool;
   const newPrivacy = newPrivacyBool ? 'Private' : 'Public';
   await Post.updateMany({ userId: userId }, { privacy: newPrivacy });
-
   await user.save();
 
   res
