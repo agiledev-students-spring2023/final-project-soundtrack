@@ -14,7 +14,8 @@ import { Autocomplete } from "@react-google-maps/api";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import logoIcon from "../Logos/soundTrackIcon.png";
-
+import mapStyle from './mapStyle.json'; // assuming the JSON is saved in a separate file
+ 
 
 function Map() {
   const libraries = ["places"];
@@ -329,6 +330,7 @@ function createSongMarkers(locationName) {
           center={center}
           zoom={15}
           options={{
+            styles: mapStyle,
             mapTypeControl: false,
           }}
           onClick={handleMarkerClick}
