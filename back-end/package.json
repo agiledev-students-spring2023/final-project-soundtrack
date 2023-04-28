@@ -33,10 +33,17 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@jest/globals": "^29.5.0",
     "chai": "^4.3.7",
     "expect": "^29.5.0",
+    "jest": "^29.5.0",
     "mocha": "^10.2.0",
     "nodemon": "^2.0.22",
+    "sinon": "^15.0.4",
     "supertest": "^6.3.3"
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
+  
 }

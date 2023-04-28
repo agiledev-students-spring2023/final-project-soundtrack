@@ -1,74 +1,105 @@
-import request from "supertest";
-import { app, close } from '../server.js';
-import fs from "fs/promises";
+import request from 'supertest';
+import express from 'express';
+import { Router } from 'express';
+import passport from 'passport';
+import jwt from 'jsonwebtoken';
+import morgan from 'morgan';
+import User from '../models/User.js';
+import bcrypt from 'bcrypt';
+import chai from 'chai';
+import chaiHttp from 'chai-http';
 import { expect } from 'chai';
+import jest from 'jest';
 
-import path from "path";
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
+import { app, close } from '../server.js';
+const hashedPassword = await bcrypt.hash('password456', 10);
 
-const JWT_SECRET = "shaoxuewenlu";
+
 
 describe('POST /', () => {
-  let server;
-
-  beforeEach(() => {
-    server = app.listen(3000); // start the server for testing
-  });
-
-  afterEach(() => {
-    server.close(); // close the server after testing
-  });
-
-  before(async () => {
-    // Create a test user in users.json
-    const testUser = {
-      id: 1,
-      username: "user1",
-      password: "password1"
-    };
-    const usersFilePath = path.join(__dirname, "../routes/users.json");
-    const usersData = await fs.readFile(usersFilePath, "utf-8");
-    const users = JSON.parse(usersData);
-    users.push(testUser);
-    await fs.writeFile(usersFilePath, JSON.stringify(users));
-  });
-
-  it('should respond with a token if given a valid username and password', async () => {
-    const res = await request(server)
-      .post('/')
-      .send({ username: 'user1', password: 'password1' })
-      .set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
-      .expect(200);
-
-    expect(res.body.token).to.exist;
-  });
-
-  it('should respond with a 401 error if given an invalid username or password', async () => {
-    const res = await request(server)
-      .post('/')
-      .send({ username: 'invalidUsername', password: 'invalidPassword' })
-      .set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
-      .expect(401);
-
-      expect(res.body.error).to.equal('Invalid username or password.');
-
-  });
-
-  it('should respond with a 400 error if the request body is missing a username or password', async () => {
-    const res = await request(server)
-      .post('/')
-      .send({ })
-      .set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
-      .expect(400);
-
-      expect(res.body.error).to.equal('Username and password are required.');
-  });
-
-  after(() => {
-    close(); // close the server after all tests have finished running
-  });
+  const testUser = {
+    username: 'loginTest',
+    password: 'password456'
+  };
   
+  let token;
+
+  beforeEach(async () => {
+    const userToDelete = await User.findOne({ userName:testUser.username });
+    if (userToDelete) {
+      await User.deleteOne({  userName:testUser.username });
+    }
+    const user = new User({
+      firstName: 'Jane',
+      userName: testUser.username,
+      password: hashedPassword,
+      email: 'janedoe@example.com',
+      spotifyUser: 'janedoe123',
+      userId: 2
+    });
+    await user.save();
+  });
+
+  it('should return 200 and a JWT token when valid username and password are provided', async () => {
+    const response = await request(app)
+      .post('/')
+      .send(testUser);
+
+    expect(response.status).to.equal(200);
+    expect(response.body.token).to.exist;
+    token = response.body.token;
+  });
+
+  it('should set a HTTP-only cookie with the JWT token when valid username and password are provided', async () => {
+    const response = await request(app)
+      .post('/')
+      .send(testUser);
+
+    expect(response.status).to.equal(200);
+    expect(response.headers['set-cookie']).to.exist;
+
+    expect(response.headers['set-cookie'][0]).to.contain(`token=${token}`);
+    expect(response.headers['set-cookie'][0]).to.contain('HttpOnly');
+  });
+
+  it('should return 401 when an invalid username is provided', async () => {
+    const response = await request(app)
+      .post('/')
+      .send({
+        username: 'nonexistentuser',
+        password: 'password123'
+      });
+
+    expect(response.status).to.equal(401);
+    expect(response.body.message).to.equal('Invalid username or password');
+  });
+
+  it('should return 401 when an invalid password is provided', async () => {
+    const response = await request(app)
+      .post('/')
+      .send({
+        username: testUser.userName,
+        password: 'wrongpassword'
+      });
+
+    expect(response.status).to.equal(401);
+    expect(response.body.message).to.equal('Invalid username or password');
+  });
+
+  
+  const secretKey = "shaoxuewenlu";
+
+  it('should return a JWT token with the correct payload', async () => {
+    const response = await request(app)
+      .post('/')
+      .send(testUser);
+
+    expect(response.status).to.equal(200);
+    const decoded = jwt.verify(response.body.token, secretKey);
+    expect(decoded.id).to.exist;
+  });
+
+   after(() => {
+    close();
+  });
 });

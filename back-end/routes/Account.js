@@ -11,6 +11,7 @@ const bcrypt = require('bcrypt');
 router.post('/', async function (req, res) {
   try {
     const existingUser = await User.findOne({ userName: req.body.username });
+
     if (existingUser) {
       return res.status(409).json({ message: 'Username already exists' });
     }
@@ -30,8 +31,7 @@ router.post('/', async function (req, res) {
     res.cookie('token', token, { httpOnly: true });
     res.status(200).json({ message: 'User created and logged in', token });
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Error saving user to database');
+    res.status(500).json({ message: 'Error saving user to database' });
   }
 });
 

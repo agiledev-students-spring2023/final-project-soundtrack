@@ -35,10 +35,11 @@ const relationshipRoute = require('./routes/Relationship');
 const mapRoute = require('./routes/map');
 
 //why it is not being read in from the .env file?
+let server;
 
 mongoose.connect(process.env.MONG_URL)
   .then(() => {
-    const server = app.listen(port, function () {
+     server = app.listen(port, function () {
       console.log(`Server running on port: ${port}`);
     });
     console.log('Connected to MongoDB...');
@@ -71,6 +72,7 @@ app.use("/map", mapRoute);
 
 // a function to stop listening to the port
 const close = () => {
+  mongoose.connection.close();
   server.close();
 };
 
