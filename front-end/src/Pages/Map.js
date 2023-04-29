@@ -19,8 +19,7 @@ import Cookies from "js-cookie";
  
 
 function Map() {
-  const libraries = ["places"];
-
+  const [ libraries ] = useState(['places']);
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_MAP_KEY,
     libraries,
@@ -102,57 +101,58 @@ function Map() {
   }, []);
 
 
+  const [markers, setMarkers] = useState([]);
+
   useEffect(() => {
     if (mapRef && bounds) {
       const ne = bounds.getNorthEast();
       const sw = bounds.getSouthWest();
-      console.log("bound is", ne.lat(), ne.lng());
-      axios
-        .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/map`, {
-          params: {
-            bounds: `${sw.lat()},${sw.lng()},${ne.lat()},${ne.lng()}`
-          },
-        })
-        .then((result) => {
-          console.log(result.data);
-          for(let i = 0; i < result.data.locationNames.length; i++){
-            console.log(result.data.locationNames[i].placeId);
-            createSongMarkers(result.data.locationNames[i]);
-          }
-        })
-        .catch((err) => {
-          setError(err);
-        });
+  
+      axios.get(`${process.env.REACT_APP_SERVER_HOSTNAME}/map`, {
+        params: {
+          bounds: `${sw.lat()},${sw.lng()},${ne.lat()},${ne.lng()}`
+        },
+      })
+      .then((result) => {
+        const posts = result.data.posts;
+        const newMarkers = posts
+          .filter((post) => {
+            return markers.findIndex((marker) => marker.key === post.locationName.placeId) === -1;
+          })
+          .map((post) => createSongMarkers(post.locationName));
+        setMarkers([...markers, ...newMarkers]);
+      })
+      .catch((err) => {
+        setError(err);
+      });
     }
   }, [bounds, mapRef]);
   
-
-//create marker based on filter 
-function createSongMarkers(locationName) {
-  if (locationName && locationName.geo && locationName.geo.location) {
-    const marker = new window.google.maps.Marker({
-      key: locationName.placeId,
-      position: {
-        lat: locationName.geo.location.lat,
-        lng: locationName.geo.location.lng,
-      },
-      title: locationName.name,
-      icon: {
-        url: logoIcon,
-        scaledSize: new window.google.maps.Size(40, 40),
-      },
-      clickable: true,
-    });
-    marker.addListener("click", () => {
-      console.log("marker place id: " + marker.key);
-      handleCustomMarkerClick(marker.key);
-    });
-    //console.log(marker.position.lat())
-    marker.setMap(mapRef);
-    console.log(mapRef)
-    return marker;
+  function createSongMarkers(locationName) {
+    if (locationName && locationName.geo && locationName.geo.location) {
+      const marker = new window.google.maps.Marker({
+        key: locationName.placeId,
+        position: {
+          lat: locationName.geo.location.lat,
+          lng: locationName.geo.location.lng,
+        },
+        title: locationName.name,
+        icon: {
+          url: logoIcon,
+          scaledSize: new window.google.maps.Size(40, 40),
+        },
+        clickable: true,
+      });
+      marker.addListener("click", () => {
+        console.log("marker place id: " + marker.key);
+        handleCustomMarkerClick(marker.key);
+      });
+      marker.setMap(mapRef);
+      return marker;
+    }
   }
-}
+  
+
 
   //handle filter pop up
   useEffect(() => {
