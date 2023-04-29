@@ -17,9 +17,10 @@ import logoIcon from "../Logos/soundTrackIcon.png";
 import mapStyle from './mapStyle.json'; // assuming the JSON is saved in a separate file
 import Cookies from "js-cookie";
  
+const libraries = ["places"];
 
 function Map() {
-  const libraries = ["places"];
+  
 
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_MAP_KEY,

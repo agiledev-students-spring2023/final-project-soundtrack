@@ -1,24 +1,28 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import './SongPreview.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faPause } from '@fortawesome/free-solid-svg-icons';
+import AudioContext from '../AudioContext';
 
 const SongPreview = ({ track }) => {
-  const [audio, setAudio] = useState(null);
-  const [playing, setPlaying] = useState(false);
-
-  //console.log(track); 
+  const { currentAudio, playing, setCurrentAudio, setPlaying } = useContext(AudioContext);
 
   const playPreview = async (previewUrl) => {
     if (!previewUrl) {
       return;
     }
-    if (audio) {
+
+    if (currentAudio && currentAudio !== previewUrl) {
+      currentAudio.pause();
+      setPlaying(false);
+    }
+
+    if (currentAudio && currentAudio === previewUrl) {
       if (playing) {
-        audio.pause();
+        currentAudio.pause();
         setPlaying(false);
       } else {
-        audio.play();
+        currentAudio.play();
         setPlaying(true);
       }
     } else {
@@ -27,7 +31,7 @@ const SongPreview = ({ track }) => {
         setPlaying(false);
       });
       await newAudio.play();
-      setAudio(newAudio);
+      setCurrentAudio(newAudio);
       setPlaying(true);
     }
   };
@@ -42,7 +46,7 @@ const SongPreview = ({ track }) => {
         <div className="song-image-container">
           <img className="song-image" src={track.album.images[0].url} alt={`${track.name} album cover`} />
           <div className="song-icon-container">
-            <FontAwesomeIcon icon={playing ? faPause : faPlay} onClick={() => playPreview(track.preview_url)} />
+          <FontAwesomeIcon icon={(currentAudio && currentAudio.src === track.preview_url && playing) ? faPause : faPlay} onClick={() => playPreview(track.preview_url)} />
           </div>
         </div>
         <div className="song-info">
@@ -55,9 +59,3 @@ const SongPreview = ({ track }) => {
 }
 
 export default SongPreview;
-
-
-
-
-
-
