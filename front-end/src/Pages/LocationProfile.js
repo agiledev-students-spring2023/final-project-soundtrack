@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Playlist from "../Components/Playlist";
 import { useLoadScript } from "@react-google-maps/api";
+import Cookies from "js-cookie";
 
 const LocationProfile = () => {
   const navigate = useNavigate();
@@ -84,6 +85,27 @@ const LocationProfile = () => {
   }
   console.log(songs);
 
+  const handleFavoriteLocation = () => {
+    const locationName = locationProfile.name;
+    const token = Cookies.get("jwt"); // Get the JWT token from the cookie
+    axios
+      .post(
+        `http://localhost:5002/Favorite/saveFavorite`,
+        { locationName },
+        {
+          headers: {
+            Authorization: `JWT ${token}`, // Include the token as a bearer token in the Authorization header
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <div className="location-container">
       <div className="location-header">
@@ -91,9 +113,7 @@ const LocationProfile = () => {
           Back
         </div>
         <div
-          onClick={() => {
-            console.log("Location Favorited");
-          }}
+          onClick={handleFavoriteLocation}
           className="favorite-button"
         >
           Favorite

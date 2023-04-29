@@ -21,41 +21,41 @@ const Friends = () => {
     let friendsDisplay = null;
 
     useEffect(() => {
-        const token = Cookies.get("jwt");
-        axios
-          .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/relationships/getfriends`, {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-          })
-          .then((result) => {
-            setData(result.data);
+      const token = Cookies.get("jwt");
+      axios
+        .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/relationships/getfriends`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        .then((result) => {
+          setData(result.data);
 
-          })
-          .catch((err) => {
-            setError('Failed to fetch data from the server');
-          })
-          .finally(() => {
-            setLoading(false);
-          });
-      }, []);
+        })
+        .catch((err) => {
+          setError('Failed to fetch data from the server');
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }, []);
 
 
-      try{
-        hasFriends = (data.friendsList[0] != null);
-      } catch(error) {
-        hasFriends = null;
-      }
-      // hasFriends = (data.friendsList != null);
-      if(hasFriends) {
-        friendsDisplay = data.friendsList
-          .slice(0, data.length)
-          .map((data, index) => (<FriendProfileChip key={index} data={data}/>))
-      } else {
-        friendsDisplay = null;
-      }
-      console.log(hasFriends);
-      console.log(data.friendsList);
+    try{
+      hasFriends = (data.friendsList[0] != null);
+    } catch(error) {
+      hasFriends = null;
+    }
+    // hasFriends = (data.friendsList != null);
+    if(hasFriends) {
+      friendsDisplay = data.friendsList
+        .slice(0, data.length)
+        .map((data, index) => (<FriendProfileChip key={index} data={data}/>))
+    } else {
+      friendsDisplay = null;
+    }
+    console.log(hasFriends);
+    console.log(data.friendsList);
       
       
 
