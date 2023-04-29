@@ -222,6 +222,15 @@ function Map() {
     };
   }, [popupRefFavorites]);
 
+  // useEffect(() => {
+  //   axios
+  //     .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/map/updateLocations`)
+  //     .then((result) => {
+  //       console.log(result.data);
+  //     });
+  // }, []);
+
+
   //handle search bar
   const onPlaceChanged = () => {
     if (autocomplete.current !== null) {

@@ -1,6 +1,31 @@
 const express = require("express");
 const router = express.Router();
 const Location = require("../models/Location");
+const Post = require("../models/post");
+
+// // Route to update locations
+// router.get("/updateLocations", async function (req, res) {
+//   try {
+//     const posts = await Post.find({});
+//     posts.forEach(async (post) => {
+//       const locationName = post.locationName;
+//       const existingLocation = await Location.findOne({
+//         "locationName.placeId": locationName.placeId,
+//       });
+//       if (!existingLocation) {
+//         const newLocation = new Location({
+//           locationName: locationName,
+//           songTitle: post.songTitle,
+//         });
+//         await newLocation.save();
+//       }
+//     });
+//     res.json({ message: "Locations updated successfully" });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ error: err.message });
+//   }
+// });
 
 // Route to get public posts within bounds
 router.get("/", async function (req, res) {
