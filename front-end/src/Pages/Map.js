@@ -169,11 +169,11 @@ function Map() {
       let isInfoWindowVisible = false;
 
       window.google.maps.event.addListener(mapRef, "zoom_changed", () => {
-        //console.log(mapRef.getZoom());
-        if (mapRef.getZoom() >= 16 && !isInfoWindowVisible) {
+        console.log(mapRef.getZoom());
+        if (mapRef.getZoom() >= 14 && !isInfoWindowVisible) {
           infoWindow.open(mapRef, marker);
           isInfoWindowVisible = true;
-        } else if (mapRef.getZoom() < 16 && isInfoWindowVisible) {
+        } else if (mapRef.getZoom() < 14 && isInfoWindowVisible) {
           infoWindow.close();
           isInfoWindowVisible = false;
         }
