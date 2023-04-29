@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Post = require("../models/post");
+const Location = require("../models/Location");
 
 // Route to get public posts within bounds
 router.get("/", async function (req, res) {
@@ -8,8 +8,7 @@ router.get("/", async function (req, res) {
   const [swLat, swLng, neLat, neLng] = bounds.split(",");
   console.log(swLat, swLng, neLat, neLng)
   try {
-    const posts = await Post.find({
-      privacy: 'Public',
+    const posts = await Location.find({
       locationName: { $exists: true, $type: 'object' },
     });
     const filteredPosts = posts.filter(post => {
