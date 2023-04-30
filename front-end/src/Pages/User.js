@@ -7,10 +7,36 @@ import Cookies from "js-cookie";
 
 const User = () => {
   const navigate = useNavigate();
+  const [user, setUser] = useState({}); //user info
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const token = Cookies.get("jwt"); // Get the JWT token from the cookie
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/user/userInfo`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((result) => {
+        setUser(result.data);
+        console.log(result.data);
+      })
+      .catch((err) => {
+        const errorMessage = err.response?.data?.message || "Failed to fetch data from the server";
+        setError(errorMessage);
+      })
+  }, [token]);
+
+
+
+
+
+
+
+
 
   useEffect(() => {
     axios
@@ -72,8 +98,8 @@ const User = () => {
         </div>
       </div>
       <div className="user-profile">
-      <img src={data.avatar} alt="Profile"/>
-        <h1 className="username">@{data.userName}</h1>
+      <img src={user.avatar} alt="Profile"/>
+        <h1 className="username">@{user.userName}</h1>
         <div onClick={() => navigate("/friends")} className="friends-link">
           Friends
         </div>

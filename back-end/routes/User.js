@@ -23,23 +23,29 @@ function authenticateToken(req, res, next) {
     next();
   });
 }
-// get all posts for a user
-router.get("/", authenticateToken, async (req, res) => {
-  const userId = req.user.id;
+
+
+//get login user info   const userId = req.user.id;
+router.get("/userInfo", authenticateToken, async (req, res) => {
   let userName;
   let avatar;
-  //console.log("userid:", userId); // Extract user ID from token
-  console.log("User ID is " + userId);
 
   try {
     const user = await User.findOne({ userId: req.user.id });
     userName = user.userName;
     avatar = user.avatar;
-    // do something with userName and avatar here
-  } catch (err) {
-    // handle any errors here
+    res.json({ userName, avatar }); 
+   } catch (err) {
+    // handle a console.error(err);
+    res.status(500).json({ error: err.message });
   }
-  
+})
+
+
+
+
+// get login user post
+router.get("/", authenticateToken, async (req, res) => {
   try {
     await Post.find({ userId: req.user.id })
       .sort({ createdAt: -1 }) // sort by update time in descending order
@@ -59,7 +65,7 @@ router.get("/", authenticateToken, async (req, res) => {
         if (posts.length == 0) {
           console.log("No posts found for user " + userName);
         }
-        res.json({ userName, posts, avatar });
+        res.json({posts});
       })
       .catch((err) => {
         console.error(err);
