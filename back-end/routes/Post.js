@@ -3,7 +3,7 @@ const router = express.Router();
 const secretKey = "shaoxuewenlu";
 const jwt = require("jsonwebtoken");
 const Post = require("../models/post"); // import Post model
-const User = require("../models/User"); 
+const User = require("../models/User");
 const Location = require("../models/Location"); // Assuming the model is in a separate file called "userModel.js"
 
 function authenticateToken(req, res, next) {
@@ -30,7 +30,7 @@ router.post("/savePost", authenticateToken, async (req, res) => {
   try {
     const post = req.body.postItem;
     console.log({ post });
-    
+
     //fetch username from db with id from token
     const userId = req.user.id;
     console.log("userid:", userId);
@@ -53,14 +53,14 @@ router.post("/savePost", authenticateToken, async (req, res) => {
 
     const savedPost = await newPost.save();
     console.log(`Successfully added post with ID ${savedPost._id} to MongoDB`);
-    
+
     // Check if a location with the same coordinates exists
     const location = await Location.findOneAndUpdate(
       { "locationName.placeId": post.locationName.placeId },
       { songTitle: post.songTitle },
       { new: true }
     );
-    
+
     if (location) {
       console.log("location exists");
     } else {
@@ -71,15 +71,13 @@ router.post("/savePost", authenticateToken, async (req, res) => {
       });
       await newLocation.save();
     }
-    
-    
+
     res.status(200).send(`Post ${savedPost._id} added successfully!`);
   } catch (error) {
     console.error(`Error saving post: ${error}`);
     res.status(500).send("Error saving post!");
   }
 });
-
 
 router.delete("/deletePost/:id", authenticateToken, async (req, res) => {
   try {

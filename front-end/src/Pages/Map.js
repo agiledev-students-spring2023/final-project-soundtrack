@@ -7,8 +7,8 @@ import {
   GoogleMap,
   Marker,
   MarkerF,
-  MarkerClustererF,
 } from "@react-google-maps/api";
+
 import React, { useState, useEffect, useRef } from "react";
 import { Autocomplete } from "@react-google-maps/api";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +18,8 @@ import mapStyle from "./mapStyle.json"; // assuming the JSON is saved in a separ
 import Cookies from "js-cookie";
 import ReactDOMServer from "react-dom/server";
 import SongPreview from "../Components/SongPreview";
-import { MarkerClusterer } from "@react-google-maps/api";
+import { MarkerClusterer } from "@googlemaps/markerclusterer";
+import { SuperClusterAlgorithm } from "@googlemaps/markerclusterer";
 
 function Map() {
   const [libraries] = useState(["places"]);
@@ -41,6 +42,14 @@ function Map() {
   const [bounds, setBounds] = useState(null);
   const [error, setError] = useState("");
   const [markers, setMarkers] = useState([]);
+
+  // useEffect(() => {
+  //   axios
+  //     .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/map/updateLocations`)
+  //     .then((result) => {
+  //       console.log(result.data);
+  //     });
+  // }, []);
 
   // client credentials flow
   const [token, setToken] = useState(null);
@@ -128,6 +137,13 @@ function Map() {
               );
             })
             .map((post) => createSongMarkers(post));
+          const cluster = new MarkerClusterer({
+            markers,
+            mapRef,
+            algorithm: new SuperClusterAlgorithm({ radius: 200 }),
+          });
+          console.log(cluster);
+          // Initialize the MarkerClusterer with the markers and mapRef
           setMarkers([...markers, ...newMarkers]);
         })
         .catch((err) => {
@@ -151,7 +167,7 @@ function Map() {
         title: post.locationName.name,
         icon: {
           url: logoIcon,
-          scaledSize: new window.google.maps.Size(40, 40),
+          scaledSize: new window.google.maps.Size(30, 30),
         },
         clickable: true,
       });
@@ -188,14 +204,6 @@ function Map() {
     }
   }
 
-  const MarkerCluster = new MarkerClusterer({
-    markers,
-    mapRef,
-    gridSize: 50, // Set the size of the clusters on the map
-    minimumClusterSize: 2, // Set the minimum number of markers needed to form a cluster
-  });
-  console.log(MarkerCluster);
-  
   //handle filter pop up
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -229,14 +237,6 @@ function Map() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [popupRefFavorites]);
-
-  // useEffect(() => {
-  //   axios
-  //     .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/map/updateLocations`)
-  //     .then((result) => {
-  //       console.log(result.data);
-  //     });
-  // }, []);
 
   //handle search bar
   const onPlaceChanged = () => {
