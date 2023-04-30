@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const secretKey = "shaoxuewenlu";
 const jwt = require("jsonwebtoken");
-const Favorite = require("../models/favorite"); 
+const Favorite = require("../models/Favorite"); 
 const User = require("../models/User"); 
 
 function authenticateToken(req, res, next) {
