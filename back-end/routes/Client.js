@@ -14,6 +14,39 @@ var spotifyApi = new SpotifyWebApi({
 // Client Credentials Flow
 const clientId = process.env.SPOTIFY_CLIENT_ID;
 const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
+let tokenExpirationTime = null; 
+
+function setAccessTokenExpirationTime(expiresIn) {
+  const currentTime = new Date();
+  tokenExpirationTime = new Date(currentTime.getTime() + expiresIn * 1000);
+};
+
+async function refreshAccessTokenIfNeeded() {
+  try {
+    if (tokenExpirationTime) {
+      const currentTime = new Date();
+      const timeRemaining = (tokenExpirationTime.getTime() - currentTime.getTime()) / 1000;
+      console.log('No need to refresh token.'); 
+      if (timeRemaining <= 60) {
+        spotifyApi.refreshAccessToken().then(
+          function (data) {
+            console.log('The access token has been refreshed!');
+            spotifyApi.setAccessToken(data.body['access_token']);
+            setAccessTokenExpirationTime(3600);
+          },
+          function (err) {
+            console.log('Could not refresh access token', err);
+          }
+        );
+      }
+    } else {
+      console.log('Token expiration time is not set');
+    }
+  } catch (error) {
+    console.error('Error refreshing access token', error);
+  }
+};
+
 
 router.get('/', morgan("dev"), async (req, res) => {
   const authOptions = {
@@ -32,6 +65,9 @@ router.get('/', morgan("dev"), async (req, res) => {
   try {
     const response = await axios.post(authOptions.url, authOptions.data, { headers: authOptions.headers });
     const token = response.data.access_token;
+    const expires_in = response.data.expires_in;
+    //console.log(expires_in); 
+    setAccessTokenExpirationTime(expires_in);
     spotifyApi.setAccessToken(token);
     res.send(token);
 
@@ -43,6 +79,7 @@ router.get('/', morgan("dev"), async (req, res) => {
 
 router.get('/random-songs', async (req, res) => {
     try {
+      //await refreshAccessTokenIfNeeded();
       const result = await spotifyApi.searchTracks('year:2023', { limit: 5 });
       res.status(200).send(result.body);
     } catch (err) {
@@ -54,6 +91,7 @@ router.get('/random-songs', async (req, res) => {
     const { q } = req.query;
   
     try {
+      await refreshAccessTokenIfNeeded(); 
       const result = await spotifyApi.searchTracks(q, { limit: 20 });
       const tracks = result.body.tracks.items;
       res.status(200).send(tracks);

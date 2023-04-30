@@ -5,7 +5,7 @@ import { faPlay, faPause } from '@fortawesome/free-solid-svg-icons';
 import AudioContext from '../AudioContext';
 
 const SongPreview = ({ track }) => {
-  const { currentAudio, playing, setCurrentAudio, setPlaying } = useContext(AudioContext);
+  const { currentAudio, currentTrack, playing, setCurrentAudio, setCurrentTrack, setPlaying } = useContext(AudioContext);
   const audioRef = useRef(null);
 
   useEffect(() => {
@@ -13,23 +13,25 @@ const SongPreview = ({ track }) => {
       if (currentAudio) {
         currentAudio.pause();
         setCurrentAudio(null);
+        setCurrentTrack(null); // Reset the current track as well
         setPlaying(false);
       }
     };
-  }, [currentAudio, setCurrentAudio, setPlaying]);
+  }, [currentAudio, setCurrentAudio, setCurrentTrack, setPlaying]);
 
   const playPreview = async (previewUrl) => {
     if (!previewUrl) {
       return;
     }
 
-    if (currentAudio && currentAudio.src !== previewUrl) {
+    if (currentAudio && currentTrack !== track) { // Compare the track objects instead of just the preview_url
       currentAudio.pause();
       setCurrentAudio(null);
+      setCurrentTrack(null); // Reset the current track as well
       setPlaying(false);
     }
 
-    if (currentAudio && currentAudio.src === previewUrl) {
+    if (currentAudio && currentTrack === track) { // Compare the track objects instead of just the preview_url
       if (playing) {
         audioRef.current.pause();
         setPlaying(false);
@@ -41,9 +43,11 @@ const SongPreview = ({ track }) => {
       const newAudio = new Audio(previewUrl);
       newAudio.addEventListener('ended', () => {
         setPlaying(false);
+        setCurrentTrack(null); // Reset the current track when the audio ends
       });
       await newAudio.play();
       setCurrentAudio(newAudio);
+      setCurrentTrack(track); // Set the current track to the clicked track
       setPlaying(true);
       audioRef.current = newAudio;
     }
@@ -63,9 +67,9 @@ const SongPreview = ({ track }) => {
             alt={`${track.name} album cover`}
           />
           <div className="song-icon-container">
-            <FontAwesomeIcon
+          <FontAwesomeIcon
               icon={
-                currentAudio && currentAudio.src === track.preview_url && playing
+                currentAudio && currentTrack === track && playing 
                   ? faPause
                   : faPlay
               }

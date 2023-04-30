@@ -18,7 +18,6 @@ import mapStyle from './mapStyle.json'; // assuming the JSON is saved in a separ
 import Cookies from "js-cookie";
  
 const libraries = ["places"];
-
 function Map() {
   
 
