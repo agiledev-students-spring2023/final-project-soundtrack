@@ -25,9 +25,10 @@ const User = () => {
         console.log(result.data);
       })
       .catch((err) => {
-        const errorMessage = err.response?.data?.message || "Failed to fetch data from the server";
+        const errorMessage =
+          err.response?.data?.message || "Failed to fetch data from the server";
         setError(errorMessage);
-      })
+      });
   }, [token]);
 
   useEffect(() => {
@@ -42,14 +43,14 @@ const User = () => {
         console.log(result.data);
       })
       .catch((err) => {
-        const errorMessage = err.response?.data?.message || "Failed to fetch data from the server";
+        const errorMessage =
+          err.response?.data?.message || "Failed to fetch data from the server";
         setError(errorMessage);
       })
       .finally(() => {
         setLoading(false);
       });
   }, [token]);
-  
 
   const handlePostDelete = (postId) => {
     setData((prevData) => ({
@@ -70,7 +71,7 @@ const User = () => {
           return post;
         }
       });
-      
+
       return {
         ...prevData,
         posts: updatedPosts,
@@ -90,7 +91,7 @@ const User = () => {
         </div>
       </div>
       <div className="user-profile">
-      <img src={user.avatar} alt="Profile"/>
+        <img src={user.avatar} alt="Profile" />
         <h1 className="username">@{user.userName}</h1>
         <div onClick={() => navigate("/friends")} className="friends-link">
           Friends
@@ -100,19 +101,25 @@ const User = () => {
         <div className="loading-message">Loading...</div>
       ) : (
         <>
-          {data.posts === 0 ? (
+          {data.posts.length !== 0 ? (
             <div className="user-posts">
               {data.posts &&
                 data.posts
                   .slice(0, data.posts.length)
-                  .map((post, index) => <UserPost key={index} post={post} onDelete={handlePostDelete} onPrivacyChange={handlePrivacyChange}/>)}
+                  .map((post, index) => (
+                    <UserPost
+                      key={index}
+                      post={post}
+                      onDelete={handlePostDelete}
+                      onPrivacyChange={handlePrivacyChange}
+                    />
+                  ))}
             </div>
           ) : (
             <div className="no-data-message" onClick={() => navigate("/post")}>
               <p>You don't have any posts yet.</p>
               <button>Click to post here</button>
-              </div>
-            
+            </div>
           )}
         </>
       )}
