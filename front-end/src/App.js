@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React, { useState } from "react";
 import './App.css';
 import Login from './Pages/Login'; 
 import Post from './Pages/Post';
@@ -16,11 +17,17 @@ import EditProfile from "./Pages/EditProfile";
 import Auth from "./Pages/Auth"; 
 import CheckEmail from "./Pages/CheckEmail"; 
 import UserProfilePage from "./Pages/UserProfilePage";
+import AudioContext from "./AudioContext";
 
 
 function App() {
+  const [currentAudio, setCurrentAudio] = useState(null);
+  const [playing, setPlaying] = useState(false);
+  const [currentTrack, setCurrentTrack] = useState(null); 
+
   return (
     <div className="App">
+      <AudioContext.Provider value={{ currentAudio, playing, currentTrack, setCurrentAudio, setPlaying, setCurrentTrack}}>
       <BrowserRouter>
         <div>
           <Routes>
@@ -43,6 +50,7 @@ function App() {
           </Routes>
         </div>
       </BrowserRouter>
+      </AudioContext.Provider>
     </div>
   );
 }

@@ -20,13 +20,10 @@
   .song-image {
     width: 60px;
     height: 60px;
+    object-fit: cover; 
     border-radius: 5px;
     margin-right: 10px;
-  }
-  
-  .song-image-container {
-    position: relative;
-  }
+  }  
   
   .song-icon-container {
     position: absolute;
@@ -40,11 +37,17 @@
     width: 2rem;
   }
   
+  .song-image-container {
+    position: relative;
+    flex-shrink: 0; /* prevent the container from shrinking */
+  }
+  
   .song-info {
     display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-left: 10px;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 10px;
+    max-width: calc(100% - 70px); /* set the maximum width to prevent squeezing the image */
   }
   
   .song-name {
@@ -85,5 +88,6 @@
   .song-preview-button:hover {
     color: #333;
   }
+  
   
   
