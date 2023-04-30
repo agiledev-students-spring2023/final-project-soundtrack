@@ -42,15 +42,15 @@ const LocationProfile = () => {
       };
       service.getDetails(request, (place, status) => {
         if (status === "OK" && place) {
-          const profile = ({
+          const profile = {
             name: place.name,
             formatted_address: place.formatted_address,
-          });
+          };
           if (place.photos && place.photos.length) {
             profile.photo = place.photos[0].getUrl();
-          }
-          else {
-            profile.photo = "https://www.freeiconspng.com/uploads/no-image-icon-4.png";
+          } else {
+            profile.photo =
+              "https://www.freeiconspng.com/uploads/no-image-icon-4.png";
           }
           setLocationProfile(profile);
         }
@@ -112,19 +112,20 @@ const LocationProfile = () => {
         <div>loading...</div>
       )}
 
-      <div>
+      <div className="playList">
         {" "}
         {songs && (
           <Playlist songs={songs} title="Enjoy the location playlist!" />
         )}
       </div>
 
+
       <div className="location-posts">
         {loading ? (
           <div className="loading-message">Loading...</div>
         ) : (
           <>
-            {data.posts.length !== 0  ? (
+            {data.posts.length !== 0 ? (
               <div className="location-posts">
                 {data.posts.map((post, index) => (
                   <UserPost key={index} post={post} />

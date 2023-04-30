@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const Location = require("../models/Location");
-const Post = require("../models/post");
 
 // // Route to update locations
 // router.get("/updateLocations", async function (req, res) {
@@ -31,12 +30,12 @@ const Post = require("../models/post");
 router.get("/", async function (req, res) {
   const { bounds } = req.query;
   const [swLat, swLng, neLat, neLng] = bounds.split(",");
-  console.log(swLat, swLng, neLat, neLng)
+  console.log(swLat, swLng, neLat, neLng);
   try {
     const posts = await Location.find({
-      locationName: { $exists: true, $type: 'object' },
+      locationName: { $exists: true, $type: "object" },
     });
-    const filteredPosts = posts.filter(post => {
+    const filteredPosts = posts.filter((post) => {
       const lat = post.locationName.geo.location.lat;
       const lng = post.locationName.geo.location.lng;
       if (lat >= swLat && lat <= neLat && lng >= swLng && lng <= neLng) {
@@ -45,7 +44,7 @@ router.get("/", async function (req, res) {
         return false; // Remove the post from the filtered array
       }
     });
-    
+
     res.json({ posts: filteredPosts });
   } catch (err) {
     console.error(err);
@@ -53,21 +52,8 @@ router.get("/", async function (req, res) {
   }
 });
 
-
-
 module.exports = router;
 
-
-
-
-
-
-
-
-
-
-
-  
 //   try {
 //     const swLat = ;
 //     const posts = await Post.find({
