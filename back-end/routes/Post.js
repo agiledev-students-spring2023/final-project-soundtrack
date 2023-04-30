@@ -3,7 +3,8 @@ const router = express.Router();
 const secretKey = "shaoxuewenlu";
 const jwt = require("jsonwebtoken");
 const Post = require("../models/post"); // import Post model
-const User = require("../models/User"); // Assuming the model is in a separate file called "userModel.js"
+const User = require("../models/User");
+const Location = require("../models/Location"); // Assuming the model is in a separate file called "userModel.js"
 
 function authenticateToken(req, res, next) {
   const authHeader = req.headers["authorization"];
@@ -29,9 +30,10 @@ router.post("/savePost", authenticateToken, async (req, res) => {
   try {
     const post = req.body.postItem;
     console.log({ post });
+
     //fetch username from db with id from token
     const userId = req.user.id;
-    console.log("userid:", userId); // Extract user ID from token
+    console.log("userid:", userId);
 
     const user = await User.findOne({ userId: userId });
     const userName = user.userName;
@@ -49,15 +51,28 @@ router.post("/savePost", authenticateToken, async (req, res) => {
       likedBy: [],
     });
 
-    await newPost.save();
-    // Update all posts with a different location name
-    // await Post.updateMany(
-    //   { userId: userId, locationName: { $ne: post.locationName } },
-    //   { $set: { locationName: post.locationName } }
-    // );
+    const savedPost = await newPost.save();
+    console.log(`Successfully added post with ID ${savedPost._id} to MongoDB`);
 
-    console.log(`Successfully added post with ID ${newPost._id} to MongoDB`);
-    res.status(200).send(`Post ${newPost._id} added successfully!`);
+    // Check if a location with the same coordinates exists
+    const location = await Location.findOneAndUpdate(
+      { "locationName.placeId": post.locationName.placeId },
+      { songTitle: post.songTitle },
+      { new: true }
+    );
+
+    if (location) {
+      console.log("location exists");
+    } else {
+      // If the location doesn't exist, create a new location and insert it into the collection
+      const newLocation = new Location({
+        locationName: post.locationName,
+        songTitle: post.songTitle,
+      });
+      await newLocation.save();
+    }
+
+    res.status(200).send(`Post ${savedPost._id} added successfully!`);
   } catch (error) {
     console.error(`Error saving post: ${error}`);
     res.status(500).send("Error saving post!");

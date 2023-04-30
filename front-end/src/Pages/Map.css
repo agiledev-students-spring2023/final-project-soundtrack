@@ -64,6 +64,13 @@
     color: #444444;
   }
   
+  .infowindow-container {
+    display: flex;
+    flex-direction: column;
+    height: 50px; /* your desired fixed height */
+    width: 150px; /* your desired fixed width */
+  }
+  
   @media only screen and (min-width: 375px) and (max-width: 812px) {
     /* iPhone 12 Pro portrait mode */
     .map-container {
@@ -84,4 +91,5 @@
       font-size: 28px;
     }
   }
+  
   

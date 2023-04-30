@@ -7,10 +7,29 @@ import Cookies from "js-cookie";
 
 const User = () => {
   const navigate = useNavigate();
+  const [user, setUser] = useState({}); //user info
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const token = Cookies.get("jwt"); // Get the JWT token from the cookie
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/user/userInfo`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((result) => {
+        setUser(result.data);
+        console.log(result.data);
+      })
+      .catch((err) => {
+        const errorMessage =
+          err.response?.data?.message || "Failed to fetch data from the server";
+        setError(errorMessage);
+      });
+  }, [token]);
 
   useEffect(() => {
     axios
@@ -24,14 +43,14 @@ const User = () => {
         console.log(result.data);
       })
       .catch((err) => {
-        const errorMessage = err.response?.data?.message || "Failed to fetch data from the server";
+        const errorMessage =
+          err.response?.data?.message || "Failed to fetch data from the server";
         setError(errorMessage);
       })
       .finally(() => {
         setLoading(false);
       });
   }, [token]);
-  
 
   const handlePostDelete = (postId) => {
     setData((prevData) => ({
@@ -52,7 +71,7 @@ const User = () => {
           return post;
         }
       });
-      
+
       return {
         ...prevData,
         posts: updatedPosts,
@@ -72,8 +91,8 @@ const User = () => {
         </div>
       </div>
       <div className="user-profile">
-      <img src={data.avatar} alt="Profile"/>
-        <h1 className="username">@{data.userName}</h1>
+        <img src={user.avatar} alt="Profile" />
+        <h1 className="username">@{user.userName}</h1>
         <div onClick={() => navigate("/friends")} className="friends-link">
           Friends
         </div>
@@ -87,14 +106,20 @@ const User = () => {
               {data.posts &&
                 data.posts
                   .slice(0, data.posts.length)
-                  .map((post, index) => <UserPost key={index} post={post} onDelete={handlePostDelete} onPrivacyChange={handlePrivacyChange}/>)}
+                  .map((post, index) => (
+                    <UserPost
+                      key={index}
+                      post={post}
+                      onDelete={handlePostDelete}
+                      onPrivacyChange={handlePrivacyChange}
+                    />
+                  ))}
             </div>
           ) : (
             <div className="no-data-message" onClick={() => navigate("/post")}>
               <p>You don't have any posts yet.</p>
               <button>Click to post here</button>
-              </div>
-            
+            </div>
           )}
         </>
       )}

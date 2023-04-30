@@ -7,20 +7,22 @@ import {
   GoogleMap,
   Marker,
   MarkerF,
-  MarkerClustererF,
 } from "@react-google-maps/api";
+
 import React, { useState, useEffect, useRef } from "react";
 import { Autocomplete } from "@react-google-maps/api";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import logoIcon from "../Logos/soundTrackIcon.png";
-import mapStyle from './mapStyle.json'; // assuming the JSON is saved in a separate file
+import mapStyle from "./mapStyle.json"; // assuming the JSON is saved in a separate file
 import Cookies from "js-cookie";
- 
-const libraries = ["places"];
-function Map() {
-  
+import ReactDOMServer from "react-dom/server";
+import SongPreview from "../Components/SongPreview";
+import { MarkerClusterer } from "@googlemaps/markerclusterer";
+import { SuperClusterAlgorithm } from "@googlemaps/markerclusterer";
 
+function Map() {
+  const [libraries] = useState(["places"]);
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_MAP_KEY,
     libraries,
@@ -39,35 +41,46 @@ function Map() {
   const [filters, setFilters] = useState([]);
   const [bounds, setBounds] = useState(null);
   const [error, setError] = useState("");
+  const [markers, setMarkers] = useState([]);
 
-     // client credentials flow
-     const [token, setToken] = useState(null);
-     useEffect(() => {
-       const fetchToken = async () => {
-         const response = await axios.get(
-           `${process.env.REACT_APP_SERVER_HOSTNAME}/client`
-         );
-         //console.log(response);
-         setToken(response.data);
-       };
-       fetchToken();
-     }, []);
- 
- 
-     useEffect(() => {
-       const fetchData = async () => {
-         const token = Cookies.get('jwt');
-         const config = {
-           headers: {
-             'Content-Type': 'application/json',
-             Authorization: `Bearer ${token}`,
-           },
-         };
-         const response = await axios.get(`${process.env.REACT_APP_SERVER_HOSTNAME}/auth/refresh`, config);      
-         console.log("spotify access refreshed"); 
-       };
-       fetchData();
-     }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/map/updateLocations`)
+  //     .then((result) => {
+  //       console.log(result.data);
+  //     });
+  // }, []);
+
+  // client credentials flow
+  const [token, setToken] = useState(null);
+  useEffect(() => {
+    const fetchToken = async () => {
+      const response = await axios.get(
+        `${process.env.REACT_APP_SERVER_HOSTNAME}/client`
+      );
+      //console.log(response);
+      setToken(response.data);
+    };
+    fetchToken();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = Cookies.get("jwt");
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.get(
+        `${process.env.REACT_APP_SERVER_HOSTNAME}/auth/refresh`,
+        config
+      );
+      console.log("spotify access refreshed");
+    };
+    fetchData();
+  }, []);
 
   const handleMapLoad = (map) => {
     setMapRef(map);
@@ -101,58 +114,95 @@ function Map() {
     );
   }, []);
 
-
   useEffect(() => {
     if (mapRef && bounds) {
       const ne = bounds.getNorthEast();
       const sw = bounds.getSouthWest();
-      console.log("bound is", ne.lat(), ne.lng());
+
       axios
         .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/map`, {
           params: {
-            bounds: `${sw.lat()},${sw.lng()},${ne.lat()},${ne.lng()}`
+            bounds: `${sw.lat()},${sw.lng()},${ne.lat()},${ne.lng()}`,
           },
         })
         .then((result) => {
+          const posts = result.data.posts;
           console.log(result.data);
-          for(let i = 0; i < result.data.locationNames.length; i++){
-            console.log(result.data.locationNames[i].placeId);
-            createSongMarkers(result.data.locationNames[i]);
-          }
+          const newMarkers = posts
+            .filter((post) => {
+              return (
+                markers.findIndex(
+                  (marker) => marker.key === post.locationName.placeId
+                ) === -1
+              );
+            })
+            .map((post) => createSongMarkers(post));
+          // const cluster = new MarkerClusterer({
+          //   markers,
+          //   mapRef,
+          //   algorithm: new SuperClusterAlgorithm({ radius: 200 }),
+          // });
+          // console.log(cluster);
+          // Initialize the MarkerClusterer with the markers and mapRef
+          setMarkers([...markers, ...newMarkers]);
         })
         .catch((err) => {
           setError(err);
         });
     }
   }, [bounds, mapRef]);
-  
 
-//create marker based on filter 
-function createSongMarkers(locationName) {
-  if (locationName && locationName.geo && locationName.geo.location) {
-    const marker = new window.google.maps.Marker({
-      key: locationName.placeId,
-      position: {
-        lat: locationName.geo.location.lat,
-        lng: locationName.geo.location.lng,
-      },
-      title: locationName.name,
-      icon: {
-        url: logoIcon,
-        scaledSize: new window.google.maps.Size(40, 40),
-      },
-      clickable: true,
-    });
-    marker.addListener("click", () => {
-      console.log("marker place id: " + marker.key);
-      handleCustomMarkerClick(marker.key);
-    });
-    //console.log(marker.position.lat())
-    marker.setMap(mapRef);
-    console.log(mapRef)
-    return marker;
+  function createSongMarkers(post) {
+    if (
+      post.locationName &&
+      post.locationName.geo &&
+      post.locationName.geo.location
+    ) {
+      const marker = new window.google.maps.Marker({
+        key: post.locationName.placeId,
+        position: {
+          lat: post.locationName.geo.location.lat,
+          lng: post.locationName.geo.location.lng,
+        },
+        title: post.locationName.name,
+        icon: {
+          url: logoIcon,
+          scaledSize: new window.google.maps.Size(30, 30),
+        },
+        clickable: true,
+      });
+
+      const infoWindowContent = `
+      <div class="infowindow-container">
+        ${ReactDOMServer.renderToString(<SongPreview track={post.songTitle} />)}
+      </div>
+    `;
+
+      const infoWindow = new window.google.maps.InfoWindow({
+        content: infoWindowContent,
+        disableAutoPan: true,
+      });
+
+      let isInfoWindowVisible = false;
+
+      window.google.maps.event.addListener(mapRef, "zoom_changed", () => {
+        console.log(mapRef.getZoom());
+        if (mapRef.getZoom() >= 14 && !isInfoWindowVisible) {
+          infoWindow.open(mapRef, marker);
+          isInfoWindowVisible = true;
+        } else if (mapRef.getZoom() < 14 && isInfoWindowVisible) {
+          infoWindow.close();
+          isInfoWindowVisible = false;
+        }
+      });
+      marker.addListener("click", () => {
+        console.log("marker place id: " + marker.key);
+        handleCustomMarkerClick(marker.key);
+      });
+      marker.setMap(mapRef);
+      return marker;
+    }
   }
-}
 
   //handle filter pop up
   useEffect(() => {
@@ -171,7 +221,7 @@ function createSongMarkers(locationName) {
     };
   }, [popupRefFilter]);
 
-  //handle filter pop up 
+  //handle filter pop up
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -222,13 +272,11 @@ function createSongMarkers(locationName) {
     }
   };
 
-
   //handle custom marker click
   const handleCustomMarkerClick = (locationID) => {
     console.log(locationID);
     navigate(`/LocationProfile/${locationID}`);
-  }
-
+  };
 
   function handleFilterClick() {
     setShowFilterPopup(!showFilterPopup);
@@ -238,7 +286,7 @@ function createSongMarkers(locationName) {
     setShowFavoritesPopup(!showFavoritesPopup);
   }
 
-  //filter locations 
+  //filter locations
   const filterLocations = (filters) => {
     setFilters(filters);
     console.log(filters);
@@ -261,7 +309,7 @@ function createSongMarkers(locationName) {
     });
   };
 
-  //create marker based on filter 
+  //create marker based on filter
   function createMarkers(locations) {
     console.log("creating markers");
     if (locations) {
