@@ -18,6 +18,7 @@ import mapStyle from "./mapStyle.json"; // assuming the JSON is saved in a separ
 import Cookies from "js-cookie";
 import ReactDOMServer from "react-dom/server";
 import SongPreview from "../Components/SongPreview";
+import { MarkerClusterer } from "@react-google-maps/api";
 
 function Map() {
   const [libraries] = useState(["places"]);
@@ -178,7 +179,6 @@ function Map() {
           isInfoWindowVisible = false;
         }
       });
-
       marker.addListener("click", () => {
         console.log("marker place id: " + marker.key);
         handleCustomMarkerClick(marker.key);
@@ -188,6 +188,14 @@ function Map() {
     }
   }
 
+  const MarkerCluster = new MarkerClusterer({
+    markers,
+    mapRef,
+    gridSize: 50, // Set the size of the clusters on the map
+    minimumClusterSize: 2, // Set the minimum number of markers needed to form a cluster
+  });
+  console.log(MarkerCluster);
+  
   //handle filter pop up
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -229,7 +237,6 @@ function Map() {
   //       console.log(result.data);
   //     });
   // }, []);
-
 
   //handle search bar
   const onPlaceChanged = () => {

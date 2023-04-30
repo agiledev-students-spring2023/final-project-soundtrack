@@ -55,14 +55,14 @@ router.post("/savePost", authenticateToken, async (req, res) => {
     console.log(`Successfully added post with ID ${savedPost._id} to MongoDB`);
     
     // Check if a location with the same coordinates exists
-    const location = await Location.findOne({
-      "locationProfile.geo.location": post.locationName.geo.location,
-    });
+    const location = await Location.findOneAndUpdate(
+      { "locationName.placeId": post.locationName.placeId },
+      { songTitle: post.songTitle },
+      { new: true }
+    );
     
     if (location) {
-      // If the location exists, update the song title
-      location.songTitle = post.songTitle;
-      await location.save();
+      console.log("location exists");
     } else {
       // If the location doesn't exist, create a new location and insert it into the collection
       const newLocation = new Location({
@@ -71,6 +71,7 @@ router.post("/savePost", authenticateToken, async (req, res) => {
       });
       await newLocation.save();
     }
+    
     
     res.status(200).send(`Post ${savedPost._id} added successfully!`);
   } catch (error) {
