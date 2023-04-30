@@ -137,12 +137,12 @@ function Map() {
               );
             })
             .map((post) => createSongMarkers(post));
-          const cluster = new MarkerClusterer({
-            markers,
-            mapRef,
-            algorithm: new SuperClusterAlgorithm({ radius: 200 }),
-          });
-          console.log(cluster);
+          // const cluster = new MarkerClusterer({
+          //   markers,
+          //   mapRef,
+          //   algorithm: new SuperClusterAlgorithm({ radius: 200 }),
+          // });
+          // console.log(cluster);
           // Initialize the MarkerClusterer with the markers and mapRef
           setMarkers([...markers, ...newMarkers]);
         })
