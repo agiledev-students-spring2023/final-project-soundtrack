@@ -30,14 +30,6 @@ const User = () => {
       })
   }, [token]);
 
-
-
-
-
-
-
-
-
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/user`, {
@@ -108,7 +100,7 @@ const User = () => {
         <div className="loading-message">Loading...</div>
       ) : (
         <>
-          {data.posts.length !== 0 ? (
+          {data.posts === 0 ? (
             <div className="user-posts">
               {data.posts &&
                 data.posts

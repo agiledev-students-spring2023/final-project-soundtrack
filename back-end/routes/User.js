@@ -63,14 +63,10 @@ router.get("/", authenticateToken, async (req, res) => {
           );
         }
         if (posts.length == 0) {
-          console.log("No posts found for user " + userName);
+          console.log("No posts found for user " + req.user.id);
         }
         res.json({posts});
       })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).json({ error: err.message });
-      });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: err.message });
