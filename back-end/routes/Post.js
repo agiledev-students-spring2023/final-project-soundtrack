@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const secretKey = "shaoxuewenlu";
 const jwt = require("jsonwebtoken");
-const Post = require("../models/post"); // import Post model
+const Post = require("../models/Post"); // import Post model
 const User = require("../models/User");
 const Location = require("../models/Location"); // Assuming the model is in a separate file called "userModel.js"
 

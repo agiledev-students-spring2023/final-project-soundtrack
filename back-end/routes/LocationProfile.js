@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Post = require("../models/post"); // or whatever your post model is called
+const Post = require("../models/Post"); // or whatever your post model is called
 const jwt = require("jsonwebtoken");
 
 
