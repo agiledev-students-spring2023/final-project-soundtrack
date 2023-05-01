@@ -94,7 +94,7 @@ const LocationProfile = () => {
     
     axios
       .post(
-        `${baseURL}/Favorite/saveFavorite`,
+        `${process.env.REACT_APP_SERVER_HOSTNAME}/Favorite/saveFavorite`,
         { locationName },
         {
           headers: {

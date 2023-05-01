@@ -52,7 +52,7 @@ const FriendRequestChip = ({data}) => {
         //post new relationship
         const token = Cookies.get("jwt");
         axios
-            .post(`${baseURL}/relationships/newrelationship`, {userAId: data.toUserId, userBId: data.fromUserId}, {
+            .post(`${process.env.REACT_APP_SERVER_HOSTNAME}/relationships/newrelationship`, {userAId: data.toUserId, userBId: data.fromUserId}, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -66,7 +66,7 @@ const FriendRequestChip = ({data}) => {
         
         //delete now-accepted and thus expired friend request
         axios
-            .delete(`${baseURL}/friends/rejectfriendrequest`, {
+            .delete(`${process.env.REACT_APP_SERVER_HOSTNAME}/friends/rejectfriendrequest`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 },
@@ -88,7 +88,7 @@ const FriendRequestChip = ({data}) => {
         console.log("rejected");
         const token = Cookies.get("jwt");
         axios
-            .delete(`${baseURL}/friends/rejectfriendrequest`, {
+            .delete(`${process.env.REACT_APP_SERVER_HOSTNAME}/friends/rejectfriendrequest`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 },
