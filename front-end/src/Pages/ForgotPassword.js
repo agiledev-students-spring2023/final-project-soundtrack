@@ -20,7 +20,7 @@ function ForgotPassword() {
     const handleSubmit = async (e) => {
       e.preventDefault();
       try {
-        const response = await axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/forgot`, {
+        const response = await axios.post(`${baseURL}/forgot`, {
           username,
           email,
         });

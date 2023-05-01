@@ -29,7 +29,7 @@ function Settings() {
     : "http://localhost:5002";
 
     try {
-      await axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/logout`);
+      await axios.post(`${baseURL}/logout`);
       await axios.get(`${process.env.REACT_APP_SERVER_HOSTNAME}/auth/reset`);
       Cookies.remove('jwt');
       navigate('/');

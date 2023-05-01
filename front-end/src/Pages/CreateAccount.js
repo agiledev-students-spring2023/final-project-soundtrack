@@ -35,7 +35,7 @@ function CreateAccount() {
     }
     
     axios
-      .post(`${process.env.REACT_APP_SERVER_HOSTNAME}/create`, newUser)
+      .post(`${baseURL}/create`, newUser)
       .then((response) => {
         const token = response.data.token;
         Cookies.set("jwt", token); // Store JWT token in a cookie

@@ -18,7 +18,7 @@ const Confirmation = ({ songTitle, imageURL, locationName, onBack }) => {
         
     axios
       .post(
-        `${process.env.REACT_APP_SERVER_HOSTNAME}/Post/savePost`,
+        `${baseURL}/Post/savePost`,
         { postItem },
         {
           headers: {
