@@ -2,11 +2,14 @@ const express = require("express");
 const router = express.Router();
 const Post = require("../models/post");
 
-// Get all posts
-router.get("/", async (req, res) => {
+
+router.get("/:skip/:limit", async (req, res) => {
   try {
+    const { skip, limit } = req.params;
     const posts = await Post.find({ privacy: "Public" })
-      .sort({ createdAt: -1 }) // sort by update time in descending order
+      .sort({ createdAt: -1 })
+      .skip(parseInt(skip))
+      .limit(parseInt(limit));
     res.json(posts);
   } catch (err) {
     console.error(err);

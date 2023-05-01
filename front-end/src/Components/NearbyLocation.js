@@ -7,8 +7,9 @@ import {
 import React, { useState, useEffect } from "react";
 import "./NearbyLocation.css";
 
+const libraries = ["places"];
+
 function NearbyLocation({ onNext }) {
-  const libraries = ["places"];
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_MAP_KEY,
     libraries,
