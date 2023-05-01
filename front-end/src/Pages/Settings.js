@@ -22,9 +22,14 @@ function Settings() {
     // code to handle notifications click
   }
 
-  const handleLogout = async () => {
+  const handleLogout = async () => { 
+    
+    const baseURL = process.env.NODE_ENV === "production"
+    ? "https://soundtrack-backend-io9tl.ondigitalocean.app"
+    : "http://localhost:5002";
+
     try {
-      await axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/logout`);
+      await axios.post(`${baseURL}/logout`);
       await axios.get(`${process.env.REACT_APP_SERVER_HOSTNAME}/auth/reset`);
       Cookies.remove('jwt');
       navigate('/');

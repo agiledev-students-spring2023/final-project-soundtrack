@@ -88,9 +88,13 @@ const LocationProfile = () => {
   const handleFavoriteLocation = () => {
     const locationName = locationProfile.name;
     const token = Cookies.get("jwt"); // Get the JWT token from the cookie
+    const baseURL = process.env.NODE_ENV === "production"
+    ? "https://soundtrack-backend-io9tl.ondigitalocean.app"
+    : "http://localhost:5002";
+    
     axios
       .post(
-        `${process.env.REACT_APP_SERVER_HOSTNAME}/Favorite/saveFavorite`,
+        `${baseURL}/Favorite/saveFavorite`,
         { locationName },
         {
           headers: {

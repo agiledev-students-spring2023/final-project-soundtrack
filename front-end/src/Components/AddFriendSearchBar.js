@@ -9,11 +9,16 @@ const AddFriendSearchBar = () => {
 
     const [query, setQuery] = useState("");
 
+    const baseURL = process.env.NODE_ENV === "production"
+        ? "https://soundtrack-backend-io9tl.ondigitalocean.app"
+        : "http://localhost:5002";
+  
+
     const handleFriendRequestSubmit = (e) => {
         e.preventDefault();
         const token = Cookies.get("jwt");
         axios
-            .post(`${process.env.REACT_APP_SERVER_HOSTNAME}/friends/newfriendrequest`, {toUser: query}, {
+            .post(`${baseURL}/friends/newfriendrequest`, {toUser: query}, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

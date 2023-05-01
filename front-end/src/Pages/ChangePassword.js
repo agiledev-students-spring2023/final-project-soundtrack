@@ -10,6 +10,10 @@ import Cookies from "js-cookie";
 function ChangePassword()  {
     const [password, setPassword] = useState("");
   
+    const baseURL = process.env.NODE_ENV === "production"
+        ? "https://soundtrack-backend-io9tl.ondigitalocean.app"
+        : "http://localhost:5002";
+        
     const handleSubmit = async (e) => {
       e.preventDefault();
       try {
@@ -18,7 +22,7 @@ function ChangePassword()  {
         headers: { Authorization: `Bearer ${token}` }
         };
 
-        const response = await axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/change`, {
+        const response = await axios.post(`${baseURL}/change`, {
         password
         }, config);
         window.location = "./Map";

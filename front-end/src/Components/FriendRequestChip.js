@@ -14,6 +14,11 @@ const FriendRequestChip = ({data}) => {
     const [profileDataError, setProfileDataError] = useState("");
     const [loadingProfileData, setLoadingProfileData] = useState(true);
 
+    const baseURL = process.env.NODE_ENV === "production"
+        ? "https://soundtrack-backend-io9tl.ondigitalocean.app"
+        : "http://localhost:5002";
+  
+
     //TODO: this should be getting avatar and username
     useEffect(() => {
         axios
@@ -47,7 +52,7 @@ const FriendRequestChip = ({data}) => {
         //post new relationship
         const token = Cookies.get("jwt");
         axios
-            .post(`${process.env.REACT_APP_SERVER_HOSTNAME}/relationships/newrelationship`, {userAId: data.toUserId, userBId: data.fromUserId}, {
+            .post(`${baseURL}/relationships/newrelationship`, {userAId: data.toUserId, userBId: data.fromUserId}, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -61,7 +66,7 @@ const FriendRequestChip = ({data}) => {
         
         //delete now-accepted and thus expired friend request
         axios
-            .delete(`${process.env.REACT_APP_SERVER_HOSTNAME}/friends/rejectfriendrequest`, {
+            .delete(`${baseURL}/friends/rejectfriendrequest`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 },
@@ -83,7 +88,7 @@ const FriendRequestChip = ({data}) => {
         console.log("rejected");
         const token = Cookies.get("jwt");
         axios
-            .delete(`${process.env.REACT_APP_SERVER_HOSTNAME}/friends/rejectfriendrequest`, {
+            .delete(`${baseURL}/friends/rejectfriendrequest`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 },

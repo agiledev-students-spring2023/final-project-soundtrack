@@ -19,7 +19,11 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/`, {
+      const baseURL = process.env.NODE_ENV === "production"
+        ? "https://soundtrack-backend-io9tl.ondigitalocean.app"
+        : "http://localhost:5002";
+  
+      const response = await axios.post(`${baseURL}/login`, {
         username,
         password,
       });
@@ -27,7 +31,7 @@ function Login() {
       Cookies.set("jwt", token); // Store JWT token in a cookie
       console.log(token);
   
-      const userResponse = await axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/return`, {
+      const userResponse = await axios.post(`${baseURL}/return`, {
         }, {
           headers: {
             "Authorization": `Bearer ${token}`,
@@ -45,6 +49,7 @@ function Login() {
       alert("Failed to log in. Please try again.");
     }
   };
+  
 
   return (
     <div className="Login">
