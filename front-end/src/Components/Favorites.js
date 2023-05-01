@@ -1,62 +1,60 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import './Favorites.css';
+import axios from "axios";
+import Cookies from "js-cookie";
+
 
 
 function Favorites() {
-    // const [data, setData] = useState([]);
-    // const navigate = useNavigate();
-    // useEffect(() => {
-    //     // a nested function that fetches the data
-    //     async function fetchData() {
-    //     console.log("Fetching data from Api");
-    //     // axios is a 3rd-party module for fetching data from servers
-    //     const result = await axios(
-    //         // retrieving some mock data about animals for sale
-    //         "https://my.api.mockaroo.com/search_locations.json?key=76409ff0"
-    //     );
-    //     // set the state variable
-    //     // this will cause a re-render of this component
-    //     setData(result.data);
-    //     }
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
 
-    //     // fetch the data!
-    //     fetchData();
-
-    //     // the blank array below causes this callback to be executed only once on component load
-    // }, []);
+    useEffect(() => {
+        const token = Cookies.get("jwt"); // Get the JWT token from the cookie
+        axios
+            .get(
+                `${process.env.REACT_APP_SERVER_HOSTNAME}/favorite`,
+                {
+                    headers: {
+                      Authorization: `JWT ${token}`, // Include the token as a bearer token in the Authorization header
+                    },
+                }
+            )
+            .then((result) => {
+                console.log(result.data);
+                setData(result.data);
+            })
+            .catch((err) => {
+                setError('Failed to fetch data from the server');
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    }, []);
 
     return (
-        // <header>
-
-        //     <div className="Title">
-        //         My Favorites
-        //     </div>
-
-
-       
-
-        //     {/* {data.slice(0, 5).map((value, key) => {
-        //         return (
-        //             <div key={key} className="dataItem">
-        //             <img src={value.image} alt={"no image"} />
-        //             <div className="locationDetails">
-        //                 <p className="name">{value.name}</p>
-        //                 <p className="address">{value.address}</p>
-        //             </div>
-        //             </div>
-        //         )
-                    
-        //     })} */}
 
         //     {/* <button className="filterByFavButton" onClick = {() => {
         //         navigate("/map")
         //     }}>
         //         Filter by Favorites
         //     </button> */}
-        // </header>
 
         <div className="FavoritesContainer">
             <div className="Title">Favorites</div>
+
+            <div>
+                {loading ? (
+                    <div className="loading-message">Loading...</div>
+                ) : error ? (
+                    <div className="error-message">{error}</div>
+                ) : (
+                    <>
+                        {data.map((favorite) => (favorite.locationName))};
+                    </>
+                )}
+            </div>
         </div>
     );
 }

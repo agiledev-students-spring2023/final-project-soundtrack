@@ -90,7 +90,7 @@ const LocationProfile = () => {
     const token = Cookies.get("jwt"); // Get the JWT token from the cookie
     axios
       .post(
-        `http://localhost:5002/Favorite/saveFavorite`,
+        `${process.env.REACT_APP_SERVER_HOSTNAME}/Favorite/saveFavorite`,
         { locationName },
         {
           headers: {
