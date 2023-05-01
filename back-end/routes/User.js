@@ -3,7 +3,7 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const Post = require("../models/Post"); // or whatever your post model is called
 const jwt = require("jsonwebtoken");
-const secretKey = "shaoxuewenlu";
+const secretKey = process.env.JWT_SECRET_KEY;
 const User = require("../models/User"); // Assuming the model is in a separate file called "userModel.js"
 
 function authenticateToken(req, res, next) {

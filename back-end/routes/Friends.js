@@ -6,7 +6,7 @@ const morgan = require("morgan")
 const User = require('../models/User');
 const Social = require("../models/Social");
 
-const secretKey = "shaoxuewenlu"
+const secretKey = process.env.JWT_SECRET_KEY;
 const jwt = require('jsonwebtoken');
 
 //get a list of all of a user's friends

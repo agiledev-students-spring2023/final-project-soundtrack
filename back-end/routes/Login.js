@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
-const secretKey = "shaoxuewenlu";
+const secretKey = process.env.JWT_SECRET_KEY;
 const morgan = require("morgan");
 const User = require('../models/User'); // Assuming the model is in a separate file called "userModel.js"
 

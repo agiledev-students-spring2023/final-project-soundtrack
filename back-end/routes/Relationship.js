@@ -5,7 +5,7 @@ const morgan = require("morgan")
 
 const Relationship = require("../models/Relationship");
 
-const secretKey = "shaoxuewenlu"
+const secretKey = process.env.JWT_SECRET_KEY;
 const jwt = require('jsonwebtoken');
 
 

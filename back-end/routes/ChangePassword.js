@@ -4,7 +4,7 @@ const User = require('../models/User'); // Assuming the model is in a separate f
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const secretKey = "shaoxuewenlu";
+const secretKey = process.env.JWT_SECRET_KEY;
 const cookieParser = require('cookie-parser');
 
 router.use(cookieParser());
