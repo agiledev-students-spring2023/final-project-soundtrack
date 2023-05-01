@@ -12,9 +12,13 @@ const Confirmation = ({ songTitle, imageURL, locationName, onBack }) => {
   const handleSendPost = () => {
     const postItem = { songTitle, imageURL, locationName, privacy };
     const token = Cookies.get("jwt"); // Get the JWT token from the cookie
+    const baseURL = process.env.NODE_ENV === "production"
+        ? "https://soundtrack-backend-io9tl.ondigitalocean.app"
+        : "http://localhost:5002";
+        
     axios
       .post(
-        `http://localhost:5002/Post/savePost`,
+        `${baseURL}/Post/savePost`,
         { postItem },
         {
           headers: {

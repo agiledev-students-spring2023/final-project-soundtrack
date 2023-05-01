@@ -7,14 +7,20 @@ function goToLogin(e) {
     window.location = './';
 }
 
+
 function ForgotPassword() {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
+
+    const baseURL = process.env.NODE_ENV === "production"
+    ? "https://soundtrack-backend-io9tl.ondigitalocean.app"
+    : "http://localhost:5002";
+    
   
     const handleSubmit = async (e) => {
       e.preventDefault();
       try {
-        const response = await axios.post("http://localhost:5002/forgot", {
+        const response = await axios.post(`${baseURL}/forgot`, {
           username,
           email,
         });

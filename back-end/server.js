@@ -10,7 +10,7 @@ const port = process.env.PORT || 3000; // the port to listen to for incoming req
 app.use('/uploads', express.static('uploads'));
 
 app.use(cors({
-  origin: 'http://localhost:7002',
+  origin: '*',
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH']
 }));
@@ -49,7 +49,7 @@ mongoose.connect(process.env.MONG_URL)
 
 app.use(cors());
 const corsOptions = {
-  origin: 'http://localhost:7002' // replace with your front-end's URL
+  origin: '*' // replace with your front-end's URL
 };
 app.use(cors(corsOptions));
 app.use("/user", userRoute);
