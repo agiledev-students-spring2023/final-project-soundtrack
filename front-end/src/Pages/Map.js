@@ -13,7 +13,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Autocomplete } from "@react-google-maps/api";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import logoIcon from "../Logos/soundTrackIcon.png";
+import logoIcon from "../Logos/icon.svg";
 import mapStyle from "./mapStyle.json"; // assuming the JSON is saved in a separate file
 import Cookies from "js-cookie";
 import ReactDOMServer from "react-dom/server";
