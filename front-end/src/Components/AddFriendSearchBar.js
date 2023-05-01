@@ -18,7 +18,7 @@ const AddFriendSearchBar = () => {
         e.preventDefault();
         const token = Cookies.get("jwt");
         axios
-            .post(`${baseURL}/friends/newfriendrequest`, {toUser: query}, {
+            .post(`${process.env.REACT_APP_SERVER_HOSTNAME}/friends/newfriendrequest`, {toUser: query}, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
