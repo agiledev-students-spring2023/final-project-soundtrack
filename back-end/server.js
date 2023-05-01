@@ -18,7 +18,7 @@ app.use(cors({
 app.use(express.json()); // decode JSON-formatted incoming POST data
 app.use(express.urlencoded({ extended: true })); // decode url-encoded incoming POST data
 
-const userRoute = require('./routes/user');
+const userRoute = require('./routes/User');
 const browseRoute = require('./routes/Browse');
 const friendRoute = require('./routes/Friends');
 const locationProfileRoute = require('./routes/LocationProfile');
