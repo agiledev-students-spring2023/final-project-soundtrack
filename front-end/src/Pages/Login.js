@@ -23,7 +23,7 @@ function Login() {
         ? "https://soundtrack-backend-io9tl.ondigitalocean.app"
         : "http://localhost:5002";
   
-      const response = await axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/login`, {
+      const response = await axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/`, {
         username,
         password,
       });
