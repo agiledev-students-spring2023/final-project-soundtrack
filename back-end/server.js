@@ -10,7 +10,7 @@ const port = process.env.PORT || 3000; // the port to listen to for incoming req
 app.use('/uploads', express.static('uploads'));
 
 app.use(cors({
-  origin: 'http://localhost:7002',
+  origin: `http://${process.env.FRONT_END_URI}`,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH']
 }));
@@ -47,9 +47,8 @@ mongoose.connect(process.env.MONG_URL)
   })
   .catch(err => console.error(err + 'Could not connect to MongoDB...'));
 
-app.use(cors());
 const corsOptions = {
-  origin: 'http://localhost:7002' // replace with your front-end's URL
+    origin: `http://${process.env.FRONT_END_URI}` // replace with your front-end's URL
 };
 app.use(cors(corsOptions));
 app.use("/user", userRoute);
