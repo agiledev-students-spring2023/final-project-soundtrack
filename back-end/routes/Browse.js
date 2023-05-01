@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Post = require("../models/post");
 
-// Get posts with lazy loading
+
 router.get("/:skip/:limit", async (req, res) => {
   try {
     const { skip, limit } = req.params;
