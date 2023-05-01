@@ -18,7 +18,7 @@ function ChangePassword()  {
         headers: { Authorization: `Bearer ${token}` }
         };
 
-        const response = await axios.post("http://localhost:5002/change", {
+        const response = await axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/change`, {
         password
         }, config);
         window.location = "./Map";

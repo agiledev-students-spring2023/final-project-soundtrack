@@ -14,7 +14,7 @@ const Confirmation = ({ songTitle, imageURL, locationName, onBack }) => {
     const token = Cookies.get("jwt"); // Get the JWT token from the cookie
     axios
       .post(
-        `http://localhost:5002/Post/savePost`,
+        `${process.env.REACT_APP_SERVER_HOSTNAME}/Post/savePost`,
         { postItem },
         {
           headers: {

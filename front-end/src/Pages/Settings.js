@@ -24,7 +24,7 @@ function Settings() {
 
   const handleLogout = async () => {
     try {
-      await axios.post('http://localhost:5002/logout');
+      await axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/logout`);
       await axios.get(`${process.env.REACT_APP_SERVER_HOSTNAME}/auth/reset`);
       Cookies.remove('jwt');
       navigate('/');
