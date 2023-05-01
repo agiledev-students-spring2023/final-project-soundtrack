@@ -4,7 +4,7 @@ const axios = require("axios");
 const morgan = require("morgan") 
 const SpotifyWebApi = require('spotify-web-api-node');
 const jwt = require("jsonwebtoken");
-const secretKey = "shaoxuewenlu";
+const secretKey = process.env.JWT_SECRET_KEY;
 const User = require("../models/User"); 
 const jwtEncryptionKey = process.env.JWT_ENCRYPTION_KEY;
 

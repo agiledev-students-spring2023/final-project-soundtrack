@@ -72,7 +72,7 @@ const Privacy = () => {
           <span className="slider round"></span>
         </label>
         <div className="toggle-label">
-          {isPrivate ? 'Private' : 'Public'}
+          {isPrivate ? 'Make account public' : 'Make account private'}
         </div>
       </div>
     </div>

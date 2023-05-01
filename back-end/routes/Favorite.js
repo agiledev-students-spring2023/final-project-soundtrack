@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const secretKey = "shaoxuewenlu";
+const secretKey = process.env.JWT_SECRET_KEY;
 const jwt = require("jsonwebtoken");
 const Favorite = require("../models/Favorite"); 
 const User = require("../models/User"); 
@@ -24,6 +24,18 @@ function authenticateToken(req, res, next) {
     next();
   });
 }
+
+router.get("/", authenticateToken, async (req, res) => {
+    try {
+        console.log("finding favorites in db");
+        const posts = await Favorite.find()
+            .sort({ createdAt: -1 }) // sort by update time in descending order
+        res.json(posts);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: err.message });
+    }
+});
 
 router.post("/saveFavorite", authenticateToken, async (req, res) => {
   try {

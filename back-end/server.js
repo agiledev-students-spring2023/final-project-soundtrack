@@ -47,7 +47,6 @@ mongoose.connect(process.env.MONG_URL)
   })
   .catch(err => console.error(err + 'Could not connect to MongoDB...'));
 
-app.use(cors());
 const corsOptions = {
   origin: '*' // replace with your front-end's URL
 };
