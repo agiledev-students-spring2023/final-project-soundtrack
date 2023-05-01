@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
-const Post = require("../models/post"); // or whatever your post model is called
+const Post = require("../models/Post"); // or whatever your post model is called
 const jwt = require("jsonwebtoken");
 const secretKey = "shaoxuewenlu";
 const User = require("../models/User"); // Assuming the model is in a separate file called "userModel.js"
