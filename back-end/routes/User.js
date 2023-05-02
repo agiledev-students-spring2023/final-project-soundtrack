@@ -29,12 +29,13 @@ function authenticateToken(req, res, next) {
 router.get("/userInfo", authenticateToken, async (req, res) => {
   let userName;
   let avatar;
+  let userId = req.user.id;
 
   try {
     const user = await User.findOne({ userId: req.user.id });
     userName = user.userName;
     avatar = user.avatar;
-    res.json({ userName, avatar }); 
+    res.json({ userName, avatar, userId }); 
    } catch (err) {
     // handle a console.error(err);
     res.status(500).json({ error: err.message });

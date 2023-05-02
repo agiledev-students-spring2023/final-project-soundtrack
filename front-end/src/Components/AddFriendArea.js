@@ -4,7 +4,7 @@ import AddFriendSearchBar from "./AddFriendSearchBar";
 
 import "./AddFriendArea.css";
 
-const AddFriendArea = () => {
+const AddFriendArea = ({setDisplayAlert}) => {
 
     return(
         <div className="AddFriendArea">
@@ -13,7 +13,7 @@ const AddFriendArea = () => {
             </div>
 
             <div>
-                <AddFriendSearchBar/>
+                <AddFriendSearchBar setDisplayAlert={setDisplayAlert}/>
             </div>
         </div>
     );
