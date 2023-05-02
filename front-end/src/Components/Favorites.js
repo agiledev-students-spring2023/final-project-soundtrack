@@ -52,9 +52,6 @@ function Favorites() {
                     <div className="error-message">{error}</div>
                 ) : (
                     <>
-                        {/* {data.map((favorite) => (
-                            favorite.favoritedLocation.name
-                        ))} */}
                         {data.map((favorite) => (
                             <FavoriteLocation key={favorite._id} favoritedLocation={favorite.favoritedLocation} />
                         ))}

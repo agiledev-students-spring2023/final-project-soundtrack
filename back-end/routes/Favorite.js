@@ -1,9 +1,11 @@
+import LocationProfile from "../../front-end/src/Pages/LocationProfile";
+
 const express = require("express");
 const router = express.Router();
 const secretKey = process.env.JWT_SECRET_KEY;
 const jwt = require("jsonwebtoken");
 const Favorite = require("../models/Favorite"); 
-const User = require("../models/User"); 
+const User = require("../models/User");  
 
 function authenticateToken(req, res, next) {
   const authHeader = req.headers["authorization"];
@@ -66,7 +68,7 @@ router.post("/saveFavorite", authenticateToken, async (req, res) => {
   }
 });
 
-router.delete("/removeFavorite/:id", authenticateToken, async (req, res) => {
+router.post("/removeFavorite", authenticateToken, async (req, res) => {
   try {
     const favoriteId = req.params.id;
     const userId = req.user.id;
