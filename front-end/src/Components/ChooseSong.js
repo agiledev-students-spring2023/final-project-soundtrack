@@ -30,14 +30,20 @@ function ChooseSong({ placeholder, data, onNext }) {
 
   useEffect(() => {
     const fetchData = async () => {
+      const token = Cookies.get('jwt');
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      };
       try {
         const { data } = await axios.get(
-          `${process.env.REACT_APP_SERVER_HOSTNAME}/auth/recently-played`
-        );
+          `${process.env.REACT_APP_SERVER_HOSTNAME}/auth/recently-played`, config);
         const uniqueTracks = removeDuplicateTracks(data.items);
         setRecentlyPlayed(uniqueTracks);
       } catch (error) {
-        //console.error(error);
+        console.error('Error fetching recently played:', error.response);
       }
     };
     fetchData();
