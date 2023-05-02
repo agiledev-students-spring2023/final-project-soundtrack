@@ -1,4 +1,3 @@
-import LocationProfile from "../../front-end/src/Pages/LocationProfile";
 
 const express = require("express");
 const router = express.Router();
