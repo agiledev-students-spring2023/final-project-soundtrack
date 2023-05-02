@@ -5,9 +5,10 @@ import axios from "axios";
 import AddFriendSearchBarStyles from "./AddFriendSearchBarStyles.module.css";
 import Cookies from "js-cookie";
 
-const AddFriendSearchBar = () => {
+const AddFriendSearchBar = ({setDisplayAlert}) => {
 
     const [query, setQuery] = useState("");
+    const [error, setError] = useState();
 
     const baseURL = process.env.NODE_ENV === "production"
         ? "https://soundtrack-backend-io9tl.ondigitalocean.app"
@@ -16,6 +17,11 @@ const AddFriendSearchBar = () => {
 
     const handleFriendRequestSubmit = (e) => {
         e.preventDefault();
+
+        // if(query.length > 0 && query.charAt[0] == '@') {
+        //     setQuery(query.substring(1, query.length));
+        // }
+
         const token = Cookies.get("jwt");
         axios
             .post(`${process.env.REACT_APP_SERVER_HOSTNAME}/friends/newfriendrequest`, {toUser: query}, {
@@ -25,9 +31,10 @@ const AddFriendSearchBar = () => {
             })
             .then((res) => {
                 console.log(res.data);
+                setDisplayAlert([true, false]);
             })
             .catch((err) => {
-                console.log(err);
+                setDisplayAlert([true, true]);
             });
     }
 

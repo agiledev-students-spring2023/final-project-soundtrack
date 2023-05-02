@@ -1,0 +1,18 @@
+.FriendRequestStatusAlert {
+    
+    padding-bottom: 1vh;
+    padding-top: 1vh;
+
+    margin-bottom: 1vh;
+    
+}
+
+.FriendRequestStatusAlertGreen {
+    background-color: lightgreen;
+    border-radius: 1vh;
+}
+
+.FriendRequestStatusAlertRed {
+    background-color: lightcoral;
+    border-radius: 1vh;
+}

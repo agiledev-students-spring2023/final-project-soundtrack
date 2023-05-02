@@ -9,6 +9,7 @@ import "./Friends.css";
 import IncomingFriendsPopup from "../Components/IncomingFriendsPopup";
 import FriendProfileChip from "../Components/FriendProfileChip";
 import AddFriendArea from "../Components/AddFriendArea";
+import FriendRequestStatusAlert from "../Components/FriendRequestStatusAlert";
 
 const Friends = () => {
 
@@ -17,8 +18,14 @@ const Friends = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
+    const [displayAlert, setDisplayAlert] = useState([false, false]); //[ShouldDisplay, WasSuccessful]
+
     let hasFriends = false;
     let friendsDisplay = null;
+    let requestStatusAlert = null;
+
+    console.log(displayAlert);
+    displayAlert[0] == true ? requestStatusAlert = <FriendRequestStatusAlert success={!displayAlert[1]}/> : requestStatusAlert = null;
 
     useEffect(() => {
       const token = Cookies.get("jwt");
@@ -56,7 +63,7 @@ const Friends = () => {
     }
     console.log(hasFriends);
     console.log(data.friendsList);
-      
+
       
 
     return(
@@ -73,7 +80,10 @@ const Friends = () => {
             </div>
 
           <div className="FriendsMainContainer">
-            <AddFriendArea/>
+
+            {requestStatusAlert}
+
+            <AddFriendArea setDisplayAlert={setDisplayAlert}/>
             <IncomingFriendsPopup/>
             
               <div className="FriendsItemsDisplayColumn">

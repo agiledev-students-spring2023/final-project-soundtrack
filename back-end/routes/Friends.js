@@ -89,6 +89,12 @@ router.post("/newfriendrequest", authenticateToken, async (req, res, next) => {
       return res.status(409).send("This request already exists");
     }
 
+    //can't send a request to someone if that someone has already sent you one
+    const existingReceivedRequest = await Social.findOne({ fromUserId: requestedFriend.userId, toUserId: req.user.id });
+    if (existingReceivedRequest) {
+      return res.status(409).send("This request already exists");
+    }
+
     //can't request yourself
     if(req.user.id == requestedFriend.userId) {
       return res.status(409).send("You can't request to be friends with yourself");
