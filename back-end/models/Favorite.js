@@ -9,7 +9,7 @@ const favoriteSchema = new Schema(
             required: true
         },
 
-        locationName: {
+        favoritedLocation: {
             type: Object,
             required: true
         }

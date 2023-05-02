@@ -46,6 +46,7 @@ const LocationProfile = () => {
           const profile = {
             name: place.name,
             formatted_address: place.formatted_address,
+            placeId: locationID,
           };
           if (place.photos && place.photos.length) {
             profile.photo = place.photos[0].getUrl();
@@ -86,7 +87,7 @@ const LocationProfile = () => {
   console.log(songs);
 
   const handleFavoriteLocation = () => {
-    const locationName = locationProfile.name;
+    const favoritedLocation = locationProfile;
     const token = Cookies.get("jwt"); // Get the JWT token from the cookie
     const baseURL = process.env.NODE_ENV === "production"
     ? "https://soundtrack-backend-io9tl.ondigitalocean.app"
@@ -95,7 +96,7 @@ const LocationProfile = () => {
     axios
       .post(
         `${process.env.REACT_APP_SERVER_HOSTNAME}/Favorite/saveFavorite`,
-        { locationName },
+        { favoritedLocation },
         {
           headers: {
             Authorization: `JWT ${token}`, // Include the token as a bearer token in the Authorization header

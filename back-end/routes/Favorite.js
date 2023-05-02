@@ -39,7 +39,7 @@ router.get("/", authenticateToken, async (req, res) => {
 
 router.post("/saveFavorite", authenticateToken, async (req, res) => {
   try {
-    const favorite = req.body.locationName;
+    const favorite = req.body.favoritedLocation;
     console.log({ favorite });
     
     //fetch username from db with id from token
@@ -52,7 +52,7 @@ router.post("/saveFavorite", authenticateToken, async (req, res) => {
 
     const newFavorite = new Favorite({
       userId: userId,
-      locationName: favorite,
+      favoritedLocation: favorite,
     });
 
     await newFavorite.save();
