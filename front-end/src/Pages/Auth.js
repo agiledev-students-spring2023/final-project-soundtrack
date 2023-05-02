@@ -38,9 +38,15 @@ const Auth = () => {
   }, []);
 
   useEffect(() => {
+    const token = Cookies.get('jwt');
     const fetchData = async () => {
       try {
-        await axios.get(`${process.env.REACT_APP_SERVER_HOSTNAME}/auth/get-access-token`);
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+        await axios.get(`${process.env.REACT_APP_SERVER_HOSTNAME}/auth/get-access-token`, config);
         setToken(true);
       } catch (err) {
         setError(`Error fetching access token: ${err.message}`);

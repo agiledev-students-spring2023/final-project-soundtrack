@@ -28,9 +28,17 @@ function Settings() {
     ? "https://soundtrack-backend-io9tl.ondigitalocean.app"
     : "http://localhost:5002";
 
+    const token = Cookies.get('jwt');
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
     try {
       await axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/logout`);
-      await axios.get(`${process.env.REACT_APP_SERVER_HOSTNAME}/auth/reset`);
+
+      await axios.get(`${process.env.REACT_APP_SERVER_HOSTNAME}/auth/reset`, config);
       Cookies.remove('jwt');
       navigate('/');
     } catch (error) {
