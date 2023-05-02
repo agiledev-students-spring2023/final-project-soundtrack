@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import './Favorites.css';
+import FavoriteLocation from './FavoriteLocation.js';
 import axios from "axios";
 import Cookies from "js-cookie";
 
@@ -51,7 +52,9 @@ function Favorites() {
                     <div className="error-message">{error}</div>
                 ) : (
                     <>
-                        {data.map((favorite) => (favorite.locationName))};
+                        {data.map((favorite) => (
+                            <FavoriteLocation key={favorite._id} favoritedLocation={favorite.favoritedLocation} />
+                        ))}
                     </>
                 )}
             </div>

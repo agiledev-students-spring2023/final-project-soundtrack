@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "./LocationProfile.css";
 import UserPost from "../Components/UserPost";
@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import Playlist from "../Components/Playlist";
 import { useLoadScript } from "@react-google-maps/api";
 import Cookies from "js-cookie";
+
 
 const LocationProfile = () => {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ const LocationProfile = () => {
   const [locationProfile, setLocationProfile] = useState({});
   const libraries = ["places"];
   const [service, setService] = useState(null); // create a state variable for PlacesService
+  const isFavorited = useRef(false);
 
   // useLoadScript hook to load the Google Maps JavaScript API
   const { isLoaded, loadError } = useLoadScript({
@@ -46,6 +48,7 @@ const LocationProfile = () => {
           const profile = {
             name: place.name,
             formatted_address: place.formatted_address,
+            placeId: locationID,
           };
           if (place.photos && place.photos.length) {
             profile.photo = place.photos[0].getUrl();
@@ -77,6 +80,14 @@ const LocationProfile = () => {
 
   console.log(data); // should now print the location name fetched from the backend
 
+
+  useEffect(() => {
+    const isFavoritedCookie = Cookies.get("isFavorited");
+    if (isFavoritedCookie !== undefined) {
+      isFavorited.current = isFavoritedCookie === "true";
+    }
+  }, []);
+  
   const songs = [];
   if (data.posts && data.posts.length) {
     for (let i = 0; i < data.posts.length; i++) {
@@ -85,8 +96,9 @@ const LocationProfile = () => {
   }
   console.log(songs);
 
+
   const handleFavoriteLocation = () => {
-    const locationName = locationProfile.name;
+    const favoritedLocation = locationProfile;
     const token = Cookies.get("jwt"); // Get the JWT token from the cookie
     const baseURL = process.env.NODE_ENV === "production"
     ? "https://soundtrack-backend-io9tl.ondigitalocean.app"
@@ -95,7 +107,7 @@ const LocationProfile = () => {
     axios
       .post(
         `${process.env.REACT_APP_SERVER_HOSTNAME}/Favorite/saveFavorite`,
-        { locationName },
+        { favoritedLocation },
         {
           headers: {
             Authorization: `JWT ${token}`, // Include the token as a bearer token in the Authorization header
@@ -110,17 +122,64 @@ const LocationProfile = () => {
       });
   };
 
+  const handleUnfavoritedLocation = () => {
+    const favoritedLocation = locationProfile;
+    const token = Cookies.get("jwt"); // Get the JWT token from the cookie
+    const baseURL = process.env.NODE_ENV === "production"
+    ? "https://soundtrack-backend-io9tl.ondigitalocean.app"
+    : "http://localhost:5002";
+    
+    axios
+      .post(
+        `${process.env.REACT_APP_SERVER_HOSTNAME}/Favorite/removeFavorite`,
+        { favoritedLocation },
+        {
+          headers: {
+            Authorization: `JWT ${token}`, // Include the token as a bearer token in the Authorization header
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  async function handleChange(e) {
+    console.log("pre-change isFavorited: ", isFavorited.current);
+    isFavorited.current = !isFavorited.current;
+    console.log("post-change isFavorited: ", isFavorited.current);
+
+    // Set cookie so that isFavorited perists across page refreshes
+    Cookies.set("isFavorited", isFavorited.current);
+
+    if (isFavorited.current) {
+      handleFavoriteLocation();
+    }
+    else {
+      handleUnfavoritedLocation();
+    }
+  }
+
   return (
     <div className="location-container">
       <div className="location-header">
         <div onClick={() => navigate("/map")} className="back-link">
           Back
         </div>
-        <div
-          onClick={handleFavoriteLocation}
-          className="favorite-button"
-        >
-          Favorite
+        <div className="switch-container">
+          <label className="switch">
+            <input className="switch-input" type="checkbox" checked={isFavorited.current} onChange={handleChange} />
+            <span className="slider round"></span>
+          </label>
+          <div className="toggle-label">
+            {isFavorited.current ? 'Remove Favorite' : 'Favorite Location'}
+          </div>
+        </div>
+        <div>
+          {console.log("isFavorited: ", isFavorited.current)}
         </div>
       </div>
 
