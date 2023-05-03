@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "node --experimental-modules node_modules/mocha/bin/mocha --recursive tests/**/*.test.mjs",
+    "test-specific": "mocha --timeout 10000",
     "dev": "nodemon server.js"
   },
   "author": "",
