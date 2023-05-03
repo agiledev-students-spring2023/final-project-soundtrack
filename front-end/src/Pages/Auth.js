@@ -46,7 +46,7 @@ const Auth = () => {
             Authorization: `Bearer ${token}`,
           },
         };
-        await axios.get(`${process.env.REACT_APP_SERVER_HOSTNAME}/auth/get-access-token`, config);
+        await axios.get(`${process.env.REACT_APP_SERVER_HOSTNAME}/auth/check-access-token`, config);
         setToken(true);
       } catch (err) {
         setError(`Error fetching access token: ${err.message}`);
