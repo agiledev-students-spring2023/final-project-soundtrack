@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 import "./FriendRequestChip.css";
 
@@ -7,6 +8,7 @@ import Cookies from "js-cookie";
 
 
 const FriendRequestChip = ({data}) => {
+    const navigate = useNavigate();
 
     const [fromUserData, setFromUserData] = useState([]);
     const [fromUserProfileData, setFromUserProfileData] = useState([]);
@@ -109,7 +111,9 @@ const FriendRequestChip = ({data}) => {
     return(
         <div className="MainBox">
             {/* left aligned */}
-            <div className="PictureAndUsername">
+            <div className="PictureAndUsername" onClick={() => {
+                navigate(`/UserProfile/${data.fromUserId}`)
+            }}>
                 <img src={fromUserProfileData.avatar} alt="avatar" className="Avatar" /> 
                 <div> @{loadingProfileData ? "Loading..." : fromUserProfileData.userName}</div>
             </div>
