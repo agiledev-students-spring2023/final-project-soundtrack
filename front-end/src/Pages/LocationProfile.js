@@ -8,7 +8,6 @@ import Playlist from "../Components/Playlist";
 import { useLoadScript } from "@react-google-maps/api";
 import Cookies from "js-cookie";
 
-
 const LocationProfile = () => {
   const navigate = useNavigate();
   const { locationID } = useParams(); // Get the userName parameter from the URL
@@ -18,11 +17,12 @@ const LocationProfile = () => {
   const [locationProfile, setLocationProfile] = useState({});
   const libraries = ["places"];
   const [service, setService] = useState(null); // create a state variable for PlacesService
-  const isFavorited = useRef(false);
+  const [favorited, setFavorited] = useState(false);
+
 
   // useLoadScript hook to load the Google Maps JavaScript API
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: "AIzaSyB1D7Olh84_bINSSNaJ5N9nsU6bq933y0U",
+    googleMapsApiKey: process.env.REACT_APP_MAP_KEY,
     libraries,
     preventGoogleFontsLoading: true,
   });
@@ -80,14 +80,33 @@ const LocationProfile = () => {
 
   //console.log(data); // should now print the location name fetched from the backend
 
-
   useEffect(() => {
-    const isFavoritedCookie = Cookies.get("isFavorited");
-    if (isFavoritedCookie !== undefined) {
-      isFavorited.current = isFavoritedCookie === "true";
-    }
-  }, []);
+    const token = Cookies.get("jwt"); // Get the JWT token from the cookie
+    axios
+      .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/favorite`, {
+        headers: {
+          Authorization: `JWT ${token}`, // Include the token as a bearer token in the Authorization header
+        },
+      })
+      .then((result) => {
+        console.log(result.data);
+        if(result.data){  
+        for (let i = 0; i < result.data.length; i++) {  
+          if (result.data[i].favoritedLocation.placeId === locationID) 
+            setFavorited(true);
+          }
+        }
+      })
+      .catch((err) => {
+        setError("Failed to fetch data from the server");
+      });
+  }, []); // Only run this effect once when the component mounts
   
+  useEffect(() => {
+    console.log("favorited: ", favorited);
+  }, [favorited]); // Log the updated value of `favorited`
+  
+
   const songs = [];
   if (data.posts && data.posts.length) {
     for (let i = 0; i < data.posts.length; i++) {
@@ -99,11 +118,13 @@ const LocationProfile = () => {
 
   const handleFavoriteLocation = () => {
     const favoritedLocation = locationProfile;
+    console.log("favoritedLocation: ", favoritedLocation);
     const token = Cookies.get("jwt"); // Get the JWT token from the cookie
-    const baseURL = process.env.NODE_ENV === "production"
-    ? "https://soundtrack-backend-io9tl.ondigitalocean.app"
-    : "http://localhost:5002";
-    
+    const baseURL =
+      process.env.NODE_ENV === "production"
+        ? "https://soundtrack-backend-io9tl.ondigitalocean.app"
+        : "http://localhost:5002";
+
     axios
       .post(
         `${process.env.REACT_APP_SERVER_HOSTNAME}/Favorite/saveFavorite`,
@@ -125,10 +146,11 @@ const LocationProfile = () => {
   const handleUnfavoritedLocation = () => {
     const favoritedLocation = locationProfile;
     const token = Cookies.get("jwt"); // Get the JWT token from the cookie
-    const baseURL = process.env.NODE_ENV === "production"
-    ? "https://soundtrack-backend-io9tl.ondigitalocean.app"
-    : "http://localhost:5002";
-    
+    const baseURL =
+      process.env.NODE_ENV === "production"
+        ? "https://soundtrack-backend-io9tl.ondigitalocean.app"
+        : "http://localhost:5002";
+
     axios
       .post(
         `${process.env.REACT_APP_SERVER_HOSTNAME}/Favorite/removeFavorite`,
@@ -148,18 +170,14 @@ const LocationProfile = () => {
   };
 
   async function handleChange(e) {
-    //console.log("pre-change isFavorited: ", isFavorited.current);
-    isFavorited.current = !isFavorited.current;
-    //console.log("post-change isFavorited: ", isFavorited.current);
+    console.log("pre-change isFavorited: ", favorited);
+    setFavorited(!favorited);
+    console.log("post-change isFavorited: ", favorited);
 
-    // Set cookie so that isFavorited perists across page refreshes
-    Cookies.set("isFavorited", isFavorited.current);
-
-    if (isFavorited.current) {
-      handleFavoriteLocation();
-    }
-    else {
+    if (favorited) {
       handleUnfavoritedLocation();
+    } else {
+      handleFavoriteLocation();
     }
   }
 
@@ -171,11 +189,16 @@ const LocationProfile = () => {
         </div>
         <div className="switch-container">
           <label className="switch">
-            <input className="switch-input" type="checkbox" checked={isFavorited.current} onChange={handleChange} />
+            <input
+              className="switch-input"
+              type="checkbox"
+              checked={favorited}
+               onChange={handleChange}
+            />
             <span className="slider round"></span>
           </label>
           <div className="toggle-label">
-            {isFavorited.current ? 'Remove Favorite' : 'Favorite Location'}
+            {favorited ? "Remove Favorite" : "Favorite Location"}
           </div>
         </div>
         <div>
@@ -201,7 +224,6 @@ const LocationProfile = () => {
           <Playlist songs={songs} title="Enjoy the location playlist!" />
         )}
       </div>
-
 
       <div className="location-posts">
         {loading ? (

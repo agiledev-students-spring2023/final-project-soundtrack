@@ -1,34 +1,32 @@
-import './CreateAccount.css';
-import './Settings.css';
-import axios from 'axios';
+import "./CreateAccount.css";
+import "./Settings.css";
+import axios from "axios";
 import Cookies from "js-cookie";
-import React, { useState, useEffect } from 'react';
-import './User.css';
-import {useNavigate} from "react-router-dom"
-import Compressor from 'compressorjs';
+import React, { useState, useEffect } from "react";
+import "./User.css";
+import { useNavigate } from "react-router-dom";
+import Compressor from "compressorjs";
 
-
-
-function handleSubmit(e){
-    e.preventDefault();
-    window.location = './settings';
+function handleSubmit(e) {
+  e.preventDefault();
+  window.location = "./settings";
 }
 
-const  EditProfile = () => {
-  const navigate = useNavigate(); 
-const [selectedFile, setSelectedFile] = useState(null);
-const [newUsername, setNewUsername] = useState('');
-const [data, setData] = useState([]);
-const [loading, setLoading] = useState(true);
-const [error, setError] = useState("");
+const EditProfile = () => {
+  const navigate = useNavigate();
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [newUsername, setNewUsername] = useState("");
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const token = Cookies.get("jwt"); 
+  const token = Cookies.get("jwt");
 
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/user`, {
         headers: {
-          Authorization: `Bearer ${token}`, 
+          Authorization: `Bearer ${token}`,
         },
       })
       .then((result) => {
@@ -42,28 +40,31 @@ const [error, setError] = useState("");
       });
   }, [token]);
 
-
   async function handleFileUpload(event) {
     const file = event.target.files[0];
-  
+
     new Compressor(file, {
       quality: 0.6,
       success: async (compressedFile) => {
         setSelectedFile(compressedFile);
-  
+
         const formData = new FormData();
-        formData.append('avatar', compressedFile);
-  
-        const token = Cookies.get('jwt');
-  
+        formData.append("avatar", compressedFile);
+
+        const token = Cookies.get("jwt");
+
         try {
-          const response = await axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/user/avatar`, formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-              Authorization: `Bearer ${token}`,
-            },
-          });
-  
+          const response = await axios.post(
+            `${process.env.REACT_APP_SERVER_HOSTNAME}/user/avatar`,
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
           //console.log(response.data);
         } catch (error) {
           console.error(error);
@@ -74,25 +75,23 @@ const [error, setError] = useState("");
       },
     });
   }
-  
 
+  async function handleSubmit(e) {
+    e.preventDefault();
 
-async function handleSubmit(e) {
-  e.preventDefault();
+    const token = Cookies.get("jwt");
 
-  const token = Cookies.get('jwt');
-
-  try {
-    const response = await axios.patch(
-      `${process.env.REACT_APP_SERVER_HOSTNAME}/user/username`,
-      { username: newUsername },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    try {
+      const response = await axios.patch(
+        `${process.env.REACT_APP_SERVER_HOSTNAME}/user/username`,
+        { username: newUsername },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
     //console.log(response.data);
     navigate('/settings');
@@ -103,24 +102,30 @@ async function handleSubmit(e) {
 
   return (
     <div className="settings-page">
-        <div className = "settings-header"> 
-        <div onClick={() => navigate("/settings")} className="back-link">Back</div>
+      <div className="settings-header">
+        <div onClick={() => navigate("/settings")} className="back-link">
+          Back
         </div>
-        <h1> Edit profile </h1>
-        <div className="user-profile">
-        <img src={data.avatar} alt="Profile"/>
-
-        </div>
-       
-        <div className="file-upload-container">
-        <h2>Change Profile Picture:</h2>
-        <input type="file" accept="image/*" onChange={handleFileUpload} className="file-upload-input" />
-        {selectedFile && <p>Selected file: {selectedFile.name}</p>}
       </div>
-        <div className="inputs-CreateAccount">
-          <h2>Change Username:</h2>
-            <form onSubmit={handleSubmit}>
-            <div className="input-containerCreateAccount">
+      <h1> Edit profile </h1>
+      <div className="user-profile">
+        <img src={data.avatar} alt="Profile" />
+      </div>
+
+      <div className="file-upload-container">
+        <h2>Change Profile Picture:</h2>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleFileUpload}
+          className="file-upload-input"
+        />
+        {selectedFile && <h2> your avatar is submitted succesfully</h2>}
+      </div>
+      <div className="inputs-CreateAccount">
+        <h2>Change Username:</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="input-containerCreateAccount">
             <input
               type="user"
               name="username"
@@ -130,13 +135,13 @@ async function handleSubmit(e) {
               required
             />
           </div>
-                <div className="login-button-container">
-                    <button type="submit">save</button>
-                </div>
-            </form>
-        </div>
+          <div className="login-button-container">
+            <button type="submit">save username</button>
+          </div>
+        </form>
+      </div>
     </div>
   );
-}
+};
 
 export default EditProfile;

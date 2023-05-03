@@ -95,6 +95,8 @@ input[type="text"] {
 .dataItem:hover,
 .recentListenItem:hover {
   transform: translateY(-10px);
+  outline: 3px solid black;
+  outline-offset: -3px;
 }
 
 .dataItem img,
