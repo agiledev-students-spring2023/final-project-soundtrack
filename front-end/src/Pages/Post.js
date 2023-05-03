@@ -7,17 +7,30 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import NearbyLocation from "../Components/NearbyLocation";
 
-
 const Post = () => {
   const navigate = useNavigate();
-  const [data, setData] = useState([]);
   const [activeComponent, setActiveComponent] = useState("ChooseSong");
   const [selectedSongTitle, setSelectedSongTitle] = useState("");
   const [imageURL, setImageURL] = useState("");
   const [locationName, setLocationName] = useState("");
 
-
-
+  let headerTitle = "";
+  switch (activeComponent) {
+    case "ChooseSong":
+      headerTitle = "Choose a Song";
+      break;
+    case "Camera":
+      headerTitle = "Take a Photo";
+      break;
+    case "NearbyLocation":
+      headerTitle = "Select a Location By Clicking on Marker";
+      break;
+    case "Confirmation":
+      headerTitle = "Confirm Your Post";
+      break;
+    default:
+      headerTitle = "Create Your Post";
+  }
 
   const handleChooseSongNext = (songTitle) => {
     setSelectedSongTitle(songTitle);
@@ -36,18 +49,15 @@ const Post = () => {
   const handleLocationBack = () => {
     setActiveComponent("Camera");
   };
-  
 
   const handleLocationNext = (locationName) => {
     setLocationName(locationName);
     setActiveComponent("Confirmation");
   };
 
-
   const handleError = (error) => {
     console.error(error);
   };
-
 
   return (
     <header>
@@ -55,7 +65,7 @@ const Post = () => {
         <button className="ReturnButton" onClick={() => navigate("/Map")}>
           Back
         </button>
-        <h1>Create Your Post</h1>
+        <h1 className="headerTitle">{headerTitle}</h1>
       </div>
 
       <div>
@@ -66,20 +76,22 @@ const Post = () => {
           />
         )}
         {activeComponent === "Camera" && (
-        <Camera onBack={handleCameraBack} onNext={handleCameraNext} />
+          <Camera onBack={handleCameraBack} onNext={handleCameraNext} />
         )}
 
         {activeComponent === "NearbyLocation" && (
-        <NearbyLocation onBack={handleLocationBack} onNext={handleLocationNext} />
+          <NearbyLocation
+            onBack={handleLocationBack}
+            onNext={handleLocationNext}
+          />
         )}
-
 
         {activeComponent === "Confirmation" && (
           <Confirmation
             onBack={handleLocationBack}
             onNext={handleLocationNext}
-            imageURL = {imageURL}
-            songTitle = {selectedSongTitle}
+            imageURL={imageURL}
+            songTitle={selectedSongTitle}
             locationName={locationName}
             onError={handleError}
           />

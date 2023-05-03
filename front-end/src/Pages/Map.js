@@ -21,6 +21,7 @@ import SongPreview from "../Components/SongPreview";
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
 import { SuperClusterAlgorithm } from "@googlemaps/markerclusterer";
 
+
 function Map() {
   const [libraries] = useState(["places"]);
   const { isLoaded, loadError } = useLoadScript({
@@ -39,9 +40,12 @@ function Map() {
   const [mapRef, setMapRef] = useState(null);
   const [placeIds, setPlaceIds] = useState([]);
   const [filters, setFilters] = useState([]);
+  const [filterMarkers, setFilterMarkers] = useState([]);
   const [bounds, setBounds] = useState(null);
   const [error, setError] = useState("");
   const [markers, setMarkers] = useState([]);
+  const [showClearFilters, setShowClearFilters] = useState(false);
+  const [songMarkers, setSongMarkers] = useState([]);
 
   // useEffect(() => {
   //   axios
@@ -119,6 +123,15 @@ function Map() {
       const ne = bounds.getNorthEast();
       const sw = bounds.getSouthWest();
 
+      // Load filters from cookie if they exist
+      const storedFilters = Cookies.get("filters");
+      console.log("storedFilters", storedFilters);
+      if (storedFilters) {
+        const parsedFilters = JSON.parse(storedFilters);
+        filterLocations(parsedFilters);
+      }
+
+
       axios
         .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/map`, {
           params: {
@@ -152,6 +165,58 @@ function Map() {
     }
   }, [bounds, mapRef]);
 
+  // function createSongMarkers(post) {
+  //   if (
+  //     post.locationName &&
+  //     post.locationName.geo &&
+  //     post.locationName.geo.location
+  //   ) {
+  //     const marker = new window.google.maps.Marker({
+  //       key: post.locationName.placeId,
+  //       position: {
+  //         lat: post.locationName.geo.location.lat,
+  //         lng: post.locationName.geo.location.lng,
+  //       },
+  //       title: post.locationName.name,
+  //       icon: {
+  //         url: logoIcon,
+  //         scaledSize: new window.google.maps.Size(30, 30),
+  //       },
+  //       clickable: true,
+  //     });
+
+  //     const infoWindowContent = `
+  //     <div class="infowindow-container">
+  //       ${ReactDOMServer.renderToString(<SongPreview track={post.songTitle} />)}
+  //     </div>
+  //   `;
+
+  //     const infoWindow = new window.google.maps.InfoWindow({
+  //       content: infoWindowContent,
+  //       disableAutoPan: true,
+  //     });
+
+  //     let isInfoWindowVisible = false;
+
+  //     window.google.maps.event.addListener(mapRef, "zoom_changed", () => {
+  //       console.log(mapRef.getZoom());
+  //       if (mapRef.getZoom() >= 14 && !isInfoWindowVisible) {
+  //         infoWindow.open(mapRef, marker);
+  //         isInfoWindowVisible = true;
+  //       } else if (mapRef.getZoom() < 14 && isInfoWindowVisible) {
+  //         infoWindow.close();
+  //         isInfoWindowVisible = false;
+  //       }
+  //     });
+  //     marker.addListener("click", () => {
+  //       console.log("marker place id: " + marker.key);
+  //       handleCustomMarkerClick(marker.key);
+  //     });
+  //     marker.setMap(mapRef);
+  //     return marker;
+  //   }
+  // }
+
   function createSongMarkers(post) {
     if (
       post.locationName &&
@@ -171,20 +236,20 @@ function Map() {
         },
         clickable: true,
       });
-
+  
       const infoWindowContent = `
       <div class="infowindow-container">
         ${ReactDOMServer.renderToString(<SongPreview track={post.songTitle} />)}
       </div>
     `;
-
+  
       const infoWindow = new window.google.maps.InfoWindow({
         content: infoWindowContent,
         disableAutoPan: true,
       });
-
+  
       let isInfoWindowVisible = false;
-
+  
       window.google.maps.event.addListener(mapRef, "zoom_changed", () => {
         console.log(mapRef.getZoom());
         if (mapRef.getZoom() >= 14 && !isInfoWindowVisible) {
@@ -195,14 +260,26 @@ function Map() {
           isInfoWindowVisible = false;
         }
       });
+  
       marker.addListener("click", () => {
         console.log("marker place id: " + marker.key);
         handleCustomMarkerClick(marker.key);
       });
+  
       marker.setMap(mapRef);
+  
+      // Add the marker to the songMarkers array
+      setSongMarkers((prevMarkers) => [...prevMarkers, marker]);
+  
       return marker;
     }
   }
+
+  const clearSongMarkers = () => {
+    songMarkers.forEach((m) => m.setMap(null));
+    setSongMarkers([]);
+  };
+  
 
   //handle filter pop up
   useEffect(() => {
@@ -290,6 +367,10 @@ function Map() {
   const filterLocations = (filters) => {
     setFilters(filters);
     console.log(filters);
+    setShowClearFilters(true);
+
+    // Store the filters in a cookie
+    Cookies.set("filters", JSON.stringify(filters));
 
     const service = new window.google.maps.places.PlacesService(mapRef);
     const request = {
@@ -313,6 +394,7 @@ function Map() {
   function createMarkers(locations) {
     console.log("creating markers");
     if (locations) {
+      clearSongMarkers();
       console.log("filtered");
       const markers = locations.map((place) => {
         console.log(place.place_id);
@@ -328,13 +410,31 @@ function Map() {
           console.log("marker place id: " + marker.key);
           handleCustomMarkerClick(marker.key);
         });
+
         return marker;
       });
+
+      // put the markers on the map
       markers.forEach((m) => m.setMap(mapRef));
+      setFilterMarkers(markers);
       console.log(markers);
-    } else {
+    } 
+    else {
       console.log("filters null");
     }
+  }
+
+  function deleteCookie(name) {
+    document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+  }  
+
+  // handle clear filters
+  function handleClearFilters() {
+    filterMarkers.forEach((m) => m.setMap(null));
+    setFilterMarkers([]);
+    setFilters([]);
+    deleteCookie('filters');
+    setShowClearFilters(false);
   }
 
   if (loadError) return "Error loading maps";
@@ -387,6 +487,9 @@ function Map() {
           )}
         </div>
       </div>
+      {showClearFilters && (
+        <button onClick={handleClearFilters}>Clear Filters</button>
+      )}
 
       {loading ? (
         <div className="loading-container">Loading...</div>
