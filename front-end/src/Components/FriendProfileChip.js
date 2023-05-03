@@ -12,6 +12,7 @@ const FriendProfileChip = ({data}) => {
     const [user, setUser] = useState([]);
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(true);
+    const [otherUserId, setOtherUserId] = useState("");
 
     const token = Cookies.get("jwt"); // Get the JWT token from the cookie
 
@@ -45,11 +46,10 @@ const FriendProfileChip = ({data}) => {
     //   console.log("true");
 
     let loggedInId = user.userId;
-    let otherUserId = data.userAId;
     let loadedOtherInfo = false;
     
     useEffect(() => {
-        otherUserId = (loggedInId == data.userBId) ? data.userAId : data.userBId;
+        setOtherUserId((loggedInId == data.userBId) ? data.userAId : data.userBId);
         axios
             .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/user/getUserInfo/${
                 otherUserId
