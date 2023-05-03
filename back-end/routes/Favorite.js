@@ -72,18 +72,15 @@ router.post("/saveFavorite", authenticateToken, async (req, res) => {
 
 router.post("/removeFavorite", authenticateToken, async (req, res) => {
   try {
-    // const favoriteId = req.body.favoritedLocation.placeId;
-    const favoriteId = req.body.placeId;
+    const favoriteId = req.body.favoritedLocation.placeId;
+    console.log("favorite id is " + favoriteId);
     const userId = req.user.id;
 
-    const favorite = await Favorite.findOne({ _id: favoriteId, userId: userId });
-    console.log(favorite);
+    const deletedFavorite = await Favorite.findOneAndDelete({ "favoritedLocation.placeId": favoriteId, userId: userId });
 
-    if (!favorite) {
+    if (!deletedFavorite) {
       return res.status(404).send("Favorited location not found");
     }
-
-    await Favorite.deleteOne({ _id: favoriteId, userId: userId });
 
     console.log(`Successfully removed favorited location with ID ${favoriteId} from MongoDB`);
     res.status(200).send(`Post ${favoriteId} removed successfully!`);
@@ -93,5 +90,6 @@ router.post("/removeFavorite", authenticateToken, async (req, res) => {
     res.status(500).send("Error removing favorited location!");
   }
 });
+
 
 module.exports = router;
