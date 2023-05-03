@@ -18,7 +18,8 @@ const LocationProfile = () => {
   const [locationProfile, setLocationProfile] = useState({});
   const libraries = ["places"];
   const [service, setService] = useState(null); // create a state variable for PlacesService
-  const isFavorited = useRef(false);
+  const isFavorited = useRef(Cookies.get(`isFavorited_${locationID}`) === "true");
+
 
   // useLoadScript hook to load the Google Maps JavaScript API
   const { isLoaded, loadError } = useLoadScript({
@@ -82,11 +83,12 @@ const LocationProfile = () => {
 
 
   useEffect(() => {
-    const isFavoritedCookie = Cookies.get("isFavorited");
+    const isFavoritedCookie = Cookies.get(`isFavorited_${locationID}`);
     if (isFavoritedCookie !== undefined) {
       isFavorited.current = isFavoritedCookie === "true";
     }
   }, []);
+  
   
   const songs = [];
   if (data.posts && data.posts.length) {
@@ -153,7 +155,7 @@ const LocationProfile = () => {
     console.log("post-change isFavorited: ", isFavorited.current);
 
     // Set cookie so that isFavorited perists across page refreshes
-    Cookies.set("isFavorited", isFavorited.current);
+    Cookies.set(`isFavorited_${locationID}`, isFavorited.current);
 
     if (isFavorited.current) {
       handleFavoriteLocation();

@@ -28,13 +28,15 @@ function authenticateToken(req, res, next) {
 
 router.get("/", authenticateToken, async (req, res) => {
     try {
-        console.log("finding favorites in db");
-        const posts = await Favorite.find()
-            .sort({ createdAt: -1 }) // sort by update time in descending order
-        res.json(posts);
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: err.message });
+      const userId = req.user.id;
+      console.log("finding favorites in db");
+      const posts = await Favorite.find({userId: userId})
+        .sort({ createdAt: -1 }) // sort by update time in descending order
+      res.json(posts);
+    } 
+    catch (err) {
+      console.error(err);
+      res.status(500).json({ error: err.message });
     }
 });
 
@@ -69,7 +71,8 @@ router.post("/saveFavorite", authenticateToken, async (req, res) => {
 
 router.post("/removeFavorite", authenticateToken, async (req, res) => {
   try {
-    const favoriteId = req.params.id;
+    // const favoriteId = req.body.favoritedLocation.placeId;
+    const favoriteId = req.body.placeId;
     const userId = req.user.id;
 
     const favorite = await Favorite.findOne({ _id: favoriteId, userId: userId });
