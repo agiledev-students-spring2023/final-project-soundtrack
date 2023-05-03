@@ -35,7 +35,9 @@ const FriendProfileChip = ({data}) => {
               err.response?.data?.message || "Failed to fetch data from the server";
             setError(errorMessage);
           }).finally(() => {
-            loadedOtherInfo = true;            
+            // loadedOtherInfo = true;
+            setLoading(false);         
+
           });
       }, [token]);
 
@@ -46,24 +48,28 @@ const FriendProfileChip = ({data}) => {
     //   console.log("true");
 
     let loggedInId = user.userId;
-    let loadedOtherInfo = false;
+    // let loadedOtherInfo = false;
     
     useEffect(() => {
         setOtherUserId((loggedInId == data.userBId) ? data.userAId : data.userBId);
         axios
             .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/user/getUserInfo/${
                 otherUserId
-            }`) 
+            }`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }) 
             
             .then((result) => {
                 setUserData(result.data);
+                // setLoading(false);
             })
             .catch((err) => {
                 setError('Failed to fetch data from the server');
             })          
             .finally(() => {
-                if(loadedOtherInfo)
-                    setLoading(false);
+                // if(loadedOtherInfo)
             });
 
     }, [user]);
