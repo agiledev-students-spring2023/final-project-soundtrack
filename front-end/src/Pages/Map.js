@@ -39,7 +39,6 @@ function Map() {
   const [showFavoritesPopup, setShowFavoritesPopup] = useState(false);
   const [mapRef, setMapRef] = useState(null);
   const [placeIds, setPlaceIds] = useState([]);
-  const [filtered, setFiltered] = useState(false);
   const [filters, setFilters] = useState([]);
   const [filterMarkers, setFilterMarkers] = useState([]);
   const [bounds, setBounds] = useState(null);
@@ -141,11 +140,7 @@ function Map() {
                 ) === -1
               );
             })
-            .map((post) => {
-              if (!filtered) {
-                createSongMarkers(post);
-              }
-            });
+            .map((post) => createSongMarkers(post));
           // const cluster = new MarkerClusterer({
           //   markers,
           //   mapRef,
@@ -387,7 +382,6 @@ function Map() {
   function createMarkers(locations) {
     console.log("creating markers");
     if (locations) {
-      setFiltered(true);
       clearSongMarkers();
       console.log("filtered");
       const markers = locations.map((place) => {
@@ -417,7 +411,6 @@ function Map() {
   // handle clear filters
   function handleClearFilters() {
     filterMarkers.forEach((m) => m.setMap(null));
-    setFiltered(false);
     setFilterMarkers([]);
     setFilters([]);
     setShowClearFilters(false);
