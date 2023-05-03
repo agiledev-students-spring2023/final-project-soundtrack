@@ -23,7 +23,7 @@ function ChooseSong({ placeholder, data, onNext }) {
         },
       };
       const response = await axios.get(`${process.env.REACT_APP_SERVER_HOSTNAME}/auth/refresh`, config);      
-      console.log("spotify access refreshed"); 
+      //console.log("spotify access refreshed"); 
     };
     fetchData();
   }, []);
@@ -85,7 +85,7 @@ function ChooseSong({ placeholder, data, onNext }) {
         `${process.env.REACT_APP_SERVER_HOSTNAME}/client/search-song?q=${searchWord}`
       );
       const searchResults = response.data;
-      console.log(searchResults);
+      //console.log(searchResults);
       setFilteredData(searchResults);
     } catch (error) {
       console.log(error);
@@ -98,7 +98,7 @@ function ChooseSong({ placeholder, data, onNext }) {
   };
 
   const handleRecentSong = (song) => {
-    console.log(song.track);
+    //console.log(song.track);
     setSelectedSong(song.track);
   };
 

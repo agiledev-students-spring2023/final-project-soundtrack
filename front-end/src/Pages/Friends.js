@@ -24,7 +24,7 @@ const Friends = () => {
     let friendsDisplay = null;
     let requestStatusAlert = null;
 
-    console.log(displayAlert);
+    //console.log(displayAlert);
     displayAlert[0] == true ? requestStatusAlert = <FriendRequestStatusAlert success={!displayAlert[1]}/> : requestStatusAlert = null;
 
     useEffect(() => {
@@ -61,8 +61,8 @@ const Friends = () => {
     } else {
       friendsDisplay = null;
     }
-    console.log(hasFriends);
-    console.log(data.friendsList);
+    //console.log(hasFriends);
+    //console.log(data.friendsList);
 
       
 

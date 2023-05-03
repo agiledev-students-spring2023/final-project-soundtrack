@@ -171,31 +171,6 @@ function setAccessTokenExpirationTime(expiresIn) {
   tokenExpirationTime = new Date(currentTime.getTime() + expiresIn * 1000);
 };
 
-async function refreshAccessTokenIfNeeded() {
-  try {
-    if (tokenExpirationTime) {
-      const currentTime = new Date();
-      const timeRemaining = (tokenExpirationTime.getTime() - currentTime.getTime()) / 1000;
-      console.log('No need to refresh token.'); 
-      if (timeRemaining <= 60) {
-        spotifyApi.refreshAccessToken().then(
-          function (data) {
-            console.log('The access token has been refreshed!');
-            spotifyApi.setAccessToken(data.body['access_token']);
-            setAccessTokenExpirationTime(3600);
-          },
-          function (err) {
-            console.log('Could not refresh access token', err);
-          }
-        );
-      }
-    } else {
-      console.log('Token expiration time is not set');
-    }
-  } catch (error) {
-    console.error('Error refreshing access token', error);
-  }
-};
 
 router.get('/refresh', authenticateToken, async(req,res) => {
   const userId = req.user.id;

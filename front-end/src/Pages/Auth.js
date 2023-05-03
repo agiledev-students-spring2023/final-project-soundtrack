@@ -30,7 +30,7 @@ const Auth = () => {
           },
         };
         const response = await axios.get(`${process.env.REACT_APP_SERVER_HOSTNAME}/auth/callback?code=${code}`, config);
-        console.log(response.data);
+        //console.log(response.data);
         setToken(true);
       }
     };

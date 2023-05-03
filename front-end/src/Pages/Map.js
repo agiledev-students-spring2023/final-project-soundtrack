@@ -77,14 +77,14 @@ function Map() {
         `${process.env.REACT_APP_SERVER_HOSTNAME}/auth/refresh`,
         config
       );
-      console.log("spotify access refreshed");
+      //console.log("spotify access refreshed");
     };
     fetchData();
   }, []);
 
   const handleMapLoad = (map) => {
     setMapRef(map);
-    console.log(mapRef);
+    //console.log(mapRef);
   };
 
   //get bounds of the map
@@ -127,7 +127,7 @@ function Map() {
         })
         .then((result) => {
           const posts = result.data.posts;
-          console.log(result.data);
+          //console.log(result.data);
           const newMarkers = posts
             .filter((post) => {
               return (
@@ -186,7 +186,7 @@ function Map() {
       let isInfoWindowVisible = false;
 
       window.google.maps.event.addListener(mapRef, "zoom_changed", () => {
-        console.log(mapRef.getZoom());
+        //console.log(mapRef.getZoom());
         if (mapRef.getZoom() >= 14 && !isInfoWindowVisible) {
           infoWindow.open(mapRef, marker);
           isInfoWindowVisible = true;
@@ -196,7 +196,7 @@ function Map() {
         }
       });
       marker.addListener("click", () => {
-        console.log("marker place id: " + marker.key);
+        //console.log("marker place id: " + marker.key);
         handleCustomMarkerClick(marker.key);
       });
       marker.setMap(mapRef);
@@ -252,14 +252,14 @@ function Map() {
   const handleMarkerClick = (event) => {
     const marker = event?.placeId;
     if (marker) {
-      console.log(marker);
+      //console.log(marker);
       // This is a Google Place marker, redirect to user profile page
       const geocoder = new window.google.maps.Geocoder();
       geocoder.geocode(
         { location: { lat: event.latLng.lat(), lng: event.latLng.lng() } },
         (results, status) => {
           if (status === "OK") {
-            console.log(results[0].place_id);
+            //console.log(results[0].place_id);
             const locationID = results[0].place_id;
             navigate(`/LocationProfile/${locationID}`);
           } else {
@@ -274,7 +274,7 @@ function Map() {
 
   //handle custom marker click
   const handleCustomMarkerClick = (locationID) => {
-    console.log(locationID);
+    //console.log(locationID);
     navigate(`/LocationProfile/${locationID}`);
   };
 
@@ -289,7 +289,7 @@ function Map() {
   //filter locations
   const filterLocations = (filters) => {
     setFilters(filters);
-    console.log(filters);
+    //console.log(filters);
 
     const service = new window.google.maps.places.PlacesService(mapRef);
     const request = {
@@ -304,18 +304,18 @@ function Map() {
         const placeIds = results.map((result) => result.place_id);
         setPlaceIds(placeIds);
         createMarkers(results);
-        console.log(result);
+        //console.log(result);
       }
     });
   };
 
   //create marker based on filter
   function createMarkers(locations) {
-    console.log("creating markers");
+    //console.log("creating markers");
     if (locations) {
-      console.log("filtered");
+      //console.log("filtered");
       const markers = locations.map((place) => {
-        console.log(place.place_id);
+        //console.log(place.place_id);
         const marker = new window.google.maps.Marker({
           key: place.place_id,
           position: {
@@ -325,15 +325,15 @@ function Map() {
           clickable: true,
         });
         marker.addListener("click", () => {
-          console.log("marker place id: " + marker.key);
+          //console.log("marker place id: " + marker.key);
           handleCustomMarkerClick(marker.key);
         });
         return marker;
       });
       markers.forEach((m) => m.setMap(mapRef));
-      console.log(markers);
+      //console.log(markers);
     } else {
-      console.log("filters null");
+      //console.log("filters null");
     }
   }
 

@@ -23,10 +23,10 @@ const Privacy = () => {
             },
           }
         );
-        console.log(response.data);
+        //console.log(response.data);
         setIsPrivate(response.data);
       } catch (error) {
-        console.error(error);
+        //console.error(error);
       }
     };
     
@@ -51,10 +51,10 @@ const Privacy = () => {
         }
       );
 
-      console.log(response.data);
+      //console.log(response.data);
       setIsPrivate(newPrivacy);
     } catch (error) {
-      console.error(error);
+      //console.error(error);
     }
   }
 

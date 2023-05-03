@@ -53,10 +53,6 @@ const SongPreview = ({ track }) => {
     }
   };
 
-  const openSpotifyLink = () => {
-    window.open(track.external_urls.spotify, '_blank');
-  };
-
   return (
     <div className="song-preview">
       <div className="song-details">
@@ -78,7 +74,7 @@ const SongPreview = ({ track }) => {
           </div>
         </div>
         <div className="song-info">
-          <p className="song-name" onClick={openSpotifyLink}>
+          <p className="song-name" >
             {track.name}
           </p>
           <p className="song-artist">

@@ -76,7 +76,7 @@ const FriendRequestChip = ({data}) => {
                 }
             })
             .then((res) => {
-                console.log(res.data);
+                //console.log(res.data);
             })
             .catch((err) => {
                 console.log(err);
@@ -85,7 +85,7 @@ const FriendRequestChip = ({data}) => {
     }
 
     const rejectFunction = () => {
-        console.log("rejected");
+        //console.log("rejected");
         const token = Cookies.get("jwt");
         axios
             .delete(`${process.env.REACT_APP_SERVER_HOSTNAME}/friends/rejectfriendrequest`, {
@@ -98,7 +98,7 @@ const FriendRequestChip = ({data}) => {
                 }
             })
             .then((res) => {
-                console.log(res.data);
+                //console.log(res.data);
             })
             .catch((err) => {
                 console.log(err);

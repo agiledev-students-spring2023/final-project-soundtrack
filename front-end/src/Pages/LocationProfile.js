@@ -78,7 +78,7 @@ const LocationProfile = () => {
       });
   }, [locationID]);
 
-  console.log(data); // should now print the location name fetched from the backend
+  //console.log(data); // should now print the location name fetched from the backend
 
 
   useEffect(() => {
@@ -94,7 +94,7 @@ const LocationProfile = () => {
       songs.push(data.posts[i].songTitle);
     }
   }
-  console.log(songs);
+  //console.log(songs);
 
 
   const handleFavoriteLocation = () => {
@@ -115,7 +115,7 @@ const LocationProfile = () => {
         }
       )
       .then((res) => {
-        console.log(res.data);
+        //console.log(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -140,7 +140,7 @@ const LocationProfile = () => {
         }
       )
       .then((res) => {
-        console.log(res.data);
+        //console.log(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -148,9 +148,9 @@ const LocationProfile = () => {
   };
 
   async function handleChange(e) {
-    console.log("pre-change isFavorited: ", isFavorited.current);
+    //console.log("pre-change isFavorited: ", isFavorited.current);
     isFavorited.current = !isFavorited.current;
-    console.log("post-change isFavorited: ", isFavorited.current);
+    //console.log("post-change isFavorited: ", isFavorited.current);
 
     // Set cookie so that isFavorited perists across page refreshes
     Cookies.set("isFavorited", isFavorited.current);
@@ -179,7 +179,7 @@ const LocationProfile = () => {
           </div>
         </div>
         <div>
-          {console.log("isFavorited: ", isFavorited.current)}
+          {/* {console.log("isFavorited: ", isFavorited.current)} */}
         </div>
       </div>
 

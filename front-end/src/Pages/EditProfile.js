@@ -64,7 +64,7 @@ const [error, setError] = useState("");
             },
           });
   
-          console.log(response.data);
+          //console.log(response.data);
         } catch (error) {
           console.error(error);
         }
@@ -94,7 +94,7 @@ async function handleSubmit(e) {
       }
     );
 
-    console.log(response.data);
+    //console.log(response.data);
     navigate('/settings');
   } catch (error) {
     console.error(error);

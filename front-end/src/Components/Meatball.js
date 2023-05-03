@@ -23,7 +23,7 @@ function Meatball({post, postId, onDelete, onPrivacyChange}) {
       });
 
       const data = await response.data;
-      console.log(data);
+      //console.log(data);
       onDelete(postId);
     } catch (error) {
       console.error(error);
@@ -46,7 +46,7 @@ function Meatball({post, postId, onDelete, onPrivacyChange}) {
       });
   
       const data = await response.data;
-      console.log(data);
+      //console.log(data);
       onPrivacyChange(postId, privacy);
     } catch (error) {
       console.error(error);

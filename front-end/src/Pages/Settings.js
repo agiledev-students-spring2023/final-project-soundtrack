@@ -1,7 +1,6 @@
 import React from 'react';
 import './Settings.css';
 import { useNavigate } from "react-router-dom";
-import SpotifyPlayer from '../Components/SpotifyPlayer';
 import axios from 'axios';
 import Cookies from "js-cookie";
 import {useEffect} from 'react'; 

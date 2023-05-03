@@ -22,7 +22,7 @@ const User = () => {
       })
       .then((result) => {
         setUser(result.data);
-        console.log(result.data);
+        //console.log(result.data);
       })
       .catch((err) => {
         const errorMessage =
@@ -40,7 +40,7 @@ const User = () => {
       })
       .then((result) => {
         setData(result.data);
-        console.log(result.data);
+        //console.log(result.data);
       })
       .catch((err) => {
         const errorMessage =
