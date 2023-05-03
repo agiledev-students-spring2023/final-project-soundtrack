@@ -22,7 +22,7 @@ const LocationProfile = () => {
 
   // useLoadScript hook to load the Google Maps JavaScript API
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: "AIzaSyB1D7Olh84_bINSSNaJ5N9nsU6bq933y0U",
+    googleMapsApiKey: process.env.REACT_APP_MAP_KEY,
     libraries,
     preventGoogleFontsLoading: true,
   });
@@ -117,6 +117,7 @@ const LocationProfile = () => {
 
   const handleFavoriteLocation = () => {
     const favoritedLocation = locationProfile;
+    console.log("favoritedLocation: ", favoritedLocation);
     const token = Cookies.get("jwt"); // Get the JWT token from the cookie
     const baseURL =
       process.env.NODE_ENV === "production"
