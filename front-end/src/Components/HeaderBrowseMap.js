@@ -26,7 +26,7 @@ const HeaderBrowseMap = () => {
                 </div>
             </div>
             <div className="BrowseAndMapRow">
-                <div onClick = {() => {navigate("/browse") }}className="SquareButton2">
+                <div onClick = {() => {navigate("/recent") }}className="SquareButton2">
                     Browse
                 </div>
 
