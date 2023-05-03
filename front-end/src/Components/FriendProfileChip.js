@@ -12,6 +12,7 @@ const FriendProfileChip = ({data}) => {
     const [user, setUser] = useState([]);
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(true);
+    const [otherUserId, setOtherUserId] = useState("");
 
     const token = Cookies.get("jwt"); // Get the JWT token from the cookie
 
@@ -28,14 +29,14 @@ const FriendProfileChip = ({data}) => {
           })
           .then((result) => {
             setUser(result.data);
-
           })
           .catch((err) => {
             const errorMessage =
               err.response?.data?.message || "Failed to fetch data from the server";
             setError(errorMessage);
+          }).finally(() => {
+            loadedOtherInfo = true;            
           });
-
       }, [token]);
 
     
@@ -45,12 +46,13 @@ const FriendProfileChip = ({data}) => {
     //   console.log("true");
 
     let loggedInId = user.userId;
+    let loadedOtherInfo = false;
     
     useEffect(() => {
-
+        setOtherUserId((loggedInId == data.userBId) ? data.userAId : data.userBId);
         axios
             .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/user/getUserInfo/${
-                (loggedInId == data.userBId) ? data.userAId : data.userBId
+                otherUserId
             }`) 
             
             .then((result) => {
@@ -60,8 +62,10 @@ const FriendProfileChip = ({data}) => {
                 setError('Failed to fetch data from the server');
             })          
             .finally(() => {
-                setLoading(false);
+                if(loadedOtherInfo)
+                    setLoading(false);
             });
+
     }, [user]);
 
 
@@ -69,7 +73,7 @@ const FriendProfileChip = ({data}) => {
 
     return(
         <div className="MainBox" onClick={() => {
-            navigate("/User")
+            navigate(`/UserProfile/${otherUserId}`)
             }}>
             <div className="PictureAndUsername">
 
