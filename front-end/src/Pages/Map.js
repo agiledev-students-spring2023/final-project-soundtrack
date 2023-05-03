@@ -21,6 +21,7 @@ import SongPreview from "../Components/SongPreview";
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
 import { SuperClusterAlgorithm } from "@googlemaps/markerclusterer";
 
+
 function Map() {
   const [libraries] = useState(["places"]);
   const { isLoaded, loadError } = useLoadScript({
@@ -42,6 +43,7 @@ function Map() {
   const [bounds, setBounds] = useState(null);
   const [error, setError] = useState("");
   const [markers, setMarkers] = useState([]);
+  const [showClearFilters, setShowClearFilters] = useState(false);
 
   // useEffect(() => {
   //   axios
@@ -290,6 +292,7 @@ function Map() {
   const filterLocations = (filters) => {
     setFilters(filters);
     console.log(filters);
+    setShowClearFilters(true);
 
     const service = new window.google.maps.places.PlacesService(mapRef);
     const request = {
@@ -335,6 +338,12 @@ function Map() {
     } else {
       console.log("filters null");
     }
+  }
+
+  // handle clear filters
+  function handleClearFilters() {
+    setFilters([]);
+    setShowClearFilters(false);
   }
 
   if (loadError) return "Error loading maps";
@@ -387,6 +396,9 @@ function Map() {
           )}
         </div>
       </div>
+      {showClearFilters && (
+        <button onClick={handleClearFilters}>Clear Filters</button>
+      )}
 
       {loading ? (
         <div className="loading-container">Loading...</div>
