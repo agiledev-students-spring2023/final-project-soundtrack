@@ -141,11 +141,7 @@ function Map() {
                 ) === -1
               );
             })
-            .map((post) => {
-              if (!filtered) {
-                createSongMarkers(post);
-              }
-            });
+            .map((post) => createSongMarkers(post));
           // const cluster = new MarkerClusterer({
           //   markers,
           //   mapRef,
