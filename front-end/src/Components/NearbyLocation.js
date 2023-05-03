@@ -68,8 +68,8 @@ function NearbyLocation({ onNext }) {
                     placeId: placeId
                   }
                   setLocationName(locationProfile);
-                  console.log(locationProfile);
-                  console.log(locationName);
+                  //console.log(locationProfile);
+                  //console.log(locationName);
 
                   
                 } else {

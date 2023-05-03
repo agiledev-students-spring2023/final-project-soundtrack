@@ -65,7 +65,7 @@ const EditProfile = () => {
             }
           );
 
-          console.log(response.data);
+          //console.log(response.data);
         } catch (error) {
           console.error(error);
         }
@@ -93,12 +93,12 @@ const EditProfile = () => {
         }
       );
 
-      console.log(response.data);
-      navigate("/settings");
-    } catch (error) {
-      console.error(error);
-    }
+    //console.log(response.data);
+    navigate('/settings');
+  } catch (error) {
+    console.error(error);
   }
+}
 
   return (
     <div className="settings-page">

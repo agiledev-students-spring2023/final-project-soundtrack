@@ -78,7 +78,7 @@ const LocationProfile = () => {
       });
   }, [locationID]);
 
-  console.log(data); // should now print the location name fetched from the backend
+  //console.log(data); // should now print the location name fetched from the backend
 
   useEffect(() => {
     const token = Cookies.get("jwt"); // Get the JWT token from the cookie
@@ -113,7 +113,8 @@ const LocationProfile = () => {
       songs.push(data.posts[i].songTitle);
     }
   }
-  console.log(songs);
+  //console.log(songs);
+
 
   const handleFavoriteLocation = () => {
     const favoritedLocation = locationProfile;
@@ -135,7 +136,7 @@ const LocationProfile = () => {
         }
       )
       .then((res) => {
-        console.log(res.data);
+        //console.log(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -161,7 +162,7 @@ const LocationProfile = () => {
         }
       )
       .then((res) => {
-        console.log(res.data);
+        //console.log(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -200,7 +201,9 @@ const LocationProfile = () => {
             {favorited ? "Remove Favorite" : "Favorite Location"}
           </div>
         </div>
-        <div>{console.log("favorited: ", favorited)}</div>
+        <div>
+          {/* {console.log("isFavorited: ", isFavorited.current)} */}
+        </div>
       </div>
 
       {locationProfile ? (

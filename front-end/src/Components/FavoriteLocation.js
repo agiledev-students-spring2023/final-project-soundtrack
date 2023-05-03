@@ -8,11 +8,11 @@ const FavoriteLocation = ({ favoritedLocation }) => {
 
     const handleLocationClick = (locationId) => {
         let locationID = locationId;
-        console.log(locationID);
+        //console.log(locationID);
         navigate(`/LocationProfile/${locationID}`);
     };
 
-    console.log("placeId", favoritedLocation.placeId);
+    //console.log("placeId", favoritedLocation.placeId);
 
     return (
         <div

@@ -7,7 +7,6 @@ import SongPreview from "../Components/SongPreview";
 import Meatball from "./Meatball";
 import axios from "axios";
 import Cookies from "js-cookie";
-import SpotifyPlayer from "../Components/SpotifyPlayer";
 
 const UserPost = ({ post, onDelete, onPrivacyChange }) => {
   const currentPage = window.location.pathname;
@@ -45,7 +44,7 @@ const UserPost = ({ post, onDelete, onPrivacyChange }) => {
     const token = Cookies.get("jwt"); // Get the JWT token from the cookie
     if (liked) {
       // Remove user from likedBy array
-      console.log("local token is" + token);
+      //console.log("local token is" + token);
       await axios
         .patch(
           `${process.env.REACT_APP_SERVER_HOSTNAME}/post/unlike/${post._id}`,
@@ -57,7 +56,7 @@ const UserPost = ({ post, onDelete, onPrivacyChange }) => {
           }
         )
         .then((result) => {
-          console.log("Successfully removed like");
+          //console.log("Successfully removed like");
           setLikes((prevLikes) => prevLikes - 1);
           setLiked(false);
         })
@@ -75,7 +74,7 @@ const UserPost = ({ post, onDelete, onPrivacyChange }) => {
           }
         )
         .then((result) => {
-          console.log("Successfully added like");
+          //console.log("Successfully added like");
           setLikes((prevLikes) => prevLikes + 1);
           setLiked(true);
         })
@@ -86,13 +85,13 @@ const UserPost = ({ post, onDelete, onPrivacyChange }) => {
 
   const handleLocationClick = (locationId) => {
     let locationID = locationId
-    console.log(locationID);
+    //console.log(locationID);
     navigate(`/LocationProfile/${locationID}`);
   };
   
 const handleUserName = () => {
   let userID = post.userId;
-  console.log(userID);
+  //console.log(userID);
   navigate(`/UserProfile/${userID}`);
 };
 

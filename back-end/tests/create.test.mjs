@@ -13,7 +13,7 @@ import { app, close } from '../server.js';
 
 chai.use(chaiHttp);
 const expect = chai.expect;
-const secretKey = "shaoxuewenlu";
+const secretKey = process.env.JWT_SECRET_KEY;
 
 
 describe('User registration', () => {

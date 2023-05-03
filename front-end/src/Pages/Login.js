@@ -29,7 +29,7 @@ function Login() {
       });
       const token = response.data.token;
       Cookies.set("jwt", token); // Store JWT token in a cookie
-      console.log(token);
+      //console.log(token);
   
       const userResponse = await axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/return`, {
         }, {

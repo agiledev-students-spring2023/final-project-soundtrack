@@ -76,7 +76,7 @@ function Mapbox() {
     }
 
     const filterLocations = (filters) => {
-        console.log(filters);
+        //console.log(filters);
     };
 
    
