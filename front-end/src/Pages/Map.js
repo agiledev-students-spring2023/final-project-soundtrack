@@ -39,11 +39,14 @@ function Map() {
   const [showFavoritesPopup, setShowFavoritesPopup] = useState(false);
   const [mapRef, setMapRef] = useState(null);
   const [placeIds, setPlaceIds] = useState([]);
+  const [filtered, setFiltered] = useState(false);
   const [filters, setFilters] = useState([]);
+  const [filterMarkers, setFilterMarkers] = useState([]);
   const [bounds, setBounds] = useState(null);
   const [error, setError] = useState("");
   const [markers, setMarkers] = useState([]);
   const [showClearFilters, setShowClearFilters] = useState(false);
+  const [songMarkers, setSongMarkers] = useState([]);
 
   // useEffect(() => {
   //   axios
@@ -138,7 +141,11 @@ function Map() {
                 ) === -1
               );
             })
-            .map((post) => createSongMarkers(post));
+            .map((post) => {
+              if (!filtered) {
+                createSongMarkers(post);
+              }
+            });
           // const cluster = new MarkerClusterer({
           //   markers,
           //   mapRef,
@@ -153,6 +160,58 @@ function Map() {
         });
     }
   }, [bounds, mapRef]);
+
+  // function createSongMarkers(post) {
+  //   if (
+  //     post.locationName &&
+  //     post.locationName.geo &&
+  //     post.locationName.geo.location
+  //   ) {
+  //     const marker = new window.google.maps.Marker({
+  //       key: post.locationName.placeId,
+  //       position: {
+  //         lat: post.locationName.geo.location.lat,
+  //         lng: post.locationName.geo.location.lng,
+  //       },
+  //       title: post.locationName.name,
+  //       icon: {
+  //         url: logoIcon,
+  //         scaledSize: new window.google.maps.Size(30, 30),
+  //       },
+  //       clickable: true,
+  //     });
+
+  //     const infoWindowContent = `
+  //     <div class="infowindow-container">
+  //       ${ReactDOMServer.renderToString(<SongPreview track={post.songTitle} />)}
+  //     </div>
+  //   `;
+
+  //     const infoWindow = new window.google.maps.InfoWindow({
+  //       content: infoWindowContent,
+  //       disableAutoPan: true,
+  //     });
+
+  //     let isInfoWindowVisible = false;
+
+  //     window.google.maps.event.addListener(mapRef, "zoom_changed", () => {
+  //       console.log(mapRef.getZoom());
+  //       if (mapRef.getZoom() >= 14 && !isInfoWindowVisible) {
+  //         infoWindow.open(mapRef, marker);
+  //         isInfoWindowVisible = true;
+  //       } else if (mapRef.getZoom() < 14 && isInfoWindowVisible) {
+  //         infoWindow.close();
+  //         isInfoWindowVisible = false;
+  //       }
+  //     });
+  //     marker.addListener("click", () => {
+  //       console.log("marker place id: " + marker.key);
+  //       handleCustomMarkerClick(marker.key);
+  //     });
+  //     marker.setMap(mapRef);
+  //     return marker;
+  //   }
+  // }
 
   function createSongMarkers(post) {
     if (
@@ -173,20 +232,20 @@ function Map() {
         },
         clickable: true,
       });
-
+  
       const infoWindowContent = `
       <div class="infowindow-container">
         ${ReactDOMServer.renderToString(<SongPreview track={post.songTitle} />)}
       </div>
     `;
-
+  
       const infoWindow = new window.google.maps.InfoWindow({
         content: infoWindowContent,
         disableAutoPan: true,
       });
-
+  
       let isInfoWindowVisible = false;
-
+  
       window.google.maps.event.addListener(mapRef, "zoom_changed", () => {
         console.log(mapRef.getZoom());
         if (mapRef.getZoom() >= 14 && !isInfoWindowVisible) {
@@ -197,14 +256,26 @@ function Map() {
           isInfoWindowVisible = false;
         }
       });
+  
       marker.addListener("click", () => {
         console.log("marker place id: " + marker.key);
         handleCustomMarkerClick(marker.key);
       });
+  
       marker.setMap(mapRef);
+  
+      // Add the marker to the songMarkers array
+      setSongMarkers((prevMarkers) => [...prevMarkers, marker]);
+  
       return marker;
     }
   }
+
+  const clearSongMarkers = () => {
+    songMarkers.forEach((m) => m.setMap(null));
+    setSongMarkers([]);
+  };
+  
 
   //handle filter pop up
   useEffect(() => {
@@ -316,6 +387,8 @@ function Map() {
   function createMarkers(locations) {
     console.log("creating markers");
     if (locations) {
+      setFiltered(true);
+      clearSongMarkers();
       console.log("filtered");
       const markers = locations.map((place) => {
         console.log(place.place_id);
@@ -334,6 +407,7 @@ function Map() {
         return marker;
       });
       markers.forEach((m) => m.setMap(mapRef));
+      setFilterMarkers(markers);
       console.log(markers);
     } else {
       console.log("filters null");
@@ -342,6 +416,9 @@ function Map() {
 
   // handle clear filters
   function handleClearFilters() {
+    filterMarkers.forEach((m) => m.setMap(null));
+    setFiltered(false);
+    setFilterMarkers([]);
     setFilters([]);
     setShowClearFilters(false);
   }
