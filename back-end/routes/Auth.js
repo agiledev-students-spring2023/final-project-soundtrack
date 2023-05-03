@@ -67,7 +67,6 @@ async function authenticateToken(req, res, next) {
   });
 }
 
-
 router.get("/", morgan("dev"),(req, res, next) => {
   res.send(loginEndpoint); 
 });
@@ -146,21 +145,26 @@ router.get('/recently-played', authenticateToken, async (req, res) => {
 
 
 
-  router.get('/get-access-token', authenticateToken, async (req, res) => {
-    try {
-      await refreshAccessTokenIfNeeded(); 
-    const token = spotifyApi.getAccessToken();
-    console.log(token); 
-    if (token) {
-      res.send({ access_token: token });
-    } else {
-      res.status(400).send('Access token is required');
+router.get('/check-access-token', authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const user = await User.findOne({ userId: userId });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
     }
+
+    if (user.auth === "0") {
+      return res.status(400).send(err);
+    } 
+
+    else {
+      res.send(user.auth);
     }
-    catch(err){
-      res.status(400).send(err)
-    }
-  });
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
 
 function setAccessTokenExpirationTime(expiresIn) {
   const currentTime = new Date();
