@@ -123,6 +123,15 @@ function Map() {
       const ne = bounds.getNorthEast();
       const sw = bounds.getSouthWest();
 
+      // Load filters from cookie if they exist
+      const storedFilters = Cookies.get("filters");
+      console.log("storedFilters", storedFilters);
+      if (storedFilters) {
+        const parsedFilters = JSON.parse(storedFilters);
+        filterLocations(parsedFilters);
+      }
+
+
       axios
         .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/map`, {
           params: {
@@ -360,6 +369,9 @@ function Map() {
     console.log(filters);
     setShowClearFilters(true);
 
+    // Store the filters in a cookie
+    Cookies.set("filters", JSON.stringify(filters));
+
     const service = new window.google.maps.places.PlacesService(mapRef);
     const request = {
       location: center,
@@ -398,21 +410,30 @@ function Map() {
           console.log("marker place id: " + marker.key);
           handleCustomMarkerClick(marker.key);
         });
+
         return marker;
       });
+
+      // put the markers on the map
       markers.forEach((m) => m.setMap(mapRef));
       setFilterMarkers(markers);
       console.log(markers);
-    } else {
+    } 
+    else {
       console.log("filters null");
     }
   }
+
+  function deleteCookie(name) {
+    document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+  }  
 
   // handle clear filters
   function handleClearFilters() {
     filterMarkers.forEach((m) => m.setMap(null));
     setFilterMarkers([]);
     setFilters([]);
+    deleteCookie('filters');
     setShowClearFilters(false);
   }
 
