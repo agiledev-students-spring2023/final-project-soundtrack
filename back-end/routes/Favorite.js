@@ -32,7 +32,8 @@ router.get("/", authenticateToken, async (req, res) => {
       console.log("finding favorites in db");
       const posts = await Favorite.find({userId: userId})
         .sort({ createdAt: -1 }) // sort by update time in descending order
-      res.json(posts);
+        console.log(posts)
+        res.json(posts);
     } 
     catch (err) {
       console.error(err);
