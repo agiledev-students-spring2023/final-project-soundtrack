@@ -69,7 +69,8 @@ router.post("/saveFavorite", authenticateToken, async (req, res) => {
 
 router.post("/removeFavorite", authenticateToken, async (req, res) => {
   try {
-    const favoriteId = req.params.id;
+    // const favoriteId = req.body.favoritedLocation.placeId;
+    const favoriteId = req.body.placeId;
     const userId = req.user.id;
 
     const favorite = await Favorite.findOne({ _id: favoriteId, userId: userId });
