@@ -66,10 +66,10 @@ router.get('/', morgan("dev"), async (req, res) => {
     const response = await axios.post(authOptions.url, authOptions.data, { headers: authOptions.headers });
     const token = response.data.access_token;
     const expires_in = response.data.expires_in;
-    //console.log(expires_in); 
     setAccessTokenExpirationTime(expires_in);
     spotifyApi.setAccessToken(token);
-    res.send(token);
+    // res.send(token);
+    res.json({ access_token: token });
 
   } catch (error) {
     console.error(error);
@@ -79,7 +79,7 @@ router.get('/', morgan("dev"), async (req, res) => {
 
 router.get('/random-songs', async (req, res) => {
     try {
-      //await refreshAccessTokenIfNeeded();
+      await refreshAccessTokenIfNeeded();
       const result = await spotifyApi.searchTracks('year:2023', { limit: 5 });
       res.status(200).send(result.body);
     } catch (err) {

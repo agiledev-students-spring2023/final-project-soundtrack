@@ -72,8 +72,8 @@ app.use("/favorite", favoriteRoute);
 
 
 // a function to stop listening to the port
-const close = () => {
-  mongoose.connection.close();
+const close = async () => {
+  await mongoose.connection.close();
   server.close();
 };
 
