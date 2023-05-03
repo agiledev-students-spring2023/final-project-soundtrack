@@ -17,8 +17,6 @@ const Post = () => {
   const [locationName, setLocationName] = useState("");
 
 
-
-
   const handleChooseSongNext = (songTitle) => {
     setSelectedSongTitle(songTitle);
     setActiveComponent("Camera");
@@ -55,7 +53,7 @@ const Post = () => {
         <button className="ReturnButton" onClick={() => navigate("/Map")}>
           Back
         </button>
-        <h1>Create Your Post</h1>
+        <h1 className="headerTitle">Create Your Post</h1>
       </div>
 
       <div>

@@ -110,6 +110,7 @@ function NearbyLocation({ onNext }) {
           onLoad={handleMapLoad}
           mapContainerStyle={mapContainerStyle}
           center={center}
+          clickableIcons={false}
           zoom={15}
           options={{
             mapTypeControl: false,
