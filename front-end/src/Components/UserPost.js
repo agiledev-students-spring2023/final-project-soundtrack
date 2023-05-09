@@ -14,6 +14,7 @@ const UserPost = ({ post, onDelete, onPrivacyChange }) => {
   const navigate = useNavigate();
   const [liked, setLiked] = useState(false);
   const [likes, setLikes] = useState(0);
+  const [meatballOpen, setMeatballOpen] = useState(false);
 
   useEffect(() => {
     const token = Cookies.get("jwt");
@@ -83,6 +84,19 @@ const UserPost = ({ post, onDelete, onPrivacyChange }) => {
     }
   }
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (meatballOpen && !event.target.closest(".meatball")) {
+        setMeatballOpen(false);
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [meatballOpen]);
+  
+
 
   const handleLocationClick = (locationId) => {
     let locationID = locationId
@@ -112,16 +126,18 @@ const handleUserName = () => {
         />
 
         <h3  onClick={() => handleUserName(post.userName)}>@{post.userName}</h3>
-        <div className="meatball">
-          {currentPage === "/user" && (
-            <Meatball
-              post={post}
-              postId={post._id}
-              onDelete={onDelete}
-              onPrivacyChange={handlePrivacyChange}
-            />
-          )}
-        </div>
+        <div className="meatball" onClick={() => setMeatballOpen(true)}>
+  {currentPage === "/user" && (
+    <Meatball
+    post={post}
+    postId={post._id}
+    onDelete={onDelete}
+    onPrivacyChange={handlePrivacyChange}
+    isOpen={meatballOpen}
+  />  
+  )}
+</div>
+
       </div>
       <div
         className="location"
