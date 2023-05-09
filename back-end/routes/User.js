@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const Post = require("../models/Post"); // or whatever your post model is called
 const jwt = require("jsonwebtoken");
 const secretKey = process.env.JWT_SECRET_KEY;
-const User = require("../models/User"); // Assuming the model is in a separate file called "userModel.js"
+const User = require("../models/User"); 
 
 function authenticateToken(req, res, next) {
   const authHeader = req.headers["authorization"];
@@ -178,6 +178,24 @@ router.patch("/privacy", authenticateToken, async (req, res) => {
     .status(200)
     .json({ message: "Privacy setting updated successfully", privacy: newPrivacy });
 });
+
+router.patch("/delete", authenticateToken, async (req, res) => {
+  const userId = req.user.id;
+
+  const user = await User.findOne({ userId: userId });
+
+  if (!user) {
+    return res.status(404).json({ error: "User not found" });
+  }
+  else{
+    await Post.deleteMany({ userId: userId});
+    await User.deleteOne({ userId: userId });
+
+  res.status(200).json({ message: "Account deleted" });
+
+  }
+});
+
 
 
 module.exports = router;

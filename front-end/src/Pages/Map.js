@@ -20,6 +20,8 @@ import ReactDOMServer from "react-dom/server";
 import SongPreview from "../Components/SongPreview";
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
 import { SuperClusterAlgorithm } from "@googlemaps/markerclusterer";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 
 function Map() {
@@ -492,7 +494,7 @@ function Map() {
       )}
 
       {loading ? (
-        <div className="loading-container">Loading...</div>
+        <div className="loading-container"><FontAwesomeIcon icon={faSpinner} spin /> </div>
       ) : (
         <GoogleMap
           onLoad={handleMapLoad}

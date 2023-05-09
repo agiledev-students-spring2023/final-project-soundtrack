@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './Meatball.css';
 import axios from "axios"; 
 import Cookies from "js-cookie";
@@ -6,6 +6,7 @@ import Cookies from "js-cookie";
 function Meatball({post, postId, onDelete, onPrivacyChange}) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const token = Cookies.get("jwt"); 
+  const menuRef = useRef(null);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -52,20 +53,32 @@ function Meatball({post, postId, onDelete, onPrivacyChange}) {
       console.error(error);
     }
   };
-  
+
+  const handleClickOutside = (event) => {
+    if (menuRef.current && !menuRef.current.contains(event.target)) {
+      setIsMenuOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
-    <div className="meatball-menu">
+    <div className="meatball-menu" ref={menuRef}>
       <button className="meatball-menu__btn" onClick={toggleMenu}> • • • </button>
       {isMenuOpen && (
         <ul className="meatball-menu__options">
           <li>
-            <a onClick={handleDeleteClick}>Delete</a>
-          </li>
-          <li>
           <a onClick={handlePrivacyClick}>
               {post.privacy === "Public" ? "Make private" : "Make public"}
             </a>
+          </li>
+          <li>
+            <a onClick={handleDeleteClick}>Delete</a>
           </li>
         </ul>
       )}

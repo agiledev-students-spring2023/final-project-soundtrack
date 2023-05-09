@@ -5,6 +5,8 @@ import HeaderBrowseMap from "../Components/HeaderBrowseMap";
 import UserPost from "../Components/UserPost";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { debounce } from "lodash";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 const Browse = () => {
   const [data, setData] = useState([]);
@@ -49,7 +51,11 @@ const Browse = () => {
           dataLength={data.length}
           next={loadMore}
           hasMore={hasMore}
-          loader={<h4>Loading...</h4>}
+          loader={
+            <div className="loading-animation">
+              <FontAwesomeIcon icon={faSpinner} spin />
+            </div>
+          }
           endMessage={
             <p style={{ textAlign: "center" }}>
               <b>You have seen it all</b>
@@ -66,4 +72,4 @@ const Browse = () => {
   );
 };
 
-export default Browse; 
+export default Browse;

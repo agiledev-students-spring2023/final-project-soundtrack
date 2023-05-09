@@ -27,6 +27,7 @@
   
   .meatball-menu__options li {
     display: block;
+    padding: 3px;
   }
   
   .meatball-menu__options a {

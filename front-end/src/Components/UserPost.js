@@ -2,17 +2,19 @@ import "./UserPost.css";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import SongPreview from "../Components/SongPreview";
 import Meatball from "./Meatball";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { faHeart, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+
 
 const UserPost = ({ post, onDelete, onPrivacyChange }) => {
   const currentPage = window.location.pathname;
   const navigate = useNavigate();
   const [liked, setLiked] = useState(false);
   const [likes, setLikes] = useState(0);
+  const [meatballOpen, setMeatballOpen] = useState(false);
 
   useEffect(() => {
     const token = Cookies.get("jwt");
@@ -82,6 +84,19 @@ const UserPost = ({ post, onDelete, onPrivacyChange }) => {
     }
   }
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (meatballOpen && !event.target.closest(".meatball")) {
+        setMeatballOpen(false);
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [meatballOpen]);
+  
+
 
   const handleLocationClick = (locationId) => {
     let locationID = locationId
@@ -111,16 +126,18 @@ const handleUserName = () => {
         />
 
         <h3  onClick={() => handleUserName(post.userName)}>@{post.userName}</h3>
-        <div className="meatball">
-          {currentPage === "/user" && (
-            <Meatball
-              post={post}
-              postId={post._id}
-              onDelete={onDelete}
-              onPrivacyChange={handlePrivacyChange}
-            />
-          )}
-        </div>
+        <div className="meatball" onClick={() => setMeatballOpen(true)}>
+  {currentPage === "/user" && (
+    <Meatball
+    post={post}
+    postId={post._id}
+    onDelete={onDelete}
+    onPrivacyChange={handlePrivacyChange}
+    isOpen={meatballOpen}
+  />  
+  )}
+</div>
+
       </div>
       <div
         className="location"
@@ -133,17 +150,18 @@ const handleUserName = () => {
       <div className="song">
         {post && <SongPreview track={post.songTitle} />}
       </div>
-      {/* <div> { <SpotifyPlayer track = {post.songTitle.uri}/> } </div> */}
       <div className="post-footer">
-        <button id="like-button" onClick={handleLike}>
+        <span className="like-button" onClick={handleLike}>
           {liked ? (
             <FontAwesomeIcon icon={faHeart} color="red" />
           ) : (
             <FontAwesomeIcon icon={faHeart} />
           )}
-        </button>
+        </span>
         <span>{likes} likes</span>
-        <span className="privacy-status">{post.privacy} </span>
+        <span className="privacy-status">
+          <FontAwesomeIcon icon={post.privacy === "Public" ? faEye : faEyeSlash} />
+          </span>
       </div>
     </div>
   );
