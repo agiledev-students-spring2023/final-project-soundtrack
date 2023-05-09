@@ -2,11 +2,12 @@ import "./UserPost.css";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import SongPreview from "../Components/SongPreview";
 import Meatball from "./Meatball";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { faHeart, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+
 
 const UserPost = ({ post, onDelete, onPrivacyChange }) => {
   const currentPage = window.location.pathname;
@@ -133,17 +134,18 @@ const handleUserName = () => {
       <div className="song">
         {post && <SongPreview track={post.songTitle} />}
       </div>
-      {/* <div> { <SpotifyPlayer track = {post.songTitle.uri}/> } </div> */}
       <div className="post-footer">
-        <button id="like-button" onClick={handleLike}>
+        <span className="like-button" onClick={handleLike}>
           {liked ? (
             <FontAwesomeIcon icon={faHeart} color="red" />
           ) : (
             <FontAwesomeIcon icon={faHeart} />
           )}
-        </button>
+        </span>
         <span>{likes} likes</span>
-        <span className="privacy-status">{post.privacy} </span>
+        <span className="privacy-status">
+          <FontAwesomeIcon icon={post.privacy === "Public" ? faEye : faEyeSlash} />
+          </span>
       </div>
     </div>
   );

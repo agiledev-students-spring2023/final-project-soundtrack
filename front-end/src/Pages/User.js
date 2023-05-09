@@ -4,6 +4,9 @@ import "./User.css";
 import UserPost from "../Components/UserPost";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+
 
 const User = () => {
   const navigate = useNavigate();
@@ -98,7 +101,9 @@ const User = () => {
         </div>
       </div>
       {loading ? (
-        <div className="loading-message">Loading...</div>
+        <div className="loading-message">
+        <FontAwesomeIcon icon={faSpinner} spin /> 
+      </div>
       ) : (
         <>
           {data.posts.length !== 0 ? (

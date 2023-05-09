@@ -50,11 +50,37 @@ const Privacy = () => {
           },
         }
       );
-
       //console.log(response.data);
       setIsPrivate(newPrivacy);
     } catch (error) {
       //console.error(error);
+    }
+  }
+
+  async function handleDeleteAccount() {
+    const token = Cookies.get('jwt');
+
+    try {
+      const response = await axios.patch(
+        `${process.env.REACT_APP_SERVER_HOSTNAME}/user/delete`,
+        {},
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      
+
+      // Remove the JWT token upon successful account deletion
+      Cookies.remove('jwt');
+
+      // Redirect the user to the home page or login page
+      navigate('/');
+    } catch (error) {
+      // Handle the error (e.g., show a message to the user)
+      console.error(error);
     }
   }
 
@@ -74,6 +100,12 @@ const Privacy = () => {
         <div className="toggle-label">
           {isPrivate ? 'Make account public' : 'Make account private'}
         </div>
+      </div>
+
+      <div className="delete-account-container">
+        <button onClick={handleDeleteAccount} className="delete-account-button">
+          Delete Account
+        </button>
       </div>
     </div>
   );

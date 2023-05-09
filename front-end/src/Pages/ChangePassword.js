@@ -54,7 +54,7 @@ const navigate = useNavigate();
                     />
                 </div>
                 <div className="login-button-container">
-                    <button type="submit">submit</button>
+                    <button type="submit">save</button>
                 </div>
             </form>
         </div>
