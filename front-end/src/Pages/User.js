@@ -105,9 +105,9 @@ const User = () => {
         <FontAwesomeIcon icon={faSpinner} spin /> 
       </div>
       ) : (
-        <>
+        <div className="user-posts">
           {data.posts.length !== 0 ? (
-            <div className="user-posts">
+            <div>
               {data.posts &&
                 data.posts
                   .slice(0, data.posts.length)
@@ -126,7 +126,7 @@ const User = () => {
               <button>Click to post here</button>
             </div>
           )}
-        </>
+        </div>
       )}
     </div>
   );
