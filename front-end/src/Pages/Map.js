@@ -188,25 +188,34 @@ function Map() {
       });
   
       const infoWindowContent = `
-      <div class="infowindow-container">
-        ${ReactDOMServer.renderToString(<SongPreview track={post.songTitle} />)}
-      </div>
-    `;
+        <div class="infowindow-container">
+          ${ReactDOMServer.renderToString(<SongPreview track={post.songTitle} />)}
+        </div>
+      `;
   
       const infoWindow = new window.google.maps.InfoWindow({
         content: infoWindowContent,
         disableAutoPan: true,
       });
-
+  
+      let isInfoWindowOpen = false;
+  
       marker.addListener("click", () => {
         console.log("marker place id: " + marker.key);
-        infoWindow.open(mapRef, marker);
-        window.google.maps.event.addListener(infoWindow, "domready", () => {
-          const infoWindowDiv = document.querySelector(".gm-style-iw");
-          infoWindowDiv.addEventListener("click", () => {
-            console.log(infoWindow.getContent());
-            handleCustomMarkerClick(marker.key);
-          });
+        if (isInfoWindowOpen) {
+          infoWindow.close();
+          isInfoWindowOpen = false;
+        } else {
+          infoWindow.open(mapRef, marker);
+          isInfoWindowOpen = true;
+        }
+      });
+  
+      window.google.maps.event.addListener(infoWindow, "domready", () => {
+        const infoWindowDiv = document.querySelector(".gm-style-iw");
+        infoWindowDiv.addEventListener("click", () => {
+          console.log(infoWindow.getContent());
+          handleCustomMarkerClick(marker.key);
         });
       });
   
@@ -218,7 +227,7 @@ function Map() {
       return marker;
     }
   }
-
+  
   const clearSongMarkers = () => {
     songMarkers.forEach((m) => m.setMap(null));
     setSongMarkers([]);
