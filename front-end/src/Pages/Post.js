@@ -6,6 +6,9 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import NearbyLocation from "../Components/NearbyLocation";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+
 
 const Post = () => {
   const navigate = useNavigate();
@@ -63,7 +66,7 @@ const Post = () => {
     <header>
       <div className="Title">
         <button className="ReturnButton" onClick={() => navigate("/Map")}>
-          Back
+        <FontAwesomeIcon icon={faArrowRight} />
         </button>
         <h1 className="headerTitle">{headerTitle}</h1>
       </div>

@@ -5,7 +5,7 @@ import UserPost from "../Components/UserPost";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 
 const User = () => {
@@ -87,8 +87,8 @@ const User = () => {
       {error && <p>{error}</p>}
       <div className="user-header">
         <div onClick={() => navigate("/map")} className="back-link">
-          Back
-        </div>
+        <FontAwesomeIcon icon={faArrowLeft} />   
+             </div>
         <div onClick={() => navigate("/settings")} className="settings-link">
           Settings
         </div>
