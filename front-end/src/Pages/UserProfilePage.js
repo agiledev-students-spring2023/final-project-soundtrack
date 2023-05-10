@@ -3,6 +3,9 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import UserPost from "../Components/UserPost";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+
 
 function UserProfilePage() {
   const navigate = useNavigate();
@@ -51,20 +54,26 @@ function UserProfilePage() {
         <h1 className="username">@{user.userName}</h1>
       </div>
       {loading ? (
-        <div className="loading-message">Loading...</div>
+        <div className="loading-message">
+        <FontAwesomeIcon icon={faSpinner} spin /> 
+      </div>
       ) : (
         <div className="user-posts">
-          {data.posts &&
-            data.posts.map((post, index) => (
-              <UserPost key={index} post={post} />
-            ))}
-          {!data.posts && (
-            <div
-              className="no-data-message"
-              onClick={() => navigate("/post")}
-            >
-              <p>You don't have any posts yet.</p>
-              <button>Click to post here</button>
+          {data.posts.length !== 0 ? (
+            <div>
+              {data.posts &&
+                data.posts
+                  .slice(0, data.posts.length)
+                  .map((post, index) => (
+                    <UserPost
+                      key={index}
+                      post={post}
+                    />
+                  ))}
+            </div>
+          ) : (
+            <div className="no-data-message" >
+              <p>This user hasn't made any posts yet</p>
             </div>
           )}
         </div>
