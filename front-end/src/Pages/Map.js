@@ -167,58 +167,6 @@ function Map() {
     }
   }, [bounds, mapRef]);
 
-  // function createSongMarkers(post) {
-  //   if (
-  //     post.locationName &&
-  //     post.locationName.geo &&
-  //     post.locationName.geo.location
-  //   ) {
-  //     const marker = new window.google.maps.Marker({
-  //       key: post.locationName.placeId,
-  //       position: {
-  //         lat: post.locationName.geo.location.lat,
-  //         lng: post.locationName.geo.location.lng,
-  //       },
-  //       title: post.locationName.name,
-  //       icon: {
-  //         url: logoIcon,
-  //         scaledSize: new window.google.maps.Size(30, 30),
-  //       },
-  //       clickable: true,
-  //     });
-
-  //     const infoWindowContent = `
-  //     <div class="infowindow-container">
-  //       ${ReactDOMServer.renderToString(<SongPreview track={post.songTitle} />)}
-  //     </div>
-  //   `;
-
-  //     const infoWindow = new window.google.maps.InfoWindow({
-  //       content: infoWindowContent,
-  //       disableAutoPan: true,
-  //     });
-
-  //     let isInfoWindowVisible = false;
-
-  //     window.google.maps.event.addListener(mapRef, "zoom_changed", () => {
-  //       console.log(mapRef.getZoom());
-  //       if (mapRef.getZoom() >= 14 && !isInfoWindowVisible) {
-  //         infoWindow.open(mapRef, marker);
-  //         isInfoWindowVisible = true;
-  //       } else if (mapRef.getZoom() < 14 && isInfoWindowVisible) {
-  //         infoWindow.close();
-  //         isInfoWindowVisible = false;
-  //       }
-  //     });
-  //     marker.addListener("click", () => {
-  //       console.log("marker place id: " + marker.key);
-  //       handleCustomMarkerClick(marker.key);
-  //     });
-  //     marker.setMap(mapRef);
-  //     return marker;
-  //   }
-  // }
-
   function createSongMarkers(post) {
     if (
       post.locationName &&
@@ -249,23 +197,17 @@ function Map() {
         content: infoWindowContent,
         disableAutoPan: true,
       });
-  
-      let isInfoWindowVisible = false;
-  
-      window.google.maps.event.addListener(mapRef, "zoom_changed", () => {
-        //console.log(mapRef.getZoom());
-        if (mapRef.getZoom() >= 14 && !isInfoWindowVisible) {
-          infoWindow.open(mapRef, marker);
-          isInfoWindowVisible = true;
-        } else if (mapRef.getZoom() < 14 && isInfoWindowVisible) {
-          infoWindow.close();
-          isInfoWindowVisible = false;
-        }
-      });
-  
+
       marker.addListener("click", () => {
-        //console.log("marker place id: " + marker.key);
-        handleCustomMarkerClick(marker.key);
+        console.log("marker place id: " + marker.key);
+        infoWindow.open(mapRef, marker);
+        window.google.maps.event.addListener(infoWindow, "domready", () => {
+          const infoWindowDiv = document.querySelector(".gm-style-iw");
+          infoWindowDiv.addEventListener("click", () => {
+            console.log(infoWindow.getContent());
+            handleCustomMarkerClick(marker.key);
+          });
+        });
       });
   
       marker.setMap(mapRef);
