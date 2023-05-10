@@ -5,16 +5,16 @@ SoundTrack is a web application that tracks users’ listening history across di
 
 Next time you’re in a cozy cafe, a dark-academia library, or your favorite museum, make yourself the main character and pull up a perfectly tailored playlist curated by like-minded peers. Live life to your own soundTrack.
 
-# Digital Ocean ! 
-https://soundtrack-w4af5.ondigitalocean.app/
+# Digital Ocean Demo 
+* [Demo](https://soundtrack-w4af5.ondigitalocean.app/)
 
 ## Product Vision Statement
 Our Minimum Viable Product includes the following: 
 
-* Notification goes off.
-* The user posts a song or a playlist, and (optionally) a picture.
+* The user posts a song and a picture.
+* The user chooses the location. 
 * The song, picture, and location of the user are added to their profile (which can be made private).
-* Application makes playlists for different places based on songs that users post at that location.
+* Application collects songs from user posts into playlists for different locations. 
 
 # Team members
 * [Alice Long](https://github.com/AliceLong)
@@ -27,17 +27,17 @@ Our Minimum Viable Product includes the following:
 Kindly refer to [CONTRIBUTING.md](CONTRIBUTING.md) for instructions on collaboration. 
 
 # How to set up and build 
-1. in root directory, run npm install 
-2. navigate to front-end directory, run npm install, followed by npm start 
-3. navigate to back-end directory, run npm install, followed by npm run dev
-4. In browser, use inspect mode and set dimensions as iPhone 12 pro. 
+1. In root directory, run npm install 
+2. Navigate to front-end directory, run npm install, followed by npm start 
+3. Navigate to back-end directory, run npm install, followed by npm run dev
+4. In browser, use inspect mode and set dimensions as iPhone 12 Pro for best user experience
 
-## How to link to spotify
+## How to link to Spotify
 1. Log in 
-2. Navigate to profile, then navigate to setting, and finally click
+2. Navigate to profile page, then navigate to settings, and finally click
 link with Spotify. 
-3. Enter Spotify username and password 
+3. Enter Spotify username and password
 
-## Test Spotify Account(if you don't have a spotify account) 
+## Test Spotify Account (if you don't have a Spotify account) 
 email: 1436959650@qq.com
 password:shaoxuewenlu021219 
