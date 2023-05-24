@@ -3,7 +3,9 @@
     border-radius: 10px;
     margin: 10px;
     background-color: #ffffff;
+    width: 360px; 
   }
+
   
   .post-header {
     display: flex;
