@@ -5,7 +5,9 @@
     margin-left:2vw;
     margin-right: 2vw;
     background-color: #ffffff;
+    width: 360px; 
   }
+
   
   .post-header {
     display: flex;
