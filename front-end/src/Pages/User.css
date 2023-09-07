@@ -9,7 +9,7 @@
     display: flex;
     justify-content: space-between;
     background-color: #ffffff;
-    padding: 20px 10px;
+    padding: 10px 10px;
     
   }
   .loading-message{
@@ -17,11 +17,9 @@
   }
   
   .back-link {
-    
-    color: #333;
-    font-size: 16px;
     padding: 0 20px;
     text-decoration: underline;
+    font-size: 20;
   }
   
   .settings-link {
