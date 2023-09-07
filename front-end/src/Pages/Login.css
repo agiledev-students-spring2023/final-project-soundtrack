@@ -8,22 +8,28 @@
   width: auto;
 }
 
-label{
+label {
   cursor: pointer;
+  margin-bottom: 8px; 
+  font-size: 12px; 
+  line-height: 1; 
+  text-decoration: underline;
 }
-.linksAccountForgot{
-  font-size: 10px;
-  text-decoration-line: underline;
-  margin-top: 5px;
-  align-items: flex-start;
-  margin-right: auto;
-  cursor: pointer;
+
+.linksAccountForgot {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  align-items: flex-start; 
+  font-size: 12px; 
+  margin-top: 12px;
+  cursor: pointer;
+  
 }
 
-
+.linksAccountForgot label:hover {
+  text-decoration: underline;
+  color: #007bff; 
+}
 
 
 .logo{
@@ -45,14 +51,12 @@ label{
   margin-top: 10px;
 }
 
-
-
 .inputs{
   width: auto;
   height: auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   text-align: center;
   color: black;
@@ -60,26 +64,51 @@ label{
 }
 
 
-button{
+.login-button{
   width: 90px;
   height: 50px;
-  background-color: lightgrey;
-  border: 0px;
+  background-color: #1c1c1e;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1em;
   cursor: pointer;
-  margin-top: 10px;
-  text-decoration-line: underline;
-  align-self: center;
-  text-align: center;
+  text-decoration: none;
+}
+
+.submit-button{
+    width: 90px;
+    height: 50px;
+    background-color: #1c1c1e;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    text-decoration: none;
 }
 
  
-input{
+input {
   text-align: center;
-  background-color: lightgrey;
+  background-color: #f2f2f2;  
   justify-content: center;
-  border: 0px;
+  border: 1px solid #ccc;  
   width: 280px;
   height: 50px;
   margin-top: 40px;
+  border-radius: 5px;
 }
+
+input:focus {
+  outline: none;
+  border: 1px solid #007bff;  
+}
+
+input::placeholder {
+  color: #999999;  
+}
+
 

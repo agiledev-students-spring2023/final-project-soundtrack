@@ -4,8 +4,6 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import SongPreview from "../Components/SongPreview";
 import {useNavigate} from "react-router-dom"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark} from "@fortawesome/free-solid-svg-icons";
 
 
 function ChooseSong({ placeholder, data, onNext }) {
@@ -124,9 +122,6 @@ function ChooseSong({ placeholder, data, onNext }) {
             value={wordEntered}
             onChange={handleFilter}
           />
-          <button id="clearButton" onClick={handleClearInput}>
-          <FontAwesomeIcon icon={faXmark} />
-          </button>
         </div>
     
         {filteredData.length !== 0 ? (

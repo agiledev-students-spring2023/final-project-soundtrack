@@ -1,91 +1,88 @@
-.song-preview {
+
+ .song-preview {
   display: flex;
   align-items: center;
-  padding: 10px;
-  background-color: #fff;
+  background-color: #ffffff; 
+  padding: 5px;
   border-radius: 5px;
-  box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
-  width: 100%; 
-  overflow: hidden;
-  justify-content: normal;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
 }
-  .song-details {
-    display: flex;
-    align-items: center;
-    flex: 1;
-  }
-  
-  .song-image {
-    width: 60px;
-    height: 60px;
-    object-fit: cover; 
-    border-radius: 5px;
-    margin-right: 10px;
-  }  
-  
-  .song-icon-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-  
-  .song-icon-container svg {
-    height: 2rem;
-    width: 2rem;
-  }
-  
-  .song-image-container {
-    position: relative;
-    flex-shrink: 0; 
-  }
-  
-  .song-info {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-left: 10px;
-    max-width: calc(100% - 70px); 
-  }
-  
-  .song-name {
-    margin: 0;
-    font-size: 1rem;
-    font-weight: bold;
-    color: #333;
-    cursor: pointer;
-    white-space: nowrap; /* prevent wrapping */
-    overflow: hidden; /* hide the overflow */
-    text-overflow: ellipsis; /* show an ellipsis if the text is too long */
-  }
-  
-  .song-artist {
-    margin: 0;
-    font-size: 0.8rem;
-    color: #666;
-    white-space: nowrap; /* prevent wrapping */
-    overflow: hidden; /* hide the overflow */
-    text-overflow: ellipsis; /* show an ellipsis if the text is too long */
-  }
-  
-  .song-controls {
-    display: flex;
-    align-items: center;
-  }
-  
-  .song-preview-button {
-    background-color: transparent;
-    border: none;
-    font-size: 1.2rem;
-    color: #666;
-    cursor: pointer;
-    transition: color 0.2s;
-  }
-  
-  
-  .song-preview-button:hover {
-    color: #333;
-  }
+
+.song-preview:hover {
+  background-color: #f2f2f2;
+}
+
+.song-details {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.song-image-container {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+  margin-right: 15px;
+}
+
+.song-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.song-icon-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.5); 
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.song-image-container:hover .song-icon-container {
+  opacity: 1;
+}
+
+.song-icon-container svg {
+  width: 24px;
+  height: 24px;
+  color: white;
+}
+
+.song-info {
+  flex: 1;
+  width: 200px; 
+  overflow: hidden;
+}
+
+.song-name {
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: left; 
+  color: #333333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.song-artist {
+  font-size: 0.8rem;
+  text-align: left; 
+  color: #666666;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
   
   
   

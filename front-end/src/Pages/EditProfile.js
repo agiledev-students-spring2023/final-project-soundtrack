@@ -145,7 +145,7 @@ return (
           />
         </div>
         <div className="login-button-container">
-          <button type="submit">save</button>
+          <button type="submit" className = "submit-button">save</button>
         </div>
       </form>
     </div>

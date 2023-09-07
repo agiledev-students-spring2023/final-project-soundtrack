@@ -1,6 +1,6 @@
 .confirmButton{
 position: fixed;
-bottom: 20px;
+bottom: 50px;
 left:50%;
 transform: translateX(-50%);
 width: 200px;
@@ -11,7 +11,25 @@ border: none;
 border-radius: 5px;
 font-size: 18px;
 font-weight: bold;
+text-decoration: none; 
 cursor: pointer;}
+
+.iamherebutton{
+    position: fixed;
+    bottom: 150px;
+    left:50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 50px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none; 
+    cursor: pointer;
+}
 
 .location-container{
     width: 100%;

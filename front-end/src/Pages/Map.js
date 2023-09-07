@@ -14,7 +14,7 @@ import { Autocomplete } from "@react-google-maps/api";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import logoIcon from "../Logos/icon.svg";
-import mapStyle from "./mapStyle.json"; // assuming the JSON is saved in a separate file
+import mapStyle from "./mapStyle.json"; 
 import Cookies from "js-cookie";
 import ReactDOMServer from "react-dom/server";
 import SongPreview from "../Components/SongPreview";
@@ -48,6 +48,9 @@ function Map() {
   const [markers, setMarkers] = useState([]);
   const [showClearFilters, setShowClearFilters] = useState(false);
   const [songMarkers, setSongMarkers] = useState([]);
+
+  const [infoWindow, setInfoWindow] = useState(null);
+
 
   // useEffect(() => {
   //   axios
@@ -167,12 +170,25 @@ function Map() {
     }
   }, [bounds, mapRef]);
 
+  useEffect(() => {
+    if (window.google && window.google.maps && !infoWindow) {
+      const initialInfoWindow = new window.google.maps.InfoWindow();
+      initialInfoWindow.setContent("Initial Content"); 
+      setInfoWindow(initialInfoWindow);
+    }
+  }, [isLoaded]); 
+
   function createSongMarkers(post) {
     if (
       post.locationName &&
       post.locationName.geo &&
       post.locationName.geo.location
-    ) {
+    ) 
+    console.log(post._id);
+    console.log(post.userName);
+    console.log(post.userId);
+    
+    {
       const marker = new window.google.maps.Marker({
         key: post.locationName.placeId,
         position: {
@@ -193,40 +209,29 @@ function Map() {
         </div>
       `;
   
-      const infoWindow = new window.google.maps.InfoWindow({
-        content: infoWindowContent,
-        disableAutoPan: true,
-      });
-  
-      let isInfoWindowOpen = false;
-  
       marker.addListener("click", () => {
         console.log("marker place id: " + marker.key);
-        if (isInfoWindowOpen) {
-          infoWindow.close();
-          isInfoWindowOpen = false;
-        } else {
-          infoWindow.open(mapRef, marker);
-          isInfoWindowOpen = true;
-        }
-      });
-  
-      window.google.maps.event.addListener(infoWindow, "domready", () => {
-        const infoWindowDiv = document.querySelector(".gm-style-iw");
-        infoWindowDiv.addEventListener("click", () => {
-          console.log(infoWindow.getContent());
-          handleCustomMarkerClick(marker.key);
+        //console.log(infoWindowContent);
+        infoWindow.setContent(infoWindowContent);
+        infoWindow.setPosition(marker.getPosition());
+        infoWindow.open(mapRef);
+        window.google.maps.event.addListenerOnce(infoWindow, 'domready', () => {
+          const infoWindowDiv = document.querySelector(".gm-style-iw");
+          infoWindowDiv.addEventListener("click", () => {
+            console.log(infoWindow.getContent());
+            handleCustomMarkerClick(marker.key);
+          });
         });
       });
   
       marker.setMap(mapRef);
-  
       // Add the marker to the songMarkers array
       setSongMarkers((prevMarkers) => [...prevMarkers, marker]);
   
       return marker;
     }
   }
+  
   
   const clearSongMarkers = () => {
     songMarkers.forEach((m) => m.setMap(null));

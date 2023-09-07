@@ -1,11 +1,12 @@
 .Title {
-  background-color: #282c34;
-  min-height: 20vh;
+  background-color: #1c1c1e;  /* Dark background */
+  min-height: 5vh;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: calc(0.75rem + 1vmin);
   color: white;
+  text-align: center; 
 }
 
 .container {
@@ -118,4 +119,5 @@ img {
   font-size: 18px;
   font-weight: bold;
   cursor: pointer;
+  text-decoration: none;
 }
