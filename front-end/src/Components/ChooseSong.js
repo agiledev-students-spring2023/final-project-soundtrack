@@ -122,9 +122,6 @@ function ChooseSong({ placeholder, data, onNext }) {
             value={wordEntered}
             onChange={handleFilter}
           />
-          <button id="clearButton" onClick={handleClearInput}>
-            X
-          </button>
         </div>
     
         {filteredData.length !== 0 ? (

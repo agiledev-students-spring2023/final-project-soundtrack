@@ -25,7 +25,6 @@
   .button-container {
     position: fixed;
     top: 110px;
-    left: 5%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -33,7 +32,7 @@
   
   .webcam-btn {
     position: fixed;
-    bottom: 30px;
+    bottom: 50px;
     left:50%;
     transform: translateX(-50%);
     width: 150px;
@@ -45,25 +44,24 @@
     font-size: 18px;
     font-weight: bold;
     cursor: pointer;
+    text-decoration: none;
   }
 
   .retake-btn {
-    top: 0;
-    left: 0;
-    padding: 10px;
+    padding-top: 30px;
     background-color: transparent;
     color: #fff;
     border: none;
     outline: none;
     cursor: pointer;
-    font-size: 18px;
-    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
   }
 
 
   .next-btn {
     position: fixed;
-    bottom: 30px;
+    bottom: 50px;
     left:50%;
     transform: translateX(-50%);
     width: 150px;
@@ -72,6 +70,7 @@
     color: white;
     border: none;
     border-radius: 5px;
+    text-decoration: none;
     font-size: 18px;
     font-weight: bold;
     cursor: pointer;

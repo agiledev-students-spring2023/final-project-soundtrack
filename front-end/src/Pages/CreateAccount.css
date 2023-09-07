@@ -13,20 +13,6 @@
 label{
   cursor: pointer;
 }
-.linksAccountForgot{
-  font-size: 15px;
-  text-decoration-line: underline;
-  margin-top: 5px;
-  margin-left: 15%;
-  align-items: flex-start;
-  margin-right: auto;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-
 
 
 .logo{
@@ -65,24 +51,36 @@ label{
 
 button{
   width: 90px;
-  height: 50px;
-  background-color: lightgrey;
-  border: 0px;
-  cursor: pointer;
-  margin-top: 10px;
-  text-decoration-line: underline;
-  align-self: center;
-  text-align: center;
+    height: 50px;
+    background-color: #1c1c1e;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    text-decoration: none;
 }
 
  
-input{
+input {
   text-align: center;
-  background-color: lightgrey;
+  background-color: #f2f2f2;  
   justify-content: center;
-  border: 0px;
-  width: 290px;
-  height: 60px;
+  border: 1px solid #ccc;  
+  width: 280px;
+  height: 50px;
   margin-top: 40px;
+  border-radius: 5px;
 }
+
+input:focus {
+  outline: none;
+  border: 1px solid #007bff;  
+}
+
+input::placeholder {
+  color: #999999;  
+}
+
 

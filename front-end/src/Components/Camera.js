@@ -53,17 +53,17 @@ function Camera({ onBack, onNext }) {
         {image ? (
           <div>
             <button onClick={retakeImage} className="retake-btn">
-              X
+             Retake
             </button>
-            <button onClick={handleNext} className="next-btn">
+            <button onClick={handleNext} className="webcam-btn">
               Next
             </button>
           </div>
         ) : (
           <div>
-            <button onClick={handleBack} className="retake-btn">
-              Song
-            </button>
+            {/* <button onClick={handleBack} className="retake-btn">
+              Choose another song
+            </button> */}
             <button onClick={capture} className="webcam-btn">
               Capture
             </button>

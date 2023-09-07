@@ -3,8 +3,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center; /* Add this line to center the container */
-  margin: 0;
-  padding: 0;
+  margin: 5px;
   height: 100vh; /* Add this line to set the container to full height */
 }
 
@@ -17,6 +16,7 @@
 
 .filter{
     padding-right: 20px;
+    
 }
 
 .favorite{
@@ -63,13 +63,22 @@
     font-size: 24px;
     color: #444444;
   }
+
+  .gm-style-iw div * {     
+    overflow: hidden !important;     
+    line-height: 1.35em; 
+  } 
+
+  button.gm-ui-hover-effect {
+    visibility: hidden;
+}
   
   .infowindow-container {
-    display: flex;
-    flex-direction: column;
-    height: 50px; /* your desired fixed height */
-    width: 150px; /* your desired fixed width */
+    height: 100%; 
+    width: 100%; 
+    font-family: Arial, sans-serif;
   }
+  
   
   @media only screen and (min-width: 375px) and (max-width: 812px) {
     /* iPhone 12 Pro portrait mode */

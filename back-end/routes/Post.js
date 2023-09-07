@@ -9,7 +9,7 @@ const Location = require("../models/Location"); // Assuming the model is in a se
 function authenticateToken(req, res, next) {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
-  console.log("token is " + token);
+  //console.log("token is " + token);
 
   if (!token) {
     return res.status(401).send("Missing token header");
@@ -29,15 +29,15 @@ function authenticateToken(req, res, next) {
 router.post("/savePost", authenticateToken, async (req, res) => {
   try {
     const post = req.body.postItem;
-    console.log({ post });
+    //console.log({ post });
 
     //fetch username from db with id from token
     const userId = req.user.id;
-    console.log("userid:", userId);
+    //console.log("userid:", userId);
 
     const user = await User.findOne({ userId: userId });
     const userName = user.userName;
-    console.log("username: ", user.userName);
+    //console.log("username: ", user.userName);
 
     const newPost = new Post({
       userId: userId,
@@ -52,7 +52,7 @@ router.post("/savePost", authenticateToken, async (req, res) => {
     });
 
     const savedPost = await newPost.save();
-    console.log(`Successfully added post with ID ${savedPost._id} to MongoDB`);
+    //console.log(`Successfully added post with ID ${savedPost._id} to MongoDB`);
 
     // Check if a location with the same coordinates exists
     const location = await Location.findOneAndUpdate(
@@ -62,7 +62,7 @@ router.post("/savePost", authenticateToken, async (req, res) => {
     );
 
     if (location) {
-      console.log("location exists");
+      //console.log("location exists");
     } else {
       // If the location doesn't exist, create a new location and insert it into the collection
       const newLocation = new Location({
@@ -84,22 +84,36 @@ router.delete("/deletePost/:id", authenticateToken, async (req, res) => {
     const postId = req.params.id;
     const userId = req.user.id;
 
+    // find the post
     const post = await Post.findOne({ _id: postId, userId: userId });
-    console.log(post);
+    //console.log(post);
 
     if (!post) {
       return res.status(404).send("Post not found");
     }
 
+    // delete the post
     await Post.deleteOne({ _id: postId, userId: userId });
+    //console.log(`Successfully deleted post with ID ${postId} from MongoDB`);
 
-    console.log(`Successfully deleted post with ID ${postId} from MongoDB`);
-    res.status(200).send(`Post ${postId} deleted successfully!`);
+    // fetch the associated location using the placeId from the deleted post
+    const location = await Location.findOne({ "locationName.placeId": post.locationName.placeId });
+    
+    if (location) {
+      // check if the location has the same song as the one in the post that was deleted
+      if (JSON.stringify(location.songTitle) === JSON.stringify(post.songTitle)) {
+        // if they are the same, delete the location
+        await Location.deleteOne({ _id: location._id });
+      }
+    }
+
+    res.status(200).send(`Post ${postId} and associated data deleted successfully!`);
   } catch (error) {
     console.error(`Error deleting post: ${error}`);
     res.status(500).send("Error deleting post!");
   }
 });
+
 
 router.patch("/updatePrivacy/:id", authenticateToken, async (req, res) => {
   try {
@@ -116,9 +130,7 @@ router.patch("/updatePrivacy/:id", authenticateToken, async (req, res) => {
     post.privacy = privacy;
     await post.save();
 
-    console.log(
-      `Successfully updated privacy for post with ID ${postId} in MongoDB`
-    );
+    //console.log(`Successfully updated privacy for post with ID ${postId} in MongoDB`);
     res.status(200).send(`Post ${postId} privacy updated successfully!`);
   } catch (error) {
     console.error(`Error updating post privacy: ${error}`);
@@ -151,9 +163,9 @@ router.patch("/like/:id", authenticateToken, async (req, res) => {
       return res.status(403).send("Already liked");
     }
     post.likes++;
-    console.log(post.likedBy);
+    //console.log(post.likedBy);
     post.likedBy.push(userId);
-    console.log(post.likedBy);
+    //console.log(post.likedBy);
     const savedPost = await post.save();
     res.json(savedPost);
   } catch (err) {
@@ -172,10 +184,10 @@ router.patch("/unlike/:id", authenticateToken, async (req, res) => {
     }
 
     post.likes--;
-    console.log(post.likedBy);
+    //console.log(post.likedBy);
     const index = post.likedBy.indexOf(userId);
     post.likedBy.splice(index, 1);
-    console.log(post.likedBy);
+    //console.log(post.likedBy);
     const savedPost = await post.save();
     res.json(savedPost);
   } catch (err) {

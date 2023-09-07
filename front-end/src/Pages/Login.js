@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
+import "./Login.css"
 
 function createAccount(e) {
   e.preventDefault();
@@ -15,6 +16,28 @@ function forgotPassword(e) {
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    const checkToken = async () => {
+      const token = Cookies.get("jwt"); // retrieve the JWT token from the cookie
+      if (token) {
+        try {
+          const userResponse = await axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/return`, {}, {
+            headers: {
+              "Authorization": `Bearer ${token}`,
+            },
+          });
+          const user = userResponse.data;
+          if (user && !user.needToChangePass) {
+            window.location = "./Map"; // redirect to Map if token is valid
+          }
+        } catch (error) {
+          console.error("Token verification failed:", error);
+        }
+      }
+    };
+    checkToken();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -84,15 +107,12 @@ function Login() {
               required
             />
           </div>
-          <div>
-            please link your spotify account in settings
-          </div>
           <div className="linksAccountForgot">
             <label onClick={createAccount}>Create Account</label>
             <label onClick={forgotPassword}>Forgot Password</label>
           </div>
           <div className="login-button-container">
-            <button type="submit">login</button>
+            <button type="submit" className = "login-button">login</button>
           </div>
         </form>
       </div>

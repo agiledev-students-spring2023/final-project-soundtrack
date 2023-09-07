@@ -47,37 +47,39 @@ function Filter(props) {
         props.handleClick();
     };
 
+    const toCapitalizedWords = (str) => {
+        return str.split('_')
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ');
+      };
+      
+
     return (
-        <div className="FilterContainer"> 
-            <div className="Title">Filter</div>
+        <div className="FilterContainer">
+          <div className="Title">Filter</div>
+          <ul className="FilterList">
+            {locationFilters.map((location, index) => (
+              <li key={index} className="FilterItem">
+                <label htmlFor={location}>
+                  <input
+                    type="checkbox"
+                    checked={checkboxes[index]}
+                    onChange={() => handleCheckboxChange(index)}
+                    className="FilterCheckbox"
+                    id={location}
+                  />
+                  {toCapitalizedWords(location)}
 
-            {
-            // <label>
-            //     <input type="checkbox" checked={checked} onChange={handleChange} className="filter" id="Favorites"/>
-            //     Favorites
-            // </label>
-            }
-
-            <ul>
-                {
-                    locationFilters.map((location, index) => (
-                        <label key={location}>
-                          <input
-                            type="checkbox"
-                            checked={checkboxes[index]}
-                            onChange={() => handleCheckboxChange(index)}
-                            className="Filter"
-                            id={location}
-                          />
-                          {location}
-                        </label>
-                      ))
-                }
-            </ul>
-            
-            <button onClick={applyFilters}>Confirm</button>
+                </label>
+              </li>
+            ))}
+          </ul>
+          <button className="ConfirmButton" onClick={applyFilters}>
+            Confirm
+          </button>
         </div>
-    );
+      );
+    
 }
 
 export default Filter;

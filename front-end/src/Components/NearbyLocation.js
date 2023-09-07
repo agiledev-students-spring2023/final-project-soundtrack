@@ -128,7 +128,7 @@ function NearbyLocation({ onNext }) {
       )}
       <div>
         {confirm && (
-          <button className="confirmButton" onClick={handleNext}>
+          <button className="iamherebutton" onClick={handleNext}>
             I am here!
           </button>
         )}

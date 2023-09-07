@@ -4,8 +4,6 @@ import FavoriteLocation from './FavoriteLocation.js';
 import axios from "axios";
 import Cookies from "js-cookie";
 
-
-
 function Favorites() {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -35,13 +33,6 @@ function Favorites() {
     }, []);
 
     return (
-
-        //     {/* <button className="filterByFavButton" onClick = {() => {
-        //         navigate("/map")
-        //     }}>
-        //         Filter by Favorites
-        //     </button> */}
-
         <div className="FavoritesContainer">
             <div className="Title">Favorites</div>
 
@@ -50,12 +41,14 @@ function Favorites() {
                     <div className="loading-message">Loading...</div>
                 ) : error ? (
                     <div className="error-message">{error}</div>
+                ) : data.length === 0 ? (
+                    <div className="no-favorites-message">You don't have any favorite locations.</div>
                 ) : (
-                    <>
+                    <div>
                         {data.map((favorite) => (
                             <FavoriteLocation key={favorite._id} favoritedLocation={favorite.favoritedLocation} />
                         ))}
-                    </>
+                    </div>
                 )}
             </div>
         </div>
