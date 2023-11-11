@@ -184,9 +184,9 @@ function Map() {
       post.locationName.geo &&
       post.locationName.geo.location
     ) 
-    console.log(post._id);
-    console.log(post.userName);
-    console.log(post.userId);
+    // console.log(post._id);
+    // console.log(post.userName);
+    // console.log(post.userId);
     
     {
       const marker = new window.google.maps.Marker({
@@ -210,7 +210,7 @@ function Map() {
       `;
   
       marker.addListener("click", () => {
-        console.log("marker place id: " + marker.key);
+        //console.log("marker place id: " + marker.key);
         //console.log(infoWindowContent);
         infoWindow.setContent(infoWindowContent);
         infoWindow.setPosition(marker.getPosition());
@@ -218,7 +218,7 @@ function Map() {
         window.google.maps.event.addListenerOnce(infoWindow, 'domready', () => {
           const infoWindowDiv = document.querySelector(".gm-style-iw");
           infoWindowDiv.addEventListener("click", () => {
-            console.log(infoWindow.getContent());
+            //console.log(infoWindow.getContent());
             handleCustomMarkerClick(marker.key);
           });
         });
@@ -298,9 +298,9 @@ function Map() {
             const locationID = results[0].place_id;
             navigate(`/LocationProfile/${locationID}`);
           } else {
-            console.log(
-              "Geocode was not successful for the following reason: " + status
-            );
+            // console.log(
+            //   "Geocode was not successful for the following reason: " + status
+            // );
           }
         }
       );
