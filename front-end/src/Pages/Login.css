@@ -100,6 +100,7 @@ input {
   height: 50px;
   margin-top: 40px;
   border-radius: 5px;
+  position: relative; 
 }
 
 input:focus {
@@ -110,5 +111,37 @@ input:focus {
 input::placeholder {
   color: #999999;  
 }
+
+.error-message-container {
+  height: 50px; 
+  width: 280px; 
+  text-align: center;
+}
+
+.error-message {
+  color: #dc3545; 
+  background-color: #f8d7da; 
+  border-color: #f5c6cb; 
+  padding: .75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent; 
+  border-radius: .25rem;
+  width: 240px; 
+  text-align: center; 
+  margin-top: 20px;
+  display: none;
+  max-height: 0;
+  transition: max-height 0.3s ease-out, padding 0.3s ease-out, margin 0.3s ease-out; 
+  overflow: hidden; 
+  height: 50%; 
+}
+
+.error-message.show {
+  display: block; 
+  max-height: 50px; 
+  padding: .75rem 1.25rem;
+  margin-bottom: 1rem;
+}
+
 
 

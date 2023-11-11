@@ -16,6 +16,7 @@ function forgotPassword(e) {
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
     const checkToken = async () => {
@@ -41,6 +42,7 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorMsg(""); // Clear any existing error messages
     try {
       const baseURL = process.env.NODE_ENV === "production"
         ? "https://soundtrack-backend-io9tl.ondigitalocean.app"
@@ -69,7 +71,7 @@ function Login() {
       }
     } catch (error) {
       console.error(error);
-      alert("Failed to log in. Please try again.");
+      setErrorMsg("Failed to log in. Please try again."); 
     }
   };
   
@@ -86,6 +88,12 @@ function Login() {
       </div>
       <h2>LOGIN</h2>
       <div className="inputs">
+      <div className="error-message-container">
+  <div className={`error-message ${errorMsg ? 'show' : ''}`} aria-live="assertive">
+    {errorMsg}
+  </div>
+</div>
+
         <form onSubmit={handleSubmit}>
           <div className="input-containerUserPass">
             <input
