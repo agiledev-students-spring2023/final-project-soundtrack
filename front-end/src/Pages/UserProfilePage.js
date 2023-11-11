@@ -45,9 +45,6 @@ function UserProfilePage() {
         <div onClick={() => navigate("/browse")} className="back-link">
           Back
         </div>
-        <div onClick={() => navigate("/settings")} className="settings-link">
-          Settings
-        </div>
       </div>
       <div className="user-profile">
         <img src={user.avatar} alt="Profile" />

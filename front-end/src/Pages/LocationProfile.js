@@ -7,6 +7,9 @@ import { useNavigate } from "react-router-dom";
 import Playlist from "../Components/Playlist";
 import { useLoadScript } from "@react-google-maps/api";
 import Cookies from "js-cookie";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBookmark as solidBookmark } from '@fortawesome/free-solid-svg-icons';
+import { faBookmark as regularBookmark } from '@fortawesome/free-regular-svg-icons';
 
 const LocationProfile = () => {
   const navigate = useNavigate();
@@ -157,7 +160,7 @@ const LocationProfile = () => {
         { favoritedLocation },
         {
           headers: {
-            Authorization: `JWT ${token}`, // Include the token as a bearer token in the Authorization header
+            Authorization: `JWT ${token}`, 
           },
         }
       )
@@ -169,73 +172,57 @@ const LocationProfile = () => {
       });
   };
 
-  async function handleChange(e) {
-    console.log("pre-change isFavorited: ", favorited);
-    setFavorited(!favorited);
-    console.log("post-change isFavorited: ", favorited);
-
-    if (favorited) {
-      handleUnfavoritedLocation();
+  async function handleChange() {
+    // Toggle the favorite state first
+    const newFavoritedState = !favorited;
+    setFavorited(newFavoritedState);
+  
+    if (newFavoritedState) {
+      await handleFavoriteLocation();
     } else {
-      handleFavoriteLocation();
+      await handleUnfavoritedLocation();
     }
   }
 
   return (
     <div className="location-container">
       <div className="location-header">
-        <div onClick={() => navigate("/map")} className="back-link">
+        <div onClick={() => navigate("/map")} className="back-link" aria-label="Go back to map">
           Back
         </div>
-        <div className="switch-container">
-          <label className="switch">
-            <input
-              className="switch-input"
-              type="checkbox"
-              checked={favorited}
-               onChange={handleChange}
-            />
-            <span className="slider round"></span>
-          </label>
-          <div className="toggle-label">
-            {favorited ? "Remove Favorite" : "Favorite Location"}
-          </div>
-        </div>
-        <div>
-          {/* {console.log("isFavorited: ", isFavorited.current)} */}
+        
+        <div className="bookmark-container" onClick={handleChange} aria-label={favorited ? "Remove from Favorites" : "Add to Favorites"}>
+          <FontAwesomeIcon icon={favorited ? solidBookmark : regularBookmark} size="2x" />
         </div>
       </div>
-
+  
       {locationProfile ? (
         <div className="location-profile">
-          <img src={locationProfile.photo} alt="Profile" />
-          <h1 className="locationName">@{locationProfile.name}</h1>
+          <img src={locationProfile.photo} alt="Location profile" />
+          <h1 className="locationName">{locationProfile.name}</h1>
           <h2 className="locationAddress">
             {locationProfile.formatted_address}
           </h2>
         </div>
       ) : (
-        <div>loading...</div>
+        <div>Loading...</div>
       )}
-
+  
       <div className="playList">
-        {" "}
         {songs && (
           <Playlist songs={songs} title="Enjoy the location playlist!" />
         )}
       </div>
-
+  
       <div className="location-posts">
         {loading ? (
           <div className="loading-message">Loading...</div>
         ) : (
           <>
-            {data.posts.length !== 0 ? (
-              <div className="location-posts">
-                {data.posts.map((post, index) => (
-                  <UserPost key={index} post={post} />
-                ))}
-              </div>
+            {data.posts && data.posts.length > 0 ? (
+              data.posts.map((post, index) => (
+                <UserPost key={index} post={post} />
+              ))
             ) : (
               <div
                 className="no-data-message"
@@ -249,7 +236,8 @@ const LocationProfile = () => {
         )}
       </div>
     </div>
-  );
-};
+  )};
+  
+  
 
 export default LocationProfile;

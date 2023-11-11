@@ -9,7 +9,7 @@ import Cookies from "js-cookie";
 import { faHeart, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 
-const UserPost = ({ post, onDelete, onPrivacyChange }) => {
+const UserPost = ({ post, onDelete, onPrivacyChange, isCurrentUser}) => {
   const currentPage = window.location.pathname;
   const navigate = useNavigate();
   const [liked, setLiked] = useState(false);
@@ -127,7 +127,7 @@ const handleUserName = () => {
 
         <h3  onClick={() => handleUserName(post.userName)}>@{post.userName}</h3>
         <div className="meatball" onClick={() => setMeatballOpen(true)}>
-  {currentPage === "/user" && (
+  {(isCurrentUser) && (
     <Meatball
     post={post}
     postId={post._id}
@@ -136,6 +136,8 @@ const handleUserName = () => {
     isOpen={meatballOpen}
   />  
   )}
+
+
 </div>
 
       </div>
@@ -146,7 +148,10 @@ const handleUserName = () => {
         <div className= "place_name"> {post.locationName.name}</div>
         <div className= "place_address"></div>{post.locationName.formatted_address}
       </div>
+      
+      <div className="post-image-wrapper">
       <img src={post.imageURL} alt="post" className="post-image" />
+    </div>
       <div className="song">
         {post && <SongPreview track={post.songTitle} />}
       </div>

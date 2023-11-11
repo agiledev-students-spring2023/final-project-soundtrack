@@ -7,6 +7,8 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { debounce } from "lodash";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { jwtDecode } from 'jwt-decode';
+import Cookies from "js-cookie";
 
 const Browse = () => {
   const [data, setData] = useState([]);
@@ -37,11 +39,35 @@ const Browse = () => {
     }, 500),
     [skip, limit]
   );
+
+  useEffect(() => {
+    const token = Cookies.get("jwt");
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        //console.log("Decoded User ID:", decoded.id); // Log decoded user ID
+      } catch (e) {
+        console.error("Error decoding token:", e);
+      }
+    }
+  }, []); 
   
 
   useEffect(() => {
     loadMore();
   }, [loadMore]);
+
+  const token = Cookies.get("jwt");
+let userId;
+
+if (token) {
+  try {
+    const decoded = jwtDecode(token);
+    userId = decoded.id; 
+  } catch (e) {
+    // handle error
+  }
+}
 
   return (
     <div>
@@ -62,9 +88,18 @@ const Browse = () => {
             </p>
           }
         >
-          {data.map((post) => (
-            <UserPost key={post._id} post={post} />
-          ))}
+          {data.map((post) => {
+  // Log post.userId here
+  console.log(post.userId==userId);
+  console.log(userId); 
+  //console.log(post.userId); 
+  
+  // Render the UserPost component
+  return (
+    <UserPost key={post._id} post={post} isCurrentUser={post.userId === userId} />
+  );
+})}
+
         </InfiniteScroll>
         {error && <div className="error-message">{error}</div>}
       </div>

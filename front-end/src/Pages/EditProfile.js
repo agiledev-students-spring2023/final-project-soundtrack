@@ -135,13 +135,13 @@ return (
       <h2>Change username:</h2>
       <form onSubmit={handleSubmit}>
         <div className="input-containerCreateAccount">
-          <input
-            type="user"
-            name="username"
-            placeholder="@username"
-            value={newUsername}
-            onChange={(e) => setNewUsername(e.target.value)}
-            required
+        <input
+          type="text"
+          name="username"
+          placeholder={data.userName ? `@${data.userName}` : '@username'} 
+          value={newUsername}
+          onChange={(e) => setNewUsername(e.target.value)}
+          required
           />
         </div>
         <div className="login-button-container">

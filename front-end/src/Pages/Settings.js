@@ -68,7 +68,7 @@ function Settings() {
       <a href="#" onClick= {() => {navigate("/ChangePassword") }} >Change Password</a>
       </div>
       <div className="option">
-        <a href="#" onClick={() => {navigate("/Privacy") }}>Privacy</a>
+        <a href="#" onClick={() => {navigate("/Privacy") }}>Manage Account</a>
       </div>
       <div className="option">
         <a href="#" onClick={() => {navigate("/Auth") }}>Link Spotify</a>
