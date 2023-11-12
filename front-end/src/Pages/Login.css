@@ -1,5 +1,6 @@
 .Login {
-  padding: 20vw;
+  padding: 50px;
+  padding-top: 100px;
   display: flex;
   flex-direction: column;
   align-items: center;

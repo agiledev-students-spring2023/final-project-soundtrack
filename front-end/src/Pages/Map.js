@@ -14,15 +14,14 @@ import { Autocomplete } from "@react-google-maps/api";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import logoIcon from "../Logos/icon.svg";
-import mapStyle from "./mapStyle.json"; 
+import mapStyle from "./mapStyle.json";
 import Cookies from "js-cookie";
 import ReactDOMServer from "react-dom/server";
 import SongPreview from "../Components/SongPreview";
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
 import { SuperClusterAlgorithm } from "@googlemaps/markerclusterer";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 function Map() {
   const [libraries] = useState(["places"]);
@@ -50,7 +49,6 @@ function Map() {
   const [songMarkers, setSongMarkers] = useState([]);
 
   const [infoWindow, setInfoWindow] = useState(null);
-
 
   // useEffect(() => {
   //   axios
@@ -136,7 +134,6 @@ function Map() {
         filterLocations(parsedFilters);
       }
 
-
       axios
         .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/map`, {
           params: {
@@ -173,22 +170,21 @@ function Map() {
   useEffect(() => {
     if (window.google && window.google.maps && !infoWindow) {
       const initialInfoWindow = new window.google.maps.InfoWindow();
-      initialInfoWindow.setContent("Initial Content"); 
+      initialInfoWindow.setContent("Initial Content");
       setInfoWindow(initialInfoWindow);
     }
-  }, [isLoaded]); 
+  }, [isLoaded]);
 
   function createSongMarkers(post) {
     if (
       post.locationName &&
       post.locationName.geo &&
       post.locationName.geo.location
-    ) 
-    // console.log(post._id);
-    // console.log(post.userName);
-    // console.log(post.userId);
-    
-    {
+    ) {
+      // console.log(post._id);
+      // console.log(post.userName);
+      // console.log(post.userId);
+
       const marker = new window.google.maps.Marker({
         key: post.locationName.placeId,
         position: {
@@ -202,20 +198,22 @@ function Map() {
         },
         clickable: true,
       });
-  
+
       const infoWindowContent = `
         <div class="infowindow-container">
-          ${ReactDOMServer.renderToString(<SongPreview track={post.songTitle} />)}
+          ${ReactDOMServer.renderToString(
+            <SongPreview track={post.songTitle} />
+          )}
         </div>
       `;
-  
+
       marker.addListener("click", () => {
         //console.log("marker place id: " + marker.key);
         //console.log(infoWindowContent);
         infoWindow.setContent(infoWindowContent);
         infoWindow.setPosition(marker.getPosition());
         infoWindow.open(mapRef);
-        window.google.maps.event.addListenerOnce(infoWindow, 'domready', () => {
+        window.google.maps.event.addListenerOnce(infoWindow, "domready", () => {
           const infoWindowDiv = document.querySelector(".gm-style-iw");
           infoWindowDiv.addEventListener("click", () => {
             //console.log(infoWindow.getContent());
@@ -223,21 +221,19 @@ function Map() {
           });
         });
       });
-  
+
       marker.setMap(mapRef);
       // Add the marker to the songMarkers array
       setSongMarkers((prevMarkers) => [...prevMarkers, marker]);
-  
+
       return marker;
     }
   }
-  
-  
+
   const clearSongMarkers = () => {
     songMarkers.forEach((m) => m.setMap(null));
     setSongMarkers([]);
   };
-  
 
   //handle filter pop up
   useEffect(() => {
@@ -376,22 +372,21 @@ function Map() {
       markers.forEach((m) => m.setMap(mapRef));
       setFilterMarkers(markers);
       //console.log(markers);
-    } 
-    else {
+    } else {
       //console.log("filters null");
     }
   }
 
   function deleteCookie(name) {
-    document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-  }  
+    document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+  }
 
   // handle clear filters
   function handleClearFilters() {
     filterMarkers.forEach((m) => m.setMap(null));
     setFilterMarkers([]);
     setFilters([]);
-    deleteCookie('filters');
+    deleteCookie("filters");
     setShowClearFilters(false);
   }
 
@@ -450,7 +445,9 @@ function Map() {
       )}
 
       {loading ? (
-        <div className="loading-container"><FontAwesomeIcon icon={faSpinner} spin /> </div>
+        <div className="loading-container">
+          <FontAwesomeIcon icon={faSpinner} spin />{" "}
+        </div>
       ) : (
         <GoogleMap
           onLoad={handleMapLoad}

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import SongPreview from "../Components/SongPreview";
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
@@ -12,74 +12,82 @@ function ChooseSong({ placeholder, data, onNext }) {
   const [wordEntered, setWordEntered] = useState("");
   const [selectedSong, setSelectedSong] = useState(null);
   const [recentlyPlayed, setRecentlyPlayed] = useState([]);
-  const navigate = useNavigate(); 
-  const [activeTab, setActiveTab] = useState('recent');
-  const [topSongs, setTopSongs] = useState([]); 
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState("recent");
+  const [topSongs, setTopSongs] = useState([]);
   const [isLoadingRecent, setIsLoadingRecent] = useState(false);
   const [isLoadingTopGlobal, setIsLoadingTopGlobal] = useState(false);
 
-
   useEffect(() => {
     const fetchData = async () => {
-      const token = Cookies.get('jwt');
+      const token = Cookies.get("jwt");
       const config = {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       };
-      const response = await axios.get(`${process.env.REACT_APP_SERVER_HOSTNAME}/auth/refresh`, config);      
-      //console.log("spotify access refreshed"); 
+      const response = await axios.get(
+        `${process.env.REACT_APP_SERVER_HOSTNAME}/auth/refresh`,
+        config
+      );
+      //console.log("spotify access refreshed");
     };
     fetchData();
   }, []);
 
-useEffect(() => {
-  const fetchData = async () => {
-    setIsLoadingRecent(true); 
-    const token = Cookies.get('jwt');
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    try {
-      const { data } = await axios.get(
-        `${process.env.REACT_APP_SERVER_HOSTNAME}/auth/recently-played`, config);
-      const uniqueTracks = removeDuplicateTracks(data.items);
-      setRecentlyPlayed(uniqueTracks);
-      if(uniqueTracks.length === 0) {
-        setActiveTab('top global'); 
-      }
-    } catch (error) {
-      console.error('Error fetching recently played:', error.response);
-      setActiveTab('top global'); 
-    }
-    setIsLoadingRecent(false); 
-  };
-  fetchData();
-}, []);
-
-// Fetch top global songs
-useEffect(() => {
-  if (activeTab === 'top global') {
-    setIsLoadingTopGlobal(true); 
-    const fetchTopSongs = async () => {
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoadingRecent(true);
+      const token = Cookies.get("jwt");
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
       try {
-        const playlistId = "37i9dQZEVXbMDoHDwVN2tF"; 
-        const response = await axios.get(`${process.env.REACT_APP_SERVER_HOSTNAME}/client/playlist/${playlistId}`);
-        setTopSongs(response.data); 
+        const { data } = await axios.get(
+          `${process.env.REACT_APP_SERVER_HOSTNAME}/auth/recently-played`,
+          config
+        );
+        const uniqueTracks = removeDuplicateTracks(data.items);
+        setRecentlyPlayed(uniqueTracks);
+        if (uniqueTracks.length === 0) {
+          setActiveTab("top global");
+        }
       } catch (error) {
-        console.error('Error fetching top global songs:', error.response || error);
+        console.error("Error fetching recently played:", error.response);
+        setActiveTab("top global");
       }
-      setIsLoadingTopGlobal(false);
+      setIsLoadingRecent(false);
     };
+    fetchData();
+  }, []);
 
-    fetchTopSongs();
-  }
-}, [activeTab]);
+  // Fetch top global songs
+  useEffect(() => {
+    if (activeTab === "top global") {
+      setIsLoadingTopGlobal(true);
+      const fetchTopSongs = async () => {
+        try {
+          const playlistId = "37i9dQZEVXbMDoHDwVN2tF";
+          const response = await axios.get(
+            `${process.env.REACT_APP_SERVER_HOSTNAME}/client/playlist/${playlistId}`
+          );
+          setTopSongs(response.data);
+        } catch (error) {
+          console.error(
+            "Error fetching top global songs:",
+            error.response || error
+          );
+        }
+        setIsLoadingTopGlobal(false);
+      };
 
+      fetchTopSongs();
+    }
+  }, [activeTab]);
 
   // client credentials flow
   const [token, setToken] = useState(null);
@@ -95,15 +103,22 @@ useEffect(() => {
   }, []);
 
   const switchTab = (tabName) => {
-    setFilteredData([]); 
+    setFilteredData([]);
     setWordEntered("");
-  
-    setActiveTab(tabName); 
-    if (tabName === 'recent' && recentlyPlayed.length === 0 && !isLoadingRecent) {
-      // fetchData(); 
-    }
-    else if (tabName === 'top global' && topSongs.length === 0 && !isLoadingTopGlobal) {
-      // fetchTopGlobalSongs(); 
+
+    setActiveTab(tabName);
+    if (
+      tabName === "recent" &&
+      recentlyPlayed.length === 0 &&
+      !isLoadingRecent
+    ) {
+      // fetchData();
+    } else if (
+      tabName === "top global" &&
+      topSongs.length === 0 &&
+      !isLoadingTopGlobal
+    ) {
+      // fetchTopGlobalSongs();
     }
   };
 
@@ -158,98 +173,122 @@ useEffect(() => {
     }
   };
 
-return (
-  <div className="choose-song">
-
-    <div className="search-inputs">
-      <input
-        type="text"
-        placeholder={placeholder}
-        value={wordEntered}
-        onChange={handleFilter}
-      />
-      {/* {wordEntered && (
+  return (
+    <div className="choose-song">
+      <div className="search-inputs">
+        <input
+          type="text"
+          placeholder={placeholder}
+          value={wordEntered}
+          onChange={handleFilter}
+        />
+        {/* {wordEntered && (
         <button onClick={handleClearInput} className="clear-input">
           Clear
         </button>
       )} */}
-    </div>
+      </div>
 
-    <div className="tab-selection">
-      <button onClick={() => switchTab('recent')} className={activeTab === 'recent' ? 'active-tab' : ''}>
-        Recently Played
+      <div className="tab-selection">
+        <button
+          onClick={() => switchTab("recent")}
+          className={activeTab === "recent" ? "active-tab" : ""}
+        >
+          Recently Played
+        </button>
+        <button
+          onClick={() => switchTab("top global")}
+          className={activeTab === "top global" ? "active-tab" : ""}
+        >
+          Top Global
+        </button>
+      </div>
+
+      {filteredData.length !== 0 && (
+        <div className="data-result-block">
+          <div className="data-result">
+            {filteredData.slice(0, 15).map((value, key) => (
+              <div
+                key={key}
+                className="data-item"
+                onClick={() => handleSearchSong(value)}
+              >
+                <SongPreview track={value} />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {activeTab === "recent" &&
+        !isLoadingRecent &&
+        recentlyPlayed.length === 0 && (
+          <div className="no-content-message">
+            No recently played songs available. Check out the Top global hits.
+          </div>
+        )}
+      {activeTab === "recent" && recentlyPlayed.length !== 0 && (
+        <div className="recent-listen-block">
+          <div className="recent-listen">
+            {recentlyPlayed.slice(0, 10).map((item, index) => (
+              <div
+                key={index}
+                className="data-item"
+                onClick={() => handleRecentSong(item)}
+              >
+                <SongPreview track={item.track} />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {activeTab === "top global" &&
+        !isLoadingTopGlobal &&
+        topSongs.length === 0 && (
+          <div className="no-content-message">
+            No top global tracks available. Try again later.
+          </div>
+        )}
+
+      {activeTab === "top global" &&
+        Array.isArray(topSongs) &&
+        topSongs.length > 0 && (
+          <div className="recent-listen-block">
+            <div className="recent-listen">
+              {topSongs.slice(0, 10).map((item, index) => (
+                <div
+                  key={index}
+                  className="data-item"
+                  onClick={() => handleRecentSong(item)}
+                >
+                  <SongPreview track={item.track} />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+      {isLoadingRecent && (
+        <div className="loader">
+          <FontAwesomeIcon icon={faSpinner} spin />
+        </div>
+      )}
+      {isLoadingTopGlobal && (
+        <div className="loader">
+          <FontAwesomeIcon icon={faSpinner} spin />
+        </div>
+      )}
+
+      <button
+        className="next-button"
+        onClick={handleNext}
+        disabled={!selectedSong}
+      >
+        Next
       </button>
-      <button onClick={() => switchTab('top global')} className={activeTab === 'top global' ? 'active-tab' : ''}>
-        Top Global
-      </button>
     </div>
-
-    {filteredData.length !== 0 && (
-      <div className="data-result-block">
-        <h2 className="title">Search Results</h2>
-        <div className="data-result">
-          {filteredData.slice(0, 15).map((value, key) => (
-            <div key={key} className="data-item" onClick={() => handleSearchSong(value)}>
-              <SongPreview track={value} />
-            </div>
-          ))}
-        </div>
-      </div>
-    )}
-
-{activeTab === 'recent' && !isLoadingRecent && recentlyPlayed.length === 0 && (
-      <div className="no-content-message">
-        No recently played songs available. Check out the Top global hits.
-      </div>
-    )}
-    {activeTab === 'recent' && recentlyPlayed.length !== 0 && (
-      <div className="recent-listen-block">
-        <h2 className="title">Recently Played</h2>
-        <div className="recent-listen">
-          {recentlyPlayed.slice(0, 10).map((item, index) => (
-            <div key={index} className="data-item" onClick={() => handleRecentSong(item)}>
-              <SongPreview track={item.track} />
-            </div>
-          ))}
-        </div>
-      </div>
-    )}
-
-{activeTab === 'top global' && !isLoadingTopGlobal && topSongs.length === 0 && (
-      <div className="no-content-message">
-        No top global tracks available. Try again later.
-      </div>
-    )}
-
-{activeTab === 'top global' && Array.isArray(topSongs) && topSongs.length > 0 && (
-      <div className="recent-listen-block">
-        <h2 className="title">Top Global</h2>
-        <div className="recent-listen">
-          {topSongs.slice(0, 10).map((item, index) => (
-            <div key={index} className="data-item" onClick={() => handleRecentSong(item)}>
-              <SongPreview track={item.track} />
-            </div>
-          ))}
-        </div>
-      </div>
-    )}
-    
-    {isLoadingRecent && (
-      <div className="loader">
-        <FontAwesomeIcon icon={faSpinner} spin />
-      </div>
-    )}
-    {isLoadingTopGlobal && (
-      <div className="loader">
-        <FontAwesomeIcon icon={faSpinner} spin />
-      </div>
-    )}
-
-    <button className="next-button" onClick={handleNext} disabled={!selectedSong}>
-      Next
-    </button>
-  </div>
-);
+  );
 }
 
 export default ChooseSong;
