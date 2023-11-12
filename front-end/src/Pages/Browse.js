@@ -69,9 +69,25 @@ if (token) {
   }
 }
 
+const handlePostDelete = (postId) => {
+  setData((currentPosts) => currentPosts.filter((post) => post._id !== postId));
+};
+
+const handlePrivacyChange = (postId, newPrivacy) => {
+  setData((currentPosts) =>
+    currentPosts.map((post) => {
+      if (post._id === postId) {
+        return { ...post, privacy: newPrivacy };
+      }
+      return post;
+    })
+  );
+};
   return (
-    <div>
-      <HeaderBrowseMap />
+    <div className= "browse-container">
+      <div className="header">
+        <HeaderBrowseMap />
+      </div>
       <div className="Browse-items">
         <InfiniteScroll
           dataLength={data.length}
@@ -89,16 +105,19 @@ if (token) {
           }
         >
           {data.map((post) => {
-  // Log post.userId here
-  console.log(post.userId==userId);
-  console.log(userId); 
-  //console.log(post.userId); 
+ 
   
   // Render the UserPost component
-  return (
-    <UserPost key={post._id} post={post} isCurrentUser={post.userId === userId} />
-  );
-})}
+        return (
+          <UserPost
+            key={post._id}
+            post={post}
+            onDelete={handlePostDelete}
+            onPrivacyChange={handlePrivacyChange}
+            isCurrentUser={post.userId === userId}
+          />
+        );
+      })}
 
         </InfiniteScroll>
         {error && <div className="error-message">{error}</div>}

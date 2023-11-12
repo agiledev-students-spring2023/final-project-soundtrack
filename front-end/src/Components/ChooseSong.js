@@ -144,7 +144,7 @@ useEffect(() => {
 
   const handleRecentSong = (song) => {
     //console.log(song.track);
-    setSelectedSong(song.track);
+    setSelectedSong(song);
   };
 
   const handleClearInput = () => {
@@ -189,9 +189,13 @@ return (
         <h2 className="title">Search Results</h2>
         <div className="data-result">
           {filteredData.slice(0, 15).map((value, key) => (
-            <div key={key} className="data-item" onClick={() => handleSearchSong(value)}>
-              <SongPreview track={value} />
-            </div>
+            <div
+            key={key}
+            className={`data-item ${selectedSong && selectedSong.id === value.id ? 'selected-song' : ''}`}
+            onClick={() => handleSearchSong(value)}
+          >
+            <SongPreview track={value} />
+          </div>
           ))}
         </div>
       </div>
@@ -206,11 +210,14 @@ return (
       <div className="recent-listen-block">
         <h2 className="title">Recently Played</h2>
         <div className="recent-listen">
-          {recentlyPlayed.slice(0, 10).map((item, index) => (
-            <div key={index} className="data-item" onClick={() => handleRecentSong(item)}>
-              <SongPreview track={item.track} />
-            </div>
-          ))}
+        {recentlyPlayed.slice(0, 10).map((item, index) => (
+          <div key={index} 
+            className={`data-item ${selectedSong && selectedSong.id === item.track.id ? 'selected-song' : ''}`} 
+            onClick={() => handleRecentSong(item.track)}
+          >
+            <SongPreview track={item.track} />
+          </div>
+        ))}
         </div>
       </div>
     )}
@@ -225,8 +232,11 @@ return (
       <div className="recent-listen-block">
         <h2 className="title">Top Global</h2>
         <div className="recent-listen">
-          {topSongs.slice(0, 10).map((item, index) => (
-            <div key={index} className="data-item" onClick={() => handleRecentSong(item)}>
+        {topSongs.slice(0, 10).map((item, index) => (
+            <div key={index} 
+              className={`data-item ${selectedSong && selectedSong.id === item.track.id ? 'selected-song' : ''}`} 
+              onClick={() => handleRecentSong(item.track)}
+            >
               <SongPreview track={item.track} />
             </div>
           ))}
