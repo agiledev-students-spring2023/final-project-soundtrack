@@ -32,12 +32,10 @@ const HeaderBrowseMap = () => {
           }}
           className="SquareButton1"
         >
-          <FontAwesomeIcon icon={faUser}/>
+          <FontAwesomeIcon icon={faUser} />
         </div>
       </div>
 
-
-      
       <div className="BrowseAndMapRow">
         <div
           onClick={() => {
