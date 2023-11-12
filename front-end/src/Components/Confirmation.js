@@ -33,7 +33,7 @@ const Confirmation = ({ songTitle, imageURL, locationName, onBack }) => {
         console.log(err);
       });
 
-    navigate("/map");
+    navigate("/browse");
   };
 
   const handleOpen = () => {

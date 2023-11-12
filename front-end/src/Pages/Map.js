@@ -460,6 +460,7 @@ function Map() {
           options={{
             styles: mapStyle,
             mapTypeControl: false,
+            streetViewControl: false,
           }}
           onClick={handleMarkerClick}
         >

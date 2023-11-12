@@ -53,12 +53,16 @@ function Settings() {
       <div className="settings-header"> 
         <div onClick={() => navigate("/user")} className="back-link">Back</div>
       </div>
-      <div className="LogoText">
-        <img 
-          src={require('../Logos/soundTrackFullLogo.png')} 
-          width="200px"
-          height="200px"
-          srcSet={require('../Logos/fullLogo.svg')} />
+      <div className="logo-wrapper"> 
+        <div className="LogoText">
+          <img 
+            src={require('../Logos/soundTrackFullLogo.png')} 
+            alt="SoundTrack Logo"
+            width="200px"
+            height="200px"
+            srcSet={require('../Logos/fullLogo.svg')} 
+          />
+        </div>
       </div>
       {/* <div> <SpotifyPlayer track = "spotify:track:2sLVs5iX0osogh4jcsAJkv"/> </div> */}
       <div className="option">

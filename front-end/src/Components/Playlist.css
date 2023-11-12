@@ -4,8 +4,9 @@
     margin: 10px;
     background-color: #ffffff;
     height: 300px;
-    width:360px;
     overflow-y: scroll;
+    width: 100%;
+    max-width: 360px; 
   }
   
   .playlist-title {
