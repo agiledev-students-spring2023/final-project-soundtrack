@@ -16,10 +16,17 @@
 }
 
 .LogoText {
-  font-size: 1.5rem;
-  font-weight: bold;
-  width: 30vw; /* Adjust as needed */
-  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 25vw; /* Adjust as needed */
+  width: auto;
+  padding: 5px;
+}
+
+.LogoText img {
+  height: 25vw; /* Adjust as needed */
+  width: auto; /* Adjust as needed */
 }
 
 .SquareButton1 {

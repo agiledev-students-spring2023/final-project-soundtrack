@@ -1,4 +1,5 @@
 .Login {
+  padding: 20vw;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -10,29 +11,27 @@
 
 label {
   cursor: pointer;
-  margin-bottom: 8px; 
-  font-size: 12px; 
-  line-height: 1; 
+  margin-bottom: 8px;
+  font-size: 12px;
+  line-height: 1;
   text-decoration: underline;
 }
 
 .linksAccountForgot {
   display: flex;
   flex-direction: column;
-  align-items: flex-start; 
-  font-size: 12px; 
+  align-items: flex-start;
+  font-size: 12px;
   margin-top: 12px;
   cursor: pointer;
-  
 }
 
 .linksAccountForgot label:hover {
   text-decoration: underline;
-  color: #007bff; 
+  color: #007bff;
 }
 
-
-.logo{
+.logo {
   width: 300px;
   height: 125px;
   background-color: lightgray;
@@ -45,13 +44,13 @@ label {
   margin-bottom: 60px;
 }
 
-.login-button-container{
+.login-button-container {
   text-align: center;
   align-items: center;
   margin-top: 10px;
 }
 
-.inputs{
+.inputs {
   width: auto;
   height: auto;
   display: flex;
@@ -60,11 +59,9 @@ label {
   justify-content: space-between;
   text-align: center;
   color: black;
-  padding: 10px;
 }
 
-
-.login-button{
+.login-button {
   width: 90px;
   height: 50px;
   background-color: #1c1c1e;
@@ -77,71 +74,56 @@ label {
   text-decoration: none;
 }
 
-.submit-button{
-    width: 90px;
-    height: 50px;
-    background-color: #1c1c1e;
-    color: white;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 5px;
-    font-size: 1em;
-    cursor: pointer;
-    text-decoration: none;
-}
-
- 
-input {
-  text-align: center;
-  background-color: #f2f2f2;  
-  justify-content: center;
-  border: 1px solid #ccc;  
-  width: 280px;
+.submit-button {
+  width: 90px;
   height: 50px;
-  margin-top: 40px;
+  background-color: #1c1c1e;
+  color: white;
+  padding: 8px 16px;
+  border: none;
   border-radius: 5px;
-  position: relative; 
+  font-size: 1em;
+  cursor: pointer;
+  text-decoration: none;
 }
 
 input:focus {
   outline: none;
-  border: 1px solid #007bff;  
+  border: 1px solid #007bff;
 }
 
 input::placeholder {
-  color: #999999;  
+  color: #999999;
 }
 
 .error-message-container {
-  height: 50px; 
-  width: 280px; 
+  height: 50px;
+  width: 280px;
   text-align: center;
 }
 
 .error-message {
-  color: #dc3545; 
-  background-color: #f8d7da; 
-  border-color: #f5c6cb; 
-  padding: .75rem 1.25rem;
+  color: #dc3545;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  padding: 0.75rem 1.25rem;
   margin-bottom: 1rem;
-  border: 1px solid transparent; 
-  border-radius: .25rem;
-  width: 240px; 
-  text-align: center; 
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  width: 240px;
+  text-align: center;
   margin-top: 20px;
   display: none;
   max-height: 0;
-  transition: max-height 0.3s ease-out, padding 0.3s ease-out, margin 0.3s ease-out; 
-  overflow: hidden; 
-  height: 50%; 
+  transition: max-height 0.3s ease-out, padding 0.3s ease-out,
+    margin 0.3s ease-out;
+  overflow: hidden;
+  height: 50%;
 }
 
 .error-message.show {
-  display: block; 
-  max-height: 50px; 
-  padding: .75rem 1.25rem;
+  display: block;
+  max-height: 50px;
+  padding: 0.75rem 1.25rem;
   margin-bottom: 1rem;
 }
-
-
-
