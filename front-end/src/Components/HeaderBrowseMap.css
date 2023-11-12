@@ -1,59 +1,56 @@
-.LogoPostAndProfile {
-    padding-left:8vw;
-    padding-right: 8vw;
-    padding-top: 4vh;
-    padding-bottom: 2vh;
+.header {
+  width: 90vw;
+  padding-left: 1vw;
+  padding-right: 1vw;
+  padding-top: 4vh;
+  padding-bottom: 2vh;
+}
 
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: nowrap;
+.LogoPostAndProfile {
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start; /* Align children to the start of the container's cross axis */
+  flex-wrap: nowrap;
 }
 
 .LogoText {
-    font-size: 1.5rem;
-    font-weight: bold;
+  font-size: 1.5rem;
+  font-weight: bold;
+  width: 30vw; /* Adjust as needed */
+  height: auto;
 }
 
 .SquareButton1 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
 
-    width: 3rem;
-    height: 4vh;
-
-    background-color: lightgray;
-    border-radius: 10px;
-
-    text-align: center;
-    font-size: small;
+  background-color: transparent;
+  border-radius: 10px;
 }
 
 .BrowseAndMapRow {
-    padding-left: 20vw;
-    padding-right: 20vw;
-    padding-top: 0vh;
-    padding-bottom: 2vh;
+  padding-left: 20vw;
+  padding-right: 20vw;
+  padding-top: 0vh;
 
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: nowrap;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
 
-    gap: 0;
+  gap: 0;
 }
 
 .SquareButton2 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    width: 4rem;
-    height: 1rem;
-
-    text-align: center;
-    font-size: medium;
+  width: 3rem;
+  height: 3rem;
 }
