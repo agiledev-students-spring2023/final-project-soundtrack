@@ -1,14 +1,30 @@
-  .post {
-    border: 1px solid #dbdbdb;
-    border-radius: 10px;
-    margin-top: 2vh;
-    margin-left:2vw;
-    margin-right: 2vw;
-    background-color: #ffffff;
-    width: 360px; 
-  }
+.post {
+  border: 1px solid #dbdbdb;
+  border-radius: 10px;
+  margin: 2vh auto; 
+  background-color: #ffffff;
+  width: 100%;
+  max-width: 360px; 
+  overflow: hidden; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+}
 
-  
+.post-image-wrapper {
+  width: 100%; 
+  height: 300px; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  overflow: hidden;
+}
+
+.post-image {
+  max-width: 100%; 
+  max-height: 100%; 
+  object-fit: cover; 
+}
+
+
   .post-header {
     display: flex;
     align-items: center;
@@ -30,15 +46,6 @@
     margin-left: 10px; 
   }
   
-  .post-image {
-    display: flex;
-    width: 100%;
-    height: auto;
-    margin-left: 0;
-    margin-right:0; 
-    object-fit: cover;
-  }
-  
   .post-footer {
     display: flex;
     justify-content: space-between;
@@ -54,6 +61,8 @@
     background-color: #F8F8F8;
     font-weight: bold;
     color: #555555;
+    border-top: 1px solid #dbdbdb; 
+    border-bottom: 1px solid #dbdbdb; 
   }
   #like-button{
     right: 0px;
@@ -82,13 +91,16 @@
     flex-direction: column;
     align-items: center;
     margin-top: 30px;
-    
 }
 
- .location{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.location {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 15px; 
+  background-color: #f7f7f7; 
+  border-top: 1px solid #dbdbdb; 
+  border-bottom: 1px solid #dbdbdb; 
 }
   .place_name {
     font-size: 20px;

@@ -18,6 +18,8 @@ import Auth from "./Pages/Auth";
 import CheckEmail from "./Pages/CheckEmail"; 
 import UserProfilePage from "./Pages/UserProfilePage";
 import AudioContext from "./AudioContext";
+import NotFoundPage from './Pages/NotFoundPage';
+import Pr from './Components/Pr';
 
 
 function App() {
@@ -32,21 +34,70 @@ function App() {
         <div>
           <Routes>
             <Route exact path="/" element={<Login />}></Route>
-            <Route exact path="/Post" element={<Post />}></Route>
-            <Route path="/UserProfile/:userId" element={<UserProfilePage />} />
-            <Route exact path="/User" element={<User />}></Route>
-            <Route exact path="/Email" element={<CheckEmail />}></Route>
-            <Route exact path="/Friends" element={<Friends />}></Route>
+            <Route path="/Post" element={
+              <Pr>
+                <Post />
+              </Pr>
+            } />
+            <Route path="/UserProfile/:userId" element={
+              <Pr>
+                <UserProfilePage />
+              </Pr>
+            } />
+            <Route path="/User" element={
+              <Pr>
+                <User/>
+              </Pr>
+            } />
+            <Route path="/Email" element={
+              <Pr>
+                <CheckEmail/>
+              </Pr>
+            } />
+            <Route path="/Friends" element={
+              <Pr>
+                <Friends/>
+              </Pr>
+            } />
             <Route exact path="/Browse" element={<Browse />}></Route>
-            <Route exact path="/Map" element={<Map />}></Route>
+            <Route path="/Map" element={
+              <Pr>
+                <Map/>
+              </Pr>
+            } />
             <Route exact path="/CreateAccount" element={<CreateAccount />}></Route>
             <Route exact path="/ForgotPassword" element={<ForgotPassword />}></Route>
-            <Route exact path="/Settings" element={<Settings />}></Route>
-            <Route exact path="/ChangePassword" element={<ChangePassword />}></Route>
-            <Route exact path="/Privacy" element={<Privacy />}></Route>
-            <Route exact path="/LocationProfile/:locationID" element={<LocationProfile />}></Route>
-            <Route exact path="/EditProfile" element={<EditProfile />}></Route>
-            <Route exact path="/Auth" element={<Auth />}></Route>
+            <Route path="/Settings" element={
+              <Pr>
+                <Settings/>
+              </Pr>
+            } />
+            <Route path="/ChangePassword" element={
+              <Pr>
+                <ChangePassword/>
+              </Pr>
+            } />
+            <Route path="/Privacy" element={
+              <Pr>
+                <Privacy/>
+              </Pr>
+            } />
+            <Route path="/LocationProfile/:locationID" element={
+              <Pr>
+                <LocationProfile/>
+              </Pr>
+            } />
+            <Route path="/EditProfile" element={
+              <Pr>
+                <EditProfile/>
+              </Pr>
+            } />
+            <Route path="/Auth" element={
+              <Pr>
+                <Auth/>
+              </Pr>
+            } />
+            <Route path="*" element={<NotFoundPage/>} />
           </Routes>
         </div>
       </BrowserRouter>

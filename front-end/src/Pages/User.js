@@ -4,6 +4,7 @@ import "./User.css";
 import UserPost from "../Components/UserPost";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { jwtDecode } from 'jwt-decode';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
@@ -82,6 +83,18 @@ const User = () => {
     });
   };
 
+  let userId;
+  
+  if (token) {
+    try {
+      const decoded = jwtDecode(token); 
+      userId = decoded.id; 
+    } catch (e) {
+      // handle error
+
+    }
+  }
+
   return (
     <div className="user-container">
       {error && <p>{error}</p>}
@@ -117,6 +130,7 @@ const User = () => {
                       post={post}
                       onDelete={handlePostDelete}
                       onPrivacyChange={handlePrivacyChange}
+                      isCurrentUser={data.posts.userId = userId}
                     />
                   ))}
             </div>

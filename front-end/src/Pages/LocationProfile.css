@@ -5,13 +5,28 @@
 }
   
 .location-header {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    background-color: #ffffff;
-    padding: 20px 10px;
-    
+  width: 100%;
+  display: flex;
+  justify-content: space-between; 
+  align-items: center; 
+  background-color: #ffffff;
+  padding: 20px 10px;
 }
+
+
+.bookmark-container {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top:10px; 
+  padding-right: 20px; 
+}
+
+.bookmark-label {
+  margin-left: 8px; 
+}
+
   
 .back-link {
     
@@ -67,9 +82,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 20px;
 }
-  
 
 .switch-container{
     margin-top:50px; 

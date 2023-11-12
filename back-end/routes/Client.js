@@ -77,16 +77,19 @@ router.get('/', morgan("dev"), async (req, res) => {
   }
 });
 
-router.get('/random-songs', async (req, res) => {
+  router.get('/playlist/:playlistId', async (req, res) => {
+    const playlistId = req.params.playlistId; 
+  
     try {
-      await refreshAccessTokenIfNeeded();
-      const result = await spotifyApi.searchTracks('year:2023', { limit: 5 });
-      res.status(200).send(result.body);
+      await refreshAccessTokenIfNeeded(); 
+      const result = await spotifyApi.getPlaylist(playlistId); 
+      console.log(result.body);
+      res.status(200).send(result.body.tracks.items); 
     } catch (err) {
-      res.status(400).send(err);
+      res.status(400).send(err); 
     }
-  });
-
+});
+  
   router.get('/search-song', async (req, res) => {
     const { q } = req.query;
   
@@ -94,11 +97,58 @@ router.get('/random-songs', async (req, res) => {
       await refreshAccessTokenIfNeeded(); 
       const result = await spotifyApi.searchTracks(q, { limit: 20 });
       const tracks = result.body.tracks.items;
+      console.log(tracks);
       res.status(200).send(tracks);
     } catch (err) {
       res.status(400).send(err);
     }
   });
+
+  router.post('/token', morgan("dev"), async (req, res) => {
+    try {
+      const result = await axios({
+        method: 'post',
+        url: 'https://accounts.spotify.com/api/token',
+        headers: {
+          'Authorization': 'Basic ' + Buffer.from(clientId + ':' + clientSecret).toString('base64'),
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data: new URLSearchParams({
+          'grant_type': 'client_credentials'
+        }).toString()
+      });
+  
+      const { access_token, expires_in } = result.data;
+      spotifyApi.setAccessToken(access_token);
+      setAccessTokenExpirationTime(expires_in); // Set the expiration time based on the expires_in value
+  
+      // Send the token back to the client if needed
+      res.json({ access_token: access_token, expires_in: expires_in });
+    } catch (error) {
+      console.error('Failed to retrieve access token:', error);
+      res.status(500).json({ error: error.message });
+    }
+  });
+  
+  function setAccessTokenExpirationTime(expiresIn) {
+    const currentTime = new Date();
+    tokenExpirationTime = new Date(currentTime.getTime() + expiresIn * 1000);
+    console.log(`New token set to expire at ${tokenExpirationTime}`);
+  }
+  
+  async function refreshAccessTokenIfNeeded() {
+    try {
+      if (!tokenExpirationTime || new Date() >= tokenExpirationTime) {
+        const data = await spotifyApi.clientCredentialsGrant();
+        spotifyApi.setAccessToken(data.body['access_token']);
+        setAccessTokenExpirationTime(data.body['expires_in']);
+        console.log('Access token refreshed');
+      }
+    } catch (error) {
+      console.error('Error refreshing access token:', error);
+    }
+  }
+  
   
 
   

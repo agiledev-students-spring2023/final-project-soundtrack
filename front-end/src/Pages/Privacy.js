@@ -91,7 +91,7 @@ const Privacy = () => {
           Back
         </div>
       </div>
-      <div>Account Privacy</div>
+      <div>Manage Account</div>
       <div className="switch-container">
         <label className="switch">
           <input className="switch-input" type="checkbox" checked={isPrivate} onChange={handleChange} />
