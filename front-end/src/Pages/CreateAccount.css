@@ -61,11 +61,8 @@ input {
   text-align: center;
   background-color: #f2f2f2;
   justify-content: center;
-  border: 1px solid #ccc;
-  width: 280px;
-  height: 50px;
-  margin-top: 30px;
-  border-radius: 5px;
+  height: 40px;
+  margin-top: 20px;
 }
 
 input:focus {
