@@ -12,25 +12,23 @@
   justify-content: center;
   align-items: center;
   position: relative;
-  margin:10px;
+  margin: 10px;
 }
 
 input[type="text"] {
   width: 100%;
-  border-radius: 5px;
   border: none;
-  font-size: 18px;
+  font-size: 15px;
   color: #333;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
   outline: none;
 }
 
-.nextButton {
+.next-button {
   position: fixed;
-  bottom: 50px;
-  left:50%;
-  transform: translateX(-50%);
-  width: 150px;
+  bottom: 0px;
+  left: 0%;
+  width: 100vw;
   height: 50px;
   background-color: black;
   color: white;
@@ -39,35 +37,26 @@ input[type="text"] {
   font-weight: bold;
   cursor: pointer;
   text-decoration: none;
-  border-radius: 5px;
-} 
-
-.dataResultBlock,
-.recentListenBlock {
-  margin: 0;
-  padding: 0;
+  border-radius: 0px;
 }
 
-.dataResultBlock h2,
-.recentListenBlock h2 {
+.data-result-block,
+.recent-listen-block {
+  width: 100%;
+  height: 100%;
+  margin-bottom: 50px;
+  box-sizing: border-bo;
+}
+
+.data-result-block h2,
+.recent-listen-block h2 {
   margin: 0 0 0px;
-  padding: 20px;
   font-size: 17px;
   color: #333;
   text-align: left;
 }
 
-.dataResult,
-.recentListen {
-  padding: 10px;
-  max-height: 400px;
-  overflow-y: auto;
-  
-}
-
-.dataItem,
-.recentListenItem {
-  align-items: center;
+.data-item {
   width: 100%;
   height: 100%;
   background-color: #fff;
@@ -77,18 +66,20 @@ input[type="text"] {
   transition: transform 0.2s ease-in-out;
 }
 
-.dataItem:hover,
-.recentListenItem:hover {
+.data-item:hover {
   transform: translateY(-10px);
   outline: 3px solid black;
   outline-offset: -3px;
 }
 
-.dataItem img,
-.recentListenItem img {
+.data-item img {
   object-fit: cover;
 }
-
+.title {
+  padding-left: 5px;
+  font-weight: 500;
+  font-size: small;
+}
 .songDetails,
 .recentListenDetails {
   width: 100%;
@@ -114,12 +105,12 @@ auth {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px; 
-  margin:20px; 
+  font-size: 24px;
+  margin: 20px;
 }
 
 .loader span {
-  margin-left: 10px; 
+  margin-left: 10px;
 }
 
 .clear-input {
@@ -143,11 +134,11 @@ auth {
   border: none;
   padding: 10px 20px;
   font-size: 14px;
-  color: #262626; 
+  color: #262626;
   margin: 0 10px;
   transition: all 0.3s ease;
-  border-bottom: 2px solid transparent; 
-  outline: none; 
+  border-bottom: 2px solid transparent;
+  outline: none;
 }
 
 .tab-selection button:hover,
@@ -156,7 +147,7 @@ auth {
 }
 
 .tab-selection .active-tab {
-  font-weight: 600; 
+  font-weight: 600;
   border-bottom: 2px solid #262626;
 }
 
@@ -165,4 +156,3 @@ auth {
   outline-offset: -3px;
   background-color: #f0f0f0; /* Or any highlight color you prefer */
 }
-
