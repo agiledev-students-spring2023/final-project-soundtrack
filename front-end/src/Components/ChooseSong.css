@@ -44,7 +44,6 @@ input[type="text"] {
 .recent-listen-block {
   width: 100%;
   height: 100%;
-  margin-bottom: 50px;
   box-sizing: border-bo;
 }
 
@@ -55,7 +54,11 @@ input[type="text"] {
   color: #333;
   text-align: left;
 }
-
+.data-result,
+.recent-listen {
+  margin-top: 20px;
+  margin-bottom: 50px;
+}
 .data-item {
   width: 100%;
   height: 100%;
