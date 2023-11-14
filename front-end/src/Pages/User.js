@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { jwtDecode } from 'jwt-decode';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner, faArrowLeft, faCog } from '@fortawesome/free-solid-svg-icons';
 
 
 const User = () => {
@@ -102,9 +102,9 @@ const User = () => {
         <div onClick={() => navigate("/map")} className="back-link">
         <FontAwesomeIcon icon={faArrowLeft} />   
              </div>
-        <div onClick={() => navigate("/settings")} className="settings-link">
-          Settings
-        </div>
+             <div onClick={() => navigate("/settings")} className="settings-link">
+              <FontAwesomeIcon icon={faCog} /> {/* Replaced text with icon */}
+            </div>
       </div>
       <div className="user-profile">
         <img src={user.avatar} alt="Profile" />

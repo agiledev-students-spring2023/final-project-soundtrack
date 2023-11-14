@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import Webcam from 'react-webcam';
 import './Camera.css';
 
+const isDesktop = window.innerWidth >= 1024;
 const videoConstraints = {
-  width: 390,
-  height: 844,
+  width: isDesktop ? 800 : 390,
+  height: isDesktop ? 600 : 844,
   facingMode: 'user',
 };
 

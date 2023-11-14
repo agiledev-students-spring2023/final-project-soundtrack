@@ -18,8 +18,6 @@ import mapStyle from "./mapStyle.json";
 import Cookies from "js-cookie";
 import ReactDOMServer from "react-dom/server";
 import SongPreview from "../Components/SongPreview";
-import { MarkerClusterer } from "@googlemaps/markerclusterer";
-import { SuperClusterAlgorithm } from "@googlemaps/markerclusterer";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 

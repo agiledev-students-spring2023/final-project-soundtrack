@@ -1,34 +1,35 @@
 .webcam-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; 
+}
 
-  }
+.webcam-img {
+  width: 390px; 
+  height: 844px;
+  overflow: hidden;
+  margin: auto; 
+}
 
-  .webcam-img {
-    width: 390;
-    height: 844;
-    overflow: hidden;
-  }
+.webcam-img > img {
+  margin: 0px;
+  padding: 0px;
+}
 
-  .webcam-img > img {
-    margin:0px;
-    padding:0px;
-  }
-  
-  .webcam-img video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+.webcam-img video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
-  .button-container {
-    position: fixed;
-    top: 110px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+.button-container {
+  position: fixed;
+  top: 110px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
   
   .webcam-btn {
     position: fixed;
@@ -76,4 +77,10 @@
     cursor: pointer;
   }
   
+  @media (min-width: 1024px) {
+    .webcam-img {
+      width: 390px;
+      height: 844; 
+    }
+  }
   
