@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import Cookies from "js-cookie";
 import {useEffect} from 'react'; 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+
 
 function Settings() {
   const navigate = useNavigate(); 
@@ -51,7 +54,9 @@ function Settings() {
   return (
     <div className="settings-page">
       <div className="settings-header"> 
-        <div onClick={() => navigate("/user")} className="back-link">Back</div>
+        <div onClick={() => navigate("/user")} className="back-link">
+          <FontAwesomeIcon icon={faArrowLeft} /> 
+        </div>
       </div>
       <div className="logo-wrapper"> 
         <div className="LogoText">

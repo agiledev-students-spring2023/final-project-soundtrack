@@ -13,7 +13,7 @@ function ChooseSong({ placeholder, data, onNext }) {
   const [selectedSong, setSelectedSong] = useState(null);
   const [recentlyPlayed, setRecentlyPlayed] = useState([]);
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("recent");
+  const [activeTab, setActiveTab] = useState("top global");
   const [topSongs, setTopSongs] = useState([]);
   const [isLoadingRecent, setIsLoadingRecent] = useState(false);
   const [isLoadingTopGlobal, setIsLoadingTopGlobal] = useState(false);
