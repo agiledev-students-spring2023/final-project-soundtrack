@@ -43,8 +43,6 @@ router.get("/userInfo", authenticateToken, async (req, res) => {
 })
 
 
-
-
 // get login user post
 router.get("/", authenticateToken, async (req, res) => {
   try {
@@ -195,6 +193,116 @@ router.patch("/delete", authenticateToken, async (req, res) => {
 
   }
 });
+
+router.get('/:userId/following', async (req, res) => {
+  try {
+      const userId = req.params.userId; 
+      console.log(userId); 
+      const user = await User.findOne({ userId: userId }).populate('following');
+
+      if (!user) {
+          return res.status(404).send('User not found');
+      }
+
+      res.json(user.following);
+  } catch (error) {
+      console.error('Error fetching following:', error);
+      res.status(500).send('Server error: ' + error.message);
+  }
+});
+
+router.get('/:userId/followers', async (req, res) => {
+  try {
+      const userId = req.params.userId;
+      const user = await User.findOne({ userId: userId }).populate('followers');
+
+      if (!user) {
+          return res.status(404).send('User not found');
+      }
+
+      res.json(user.followers);
+  } catch (error) {
+      console.error('Error fetching followers:', error);
+      res.status(500).send('Server error: ' + error.message);
+  }
+});
+
+router.post('/follow/:userId', authenticateToken, async (req, res) => {
+  try {
+      const userIdToFollow = req.params.userId;
+      const currentUserId = req.user.id; 
+
+      const currentUser = await User.findOne({ userId: currentUserId });
+      const userToFollow = await User.findOne({ userId: userIdToFollow });
+
+      if (!currentUser || !userToFollow) {
+          return res.status(404).send("One of the users not found.");
+      }
+
+      if (currentUser.following.includes(userToFollow._id)) {
+          return res.status(400).send("You are already following this user.");
+      }
+
+      currentUser.following.push(userToFollow._id);
+      userToFollow.followers.push(currentUser._id);
+
+      await currentUser.save();
+      await userToFollow.save();
+
+      res.status(200).send("Successfully followed the user.");
+  } catch (error) {
+      console.error('Error in follow route:', error);
+      res.status(500).send('Server error');
+  }
+});
+
+router.post('/unfollow/:userId', authenticateToken, async (req, res) => {
+  try {
+      const userIdToUnfollow = req.params.userId;
+      const currentUserId = req.user.id;
+
+      const currentUser = await User.findOne({ userId: currentUserId });
+      const userToUnfollow = await User.findOne({ userId: userIdToUnfollow });
+
+      if (!currentUser || !userToUnfollow) {
+          return res.status(404).send("One of the users not found.");
+      }
+
+      currentUser.following = currentUser.following.filter(id => !id.equals(userToUnfollow._id));
+      userToUnfollow.followers = userToUnfollow.followers.filter(id => !id.equals(currentUser._id));
+
+      await currentUser.save();
+      await userToUnfollow.save();
+
+      res.status(200).send("Successfully unfollowed the user.");
+  } catch (error) {
+      console.error('Error in unfollow route:', error);
+      res.status(500).send('Server error');
+  }
+});
+
+
+router.get('/checkFollow/:profileUserId', authenticateToken, async (req, res) => {
+  try {
+      const currentUserId = req.user.id; 
+      const profileUserId = req.params.profileUserId; 
+
+      const currentUser = await User.findOne({ userId: currentUserId });
+      const profileUser = await User.findOne({ userId: profileUserId });
+
+      if (!currentUser || !profileUser) {
+          return res.status(404).send('One of the users not found');
+      }
+
+      const isFollowing = currentUser.following.some(id => id.equals(profileUser._id));
+
+      res.json({ isFollowing });
+  } catch (error) {
+      console.error('Error in check follow route:', error);
+      res.status(500).send('Server error');
+  }
+});
+
 
 
 

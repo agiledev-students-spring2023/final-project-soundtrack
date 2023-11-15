@@ -8,14 +8,13 @@ import { jwtDecode } from 'jwt-decode';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner, faArrowLeft, faCog } from '@fortawesome/free-solid-svg-icons';
 
-
 const User = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState({}); //user info
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const token = Cookies.get("jwt"); // Get the JWT token from the cookie
+  const token = Cookies.get("jwt"); 
 
   useEffect(() => {
     axios
@@ -90,8 +89,7 @@ const User = () => {
       const decoded = jwtDecode(token); 
       userId = decoded.id; 
     } catch (e) {
-      // handle error
-
+      // console.log(e); 
     }
   }
 
@@ -109,10 +107,18 @@ const User = () => {
       <div className="user-profile">
         <img src={user.avatar} alt="Profile" />
         <h1 className="username">@{user.userName}</h1>
-        <div onClick={() => navigate("/friends")} className="friends-link">
+        {/* <div onClick={() => navigate("/friends")} className="friends-link">
           Friends
-        </div>
+        </div> */}
       </div>
+      <div className = "following-wrapper">
+      <div onClick={() => navigate(`/following?userId=${userId}`)} className="friends-link">
+        Following
+      </div>
+      <div onClick={() => navigate(`/followers?userId=${userId}`)} className="friends-link">
+        Followers
+      </div>
+        </div>
       {loading ? (
         <div className="loading-message">
         <FontAwesomeIcon icon={faSpinner} spin /> 

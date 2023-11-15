@@ -17,6 +17,8 @@ import EditProfile from "./Pages/EditProfile";
 import Auth from "./Pages/Auth"; 
 import CheckEmail from "./Pages/CheckEmail"; 
 import UserProfilePage from "./Pages/UserProfilePage";
+import Following from "./Pages/Following"; 
+import Followers from "./Pages/Followers"; 
 import AudioContext from "./AudioContext";
 import NotFoundPage from './Pages/NotFoundPage';
 import Pr from './Components/Pr';
@@ -57,6 +59,16 @@ function App() {
             <Route path="/Friends" element={
               <Pr>
                 <Friends/>
+              </Pr>
+            } />
+            <Route path="/Following" element={
+              <Pr>
+                <Following/>
+              </Pr>
+            } />
+            <Route path="/Followers" element={
+              <Pr>
+                <Followers/>
               </Pr>
             } />
             <Route exact path="/Browse" element={<Browse />}></Route>
