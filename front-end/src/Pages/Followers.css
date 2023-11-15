@@ -1,0 +1,40 @@
+.followers-page {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.followers-page h2 {
+    text-align: center;
+    color: #262626;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.followers-list {
+    list-style: none;
+    padding: 0;
+}
+
+.followers-list li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #efefef;
+    padding-bottom: 15px;
+}
+
+.followers-list img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 15px;
+}
+
+.followers-list span {
+    font-size: 16px;
+    color: #262626;
+}

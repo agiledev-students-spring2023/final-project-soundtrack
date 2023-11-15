@@ -1,21 +1,42 @@
 .Title {
-  background-color: #1c1c1e;  
-  min-height: 10vh;
+  
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 15px; 
-  text-align:center; 
-  color: white;
+  font-size: 20px; 
+  background-color: #000000; 
+  border-bottom: 1px solid #dbdbdb; 
 }
 
+.headerTitle {
+  font-weight: bold; 
+  flex-grow: 1; 
+  text-align: center;
+}
+
+.selection {
+  padding: 20px; 
+  
+}
+
+button {
+  background-color: #000000; 
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
 
 .ReturnButton{
   background-color: transparent;
   border: none;
   color: white;
-  font-size: 20px;
+  font-size: 24px;
   font-weight: bold;
+  padding: 10px; 
   cursor: pointer;
   margin-left: auto;
 }

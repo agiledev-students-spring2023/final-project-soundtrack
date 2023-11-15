@@ -45,10 +45,11 @@ const userSchema = new Schema(
       needToChangePass: {
         type: Boolean,
         default: false
-      }
+      }, 
+      followers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+      following: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     },
     {
-      // Add `toJSON` and `toObject` transform to remove password field
       toJSON: {
         transform: (doc, ret) => {
           delete ret.password;

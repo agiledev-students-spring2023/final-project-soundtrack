@@ -37,13 +37,20 @@
   }
   
   .friends-link {
-    margin-top: 10px;
     font-size: 16px;
     text-decoration: none;
     color: #333;
     text-decoration: underline;
+    padding-left:10px; 
+    padding-right:10px; 
   }
   
+  .following-wrapper {
+    align-items: center;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: row; 
+  }
   
   .user-profile {
     display: flex;
@@ -100,6 +107,20 @@
     border-radius: 5px;
     cursor: pointer;
   }
+
+  .user-profile-actions{
+    padding-top: 15px; 
+  }
+
+  .user-profile-actions button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px; 
+    text-align: center;
+    width: 100px; 
+  }
+  
   
   
 

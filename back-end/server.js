@@ -35,7 +35,6 @@ const relationshipRoute = require('./routes/Relationship');
 const mapRoute = require('./routes/map');
 const favoriteRoute = require('./routes/Favorite');
 
-//why it is not being read in from the .env file?
 let server;
 
 mongoose.connect(process.env.MONG_URL)
@@ -67,9 +66,6 @@ app.use("/logout", logoutRoute);
 app.use("/return", returnRoute);
 app.use("/map", mapRoute);
 app.use("/favorite", favoriteRoute);
-
-
-
 
 // a function to stop listening to the port
 const close = async () => {
